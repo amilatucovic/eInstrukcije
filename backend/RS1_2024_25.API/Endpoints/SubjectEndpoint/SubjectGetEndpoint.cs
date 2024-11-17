@@ -1,0 +1,116 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using RS1_2024_25.API.Data;
+using RS1_2024_25.API.Data.Models;
+
+namespace RS1_2024_25.API.Endpoints.SubjectEndpoint
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class SubjectGetEndpoint(ApplicationDbContext db) : ControllerBase
+    {
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            var subjects = db.Subjects
+                .Select(s => new SubjectResponse
+                {
+                    ID = s.ID,
+                    Name = s.Name,
+                    Description = s.Description,
+                    DifficultyLevel = s.DifficultyLevel
+                })
+                .ToArray(); 
+
+            return Ok(subjects);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var subject = db.Subjects
+                .Where(s => s.ID == id)
+                .Select(s => new SubjectResponse
+                {
+                    ID = s.ID,
+                    Name = s.Name,
+                    Description = s.Description,
+                    DifficultyLevel = s.DifficultyLevel
+                })
+                .FirstOrDefault();
+
+            if (subject == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(subject);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] SubjectRequest subjectRequest)
+        {
+            var subject = new Subject
+            {
+                Name = subjectRequest.Name,
+                Description = subjectRequest.Description,
+                DifficultyLevel = subjectRequest.DifficultyLevel
+            };
+
+            db.Subjects.Add(subject);
+            db.SaveChanges();
+            
+            var subjectResponse = new SubjectResponse
+            {
+                ID = subject.ID,
+                Name = subject.Name,
+                Description = subject.Description,
+                DifficultyLevel = subject.DifficultyLevel
+            };
+
+            return Ok(subjectResponse);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] SubjectRequest subjectRequest)
+        {
+            var subject = db.Subjects.FirstOrDefault(s => s.ID == id);
+            if (subject == null)
+            {
+                return NotFound();
+            }
+
+            subject.Name = subjectRequest.Name;
+            subject.Description = subjectRequest.Description;
+            subject.DifficultyLevel = subjectRequest.DifficultyLevel;
+
+            db.SaveChanges(); 
+
+            var subjectResponse = new SubjectResponse
+            {
+                ID = subject.ID,
+                Name = subject.Name,
+                Description = subject.Description,
+                DifficultyLevel = subject.DifficultyLevel
+            };
+
+            return Ok(subjectResponse);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        { 
+            var subject = db.Subjects.Where(x => x.ID == id).FirstOrDefault();
+            if (subject == null)
+            {   
+                return NotFound();
+            }
+            else
+            {
+                db.Subjects.Remove(subject);
+                db.SaveChanges();
+                return Ok();
+            }
+        }
+    }
+}
