@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using RS1_2024_25.API.Helper;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace RS1_2024_25.API.Data.Models.Auth;
 
-public class MyAppUser
+public class MyAppUser:IMyBaseEntity
 {
     [Key]
     public int ID { get; set; }
@@ -18,6 +19,7 @@ public class MyAppUser
     public int Age { get; set; }
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
+    public string UserType { get; set; }
 
     [ForeignKey(nameof(City))]
     public int CityId { get; set; }
