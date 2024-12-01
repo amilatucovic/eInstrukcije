@@ -7,10 +7,12 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MyAuthInterceptor} from './services/auth-services/my-auth-interceptor.service';
 import {MyAuthService} from './services/auth-services/my-auth.service';
 import {SharedModule} from './modules/shared/shared.module';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LandingPageComponent
   ],
   imports: [
     BrowserModule,
