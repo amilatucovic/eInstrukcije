@@ -24,7 +24,7 @@
         </li>
       </ul>
     </div>
-     <div class="dugmad">
+     <div class="navbarButtons">
       <a class="btn" href="/login">Prijava</a>
       <a class="btn ml-2" href="/register">Registracija</a>
      </div>
@@ -33,21 +33,68 @@
 </nav>
 <section class="hero text-white text-center py-5">
   <div class="hero-container">
-    <h1 class="display-4">Find the Perfect Tutor</h1>
-    <p class="lead">Join our community and get the best learning experience!</p>
-    <a href="/register" class="btn btn-light btn-lg">Get Started</a>
+    <div class="text-center p-5">
+      <h1 class="mb-4">Uči od najboljih: Pronađi svog instruktora</h1>
+      <p class="mb-5">Savladaj bilo koji predmet uz našu pomoć. Sve što ti treba je jedan klik!</p>
+      <form class="d-flex justify-content-center">
+        <input
+          class="form-control me-2"
+          type="search"
+          placeholder="Šta želite naučiti?"
+          aria-label="Pretraga"
+          style="max-width: 500px; background-color: #D3D3D3; color: #000000; border: none; border-radius: 15px;"
+        >
+        <button
+          class="btn"
+          type="submit"
+          style="background-color: #2E3A3F; color: #F5F5F5; border-radius: 15px; height: 50px;"
+        >
+          <i class="fas fa-search" style="font-size: 16px;"></i>
+        </button>
+      </form>
+    </div>
   </div>
 </section>
 
 
-<section class="info py-5">
-  <div class="container text-center">
-    <h2 class="mb-4">How It Works</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum.</p>
+<section class="how-it-works">
+  <div class="container">
+    <h2>U par klikova do vrhunskih instrukcija. Tvoje znanje, naša misija!</h2>
+    <div class="steps">
+      <div class="step-card">
+        <div class="icon">
+          <i class="fas fa-search"></i>
+        </div>
+        <h3>Pronađi savršenog instruktora</h3>
+        <p>Odaberi predmet, lokaciju, cijenu i odluči kako želiš učiti.</p>
+      </div>
+      <div class="step-card">
+        <div class="icon">
+          <i class="fas fa-user"></i>
+        </div>
+        <h3>Upoznaj svog instruktora</h3>
+        <p>Pročitaj recenzije, pogledaj profile i odaberi onog koji ti najviše odgovara.</p>
+      </div>
+      <div class="step-card">
+        <div class="icon">
+          <i class="fas fa-calendar-check"></i>
+        </div>
+        <h3>Osiguraj svoje mjesto</h3>
+        <p>Dogovori termin u samo nekoliko klikova i kreni s učenjem!</p>
+      </div>
+      <div class="step-card">
+        <div class="icon">
+          <i class="fas fa-graduation-cap"></i>
+        </div>
+        <h3>Vjeruj u sebe</h3>
+        <p>Uz naše instruktore, tvoj uspjeh je zagarantovan!</p>
+      </div>
+    </div>
   </div>
 </section>
 
 
-<footer class="bg-dark text-white text-center py-4">
-  <p>&copy; 2024 eInstrukcije | All rights reserved</p>
+
+<footer class="footerClass">
+  <p>&copy; 2024 eInstrukcije | Sva prava zadržana</p>
 </footer>
