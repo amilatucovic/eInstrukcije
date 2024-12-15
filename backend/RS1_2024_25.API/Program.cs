@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using RS1_2024_25.API.Data;
+using RS1_2024_25.API.Endpoints.LoginEndpoint.Classes;
+using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
 using RS1_2024_25.API.Helper;
 using RS1_2024_25.API.Helper.Auth;
 using RS1_2024_25.API.Services;
@@ -25,6 +27,7 @@ builder.Services.AddHttpContextAccessor();
 //dodajte vaše servise
 builder.Services.AddTransient<MyAuthService>();
 builder.Services.AddTransient<MyTokenGenerator>();
+builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
 
@@ -46,3 +49,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

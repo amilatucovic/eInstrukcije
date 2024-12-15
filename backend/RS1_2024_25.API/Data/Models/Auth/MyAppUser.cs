@@ -29,4 +29,4 @@ public class MyAppUser:IMyBaseEntity
 
 public enum UserType { Admin, Tutor, Student}
 
-public enum Gender { Male, Female}
+//public enum Gender { Male, Female}

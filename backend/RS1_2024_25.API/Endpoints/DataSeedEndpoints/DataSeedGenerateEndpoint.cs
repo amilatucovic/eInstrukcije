@@ -46,7 +46,6 @@ public class DataSeedGenerateEndpoint(ApplicationDbContext db)
                 Password = "admin123",
                 FirstName = "Admin",
                 LastName = "One",
-                IsAdmin = true, 
                 
             },
             new MyAppUser
@@ -55,7 +54,6 @@ public class DataSeedGenerateEndpoint(ApplicationDbContext db)
                 Password = "manager123",
                 FirstName = "Manager",
                 LastName = "One",
-                IsAdmin = false,
               
             },
             new MyAppUser
@@ -64,7 +62,6 @@ public class DataSeedGenerateEndpoint(ApplicationDbContext db)
                 Password = "user123",
                 FirstName = "User",
                 LastName = "One",
-                IsAdmin = false, 
                
             },
             new MyAppUser
@@ -73,7 +70,6 @@ public class DataSeedGenerateEndpoint(ApplicationDbContext db)
                 Password = "user456",
                 FirstName = "User",
                 LastName = "Two",
-                IsAdmin = false,
                
             }
         };

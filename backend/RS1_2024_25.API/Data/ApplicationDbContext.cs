@@ -21,15 +21,14 @@ namespace RS1_2024_25.API.Data
         {
             base.OnModelCreating(modelBuilder);
 
-           
-            modelBuilder.Entity<MyAppUser>()
-                        .HasDiscriminator<string>("UserType")
-                        .HasValue<MyAppUser>("User")
-                        .HasValue<Admin>("Admin")
-                        .HasValue<Tutor>("Tutor")
-                        .HasValue<Student>("Student");
 
-           
+            modelBuilder.Entity<MyAppUser>()
+    .Property(e => e.UserType)
+    .HasConversion(
+        v => v.ToString(),
+        v => (UserType)Enum.Parse(typeof(UserType), v));
+
+
             modelBuilder.Entity<Review>()
                 .HasKey(r => r.ID);
 

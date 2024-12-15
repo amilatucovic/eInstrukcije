@@ -1,0 +1,21 @@
+.container{
+
+
+}
+.btn:hover{
+  background-color: #370ee3;
+}
+body{
+  max-width:100%;
+  background-image:url("/public/images/pngtree-desain-background-ungu-polos-dan-kosong-untuk-latarbelakang-picture-image_1454585.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.form-control{
+  border-bottom:1px solid black;
+  border-radius:0px;
+}
+.btn{
+  background-color: #008080;
+  border:none;
+}

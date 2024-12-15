@@ -80,7 +80,6 @@ namespace RS1_2024_25.API.Services
                 Username = myAuthToken.MyAppUser!.Username,
                 FirstName = myAuthToken.MyAppUser.FirstName,
                 LastName = myAuthToken.MyAppUser.LastName,
-                IsAdmin = myAuthToken.MyAppUser.IsAdmin,
                 IsLoggedIn = true
             };
         }

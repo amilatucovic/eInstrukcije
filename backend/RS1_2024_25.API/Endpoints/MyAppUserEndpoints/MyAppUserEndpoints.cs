@@ -64,10 +64,8 @@ namespace RS1_2024_25.API.Endpoints.MyAppUserEndpoints
                 Email=request.Email,
                 PhoneNumber=request.PhoneNumber,
                 CityId=request.CityId,
-                IsAdmin=request.IsAdmin,
-                IsTutor=request.IsTutor,
-                IsStudent=request.IsStudent,
-                UserType=request.UserType
+                UserType=request.UserType,
+                Gender=request.Gender
             };
 
             db.MyAppUsers.Add(newAppUser);
