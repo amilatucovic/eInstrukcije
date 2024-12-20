@@ -1,44 +1,57 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
-using RS1_2024_2025.Domain;
+using Microsoft.IdentityModel.Tokens;
 using RS1_2024_2025.API.Endpoints.LoginEndpoint.Classes;
 using RS1_2024_2025.API.Endpoints.LoginEndpoint.Interfaces;
-using RS1_2024_2025.API.Helper;
 using RS1_2024_2025.API.Helper.Auth;
-using RS1_2024_2025.Services;
 using RS1_2024_2025.Database;
-
+using RS1_2024_2025.Services;
+using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
+using System.Text;
 
 var config = new ConfigurationBuilder()
-.AddJsonFile("appsettings.json", false)
-.Build();
+    .AddJsonFile("appsettings.json", false)
+    .Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+// Configure DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(config.GetConnectionString("db1"),
-        sqlOptions => sqlOptions.MigrationsAssembly("RS1_2024_2025.Database")));
+    options.UseSqlServer(config.GetConnectionString("db1")));
+
+// Add JWT Authentication
+var jwtSettings = config.GetSection("Jwt");
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = jwtSettings["Issuer"],
+            ValidAudience = jwtSettings["Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
+        };
+    });
+
+// Add application services
+builder.Services.AddTransient<MyAuthService>();
+builder.Services.AddTransient<MyTokenGenerator>();
+builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x => x.OperationFilter<MyAuthorizationSwaggerHeader>());
 builder.Services.AddHttpContextAccessor();
 
-//dodajte vaše servise
-//builder.Services.AddTransient<MyAuthService>();
-//builder.Services.AddTransient<RS1_2024_2025.API.Helper.MyTokenGenerator>();
-//builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
-
 var app = builder.Build();
-
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Uploads/Images")),
-    RequestPath = "/Uploads/Images"
-});
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
@@ -50,12 +63,11 @@ app.UseCors(
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials()
-); //This needs to set everything allowed
+); // Allow all CORS requests
 
-
-app.UseAuthorization();
+app.UseAuthentication(); // Add authentication middleware
+app.UseAuthorization(); // Add authorization middleware
 
 app.MapControllers();
 
 app.Run();
-

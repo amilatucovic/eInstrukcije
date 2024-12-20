@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using RS1_2024_2025.API.Endpoints.LoginEndpoint.DTOs;
 using RS1_2024_2025.API.Endpoints.LoginEndpoint.Interfaces;
-
+using RS1_2024_2025.Database;
+using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
 namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
 {
     [Route("api/[controller]")]
@@ -10,10 +11,13 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
     public class LoginController : ControllerBase
     {
         private readonly IAuthenticationService _authenticationService;
-
-        public LoginController(IAuthenticationService authenticationService)
+        private readonly ITokenService _tokenService;
+        private readonly ApplicationDbContext _context;
+        public LoginController(IAuthenticationService authenticationService, ITokenService tokenService, ApplicationDbContext context)
         {
             _authenticationService = authenticationService;
+            _tokenService = tokenService;
+            _context = context;
         }
 
         [HttpPost("login")]
@@ -24,16 +28,22 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
             if (user == null)
                 return Unauthorized("Invalid credentials.");
 
-            //var token = _authenticationService.GenerateJwtToken(user);
+            var role = user.UserType.ToString();
+            var token = _tokenService.GenerateToken(user.Username, role);
+            var refreshToken = _tokenService.GenerateRefreshToken();
 
-            //var loginResponseDto = new LoginResponseDto
-            //{
-            //    Token = token,
-            //    Role = user.UserType.ToString()
-            //};
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
 
-            //return Ok(loginResponseDto);
-            return Ok(new { Message = "Login successful", Username = user.Username });
+            await _context.SaveChangesAsync();
+
+            var loginResponseDto = new LoginResponseDto()
+            {
+                Token = token,
+                RefreshToken = refreshToken,
+                Role = role
+            };
+            return Ok(loginResponseDto);
         }
     }
 }

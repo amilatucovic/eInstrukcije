@@ -23,6 +23,9 @@ public class MyAppUser : IMyBaseEntity
     public City? City { get; set; }
 
     public string? Gender { get; set; }
+
+    public string RefreshToken { get; set; }
+    public DateTime? RefreshTokenExpiryTime { get; set; }
     public ICollection<Message> SentMessages { get; set; }
     public ICollection<Message> ReceivedMessages { get; set; }
     public string? ProfileImageUrl { get; set; }

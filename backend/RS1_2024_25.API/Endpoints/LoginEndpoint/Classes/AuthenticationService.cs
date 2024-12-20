@@ -34,5 +34,10 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint.Classes
         //    var roles = _userManager.GetRolesAsync(user).Result;
         //    return _tokenService.GenerateToken(user.Username, roles);
         //}
+
+        public async Task<string> GetUserRoleAsync(MyAppUser user)
+        {
+            return user.UserType.ToString();
+        }
     }
 }

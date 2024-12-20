@@ -3,12 +3,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { UnauthorizedComponent } from './modules/shared/unauthorized/unauthorized.component';
 import { AuthGuard } from './auth-guards/auth-guard.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import {LoginComponent } from './login/login.component';
 
 
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: 'login', component: LoginComponent },
   {
     path: 'admin',
     canActivate: [AuthGuard],

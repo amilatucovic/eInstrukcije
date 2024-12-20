@@ -8,17 +8,21 @@ import {MyAuthInterceptor} from './services/auth-services/my-auth-interceptor.se
 import {MyAuthService} from './services/auth-services/my-auth.service';
 import {SharedModule} from './modules/shared/shared.module';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {LoginComponent} from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LandingPageComponent
+    LandingPageComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    SharedModule // Omogućava korištenje UnauthorizedComponent u AppRoutingModule
+    SharedModule,
+    ReactiveFormsModule// Omogućava korištenje UnauthorizedComponent u AppRoutingModule
   ],
   providers: [
     {

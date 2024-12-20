@@ -14,21 +14,21 @@
           required
         />
         <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-danger">
-          Ispravan Email je potreban.
+          Ovo polje je obavezno.
         </div>
       </div>
       <div class="form-group mb-3">
-        <label for="password" class="form-label">Password</label>
+        <label for="password" class="form-label">Šifra</label>
         <input
           type="password"
           id="password"
           class="form-control"
           formControlName="password"
-          placeholder="Unesite password"
+          placeholder="Unesite šifru"
           required
         />
         <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-danger">
-          Password polje je obavezno.
+          Ovo polje je obavezno.
         </div>
       </div>
       <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">Prijava</button>
