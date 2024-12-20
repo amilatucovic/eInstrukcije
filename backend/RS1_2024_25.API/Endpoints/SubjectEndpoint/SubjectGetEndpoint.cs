@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RS1_2024_25.API.Data;
-using RS1_2024_25.API.Data.Models;
+using RS1_2024_2025.Database;
+using RS1_2024_2025.Domain;
+using RS1_2024_2025.Domain.Entities;
+using RS1_2024_2025.Domain.Entities.Models;
 
-namespace RS1_2024_25.API.Endpoints.SubjectEndpoint
+namespace RS1_2024_2025.API.Endpoints.SubjectEndpoint
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,9 +1,9 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
+using RS1_2024_2025.API.Endpoints.LoginEndpoint.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
-namespace RS1_2024_25.API.Endpoints.LoginEndpoint.Classes
+namespace RS1_2024_2025.API.Endpoints.LoginEndpoint.Classes
 {
     public class TokenService:ITokenService
     {

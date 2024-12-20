@@ -19,7 +19,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="Uploads\Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RS1_2024_2025.Database\RS1_2024_2025.Database.csproj" />
+    <ProjectReference Include="..\RS1_2024_2025.Domain\RS1_2024_2025.Domain.csproj" />
+    <ProjectReference Include="..\RS1_2024_2025.Services\RS1_2024_2025.Services.csproj" />
   </ItemGroup>
 
 </Project>

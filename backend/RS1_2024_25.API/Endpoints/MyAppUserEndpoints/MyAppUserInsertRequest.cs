@@ -1,6 +1,7 @@
-﻿using RS1_2024_25.API.Data.Models.Auth;
+﻿using RS1_2024_2025.Domain.Entities;
+using RS1_2024_2025.Domain.Entities.Models.Auth;
 
-namespace RS1_2024_25.API.Endpoints.MyAppUserEndpoints
+namespace RS1_2024_2025.API.Endpoints.MyAppUserEndpoints
 {
     public class MyAppUserInsertRequest
     {
@@ -15,6 +16,6 @@ namespace RS1_2024_25.API.Endpoints.MyAppUserEndpoints
         public int? CityId { get; set; }
         public UserType UserType { get; set; }
         public string Gender { get; set; }
-       
+        public byte[] ProfileImage { get; set; }
     }
 }

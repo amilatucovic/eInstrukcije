@@ -1,14 +1,15 @@
 ﻿using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RS1_2024_25.API.Data;
-using RS1_2024_25.API.Helper.Api;
-using RS1_2024_25.API.Services;
+using RS1_2024_2025.Domain.Entities;
+using RS1_2024_2025.API.Helper.Api;
+using RS1_2024_2025.Services;
 using System.Threading;
 using System.Threading.Tasks;
-using static RS1_2024_25.API.Endpoints.AuthEndpoints.AuthLogoutEndpoint;
+using static RS1_2024_2025.API.Endpoints.AuthEndpoints.AuthLogoutEndpoint;
+using RS1_2024_2025.Database;
 
-namespace RS1_2024_25.API.Endpoints.AuthEndpoints;
+namespace RS1_2024_2025.API.Endpoints.AuthEndpoints;
 
 [Route("auth")]
 public class AuthLogoutEndpoint(ApplicationDbContext db, MyAuthService authService) : MyEndpointBaseAsync

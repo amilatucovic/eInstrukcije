@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RS1_2024_25.API.Data;
-using RS1_2024_25.API.Data.Models.Auth;
-using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
+using RS1_2024_2025.Domain;
+using RS1_2024_2025.Domain.Entities.Models.Auth;
+using RS1_2024_2025.API.Endpoints.LoginEndpoint.Interfaces;
+using RS1_2024_2025.Database;
+using RS1_2024_2025.Domain.Entities;
 
-namespace RS1_2024_25.API.Endpoints.LoginEndpoint.Classes
+namespace RS1_2024_2025.API.Endpoints.LoginEndpoint.Classes
 {
-    public class AuthenticationService:IAuthenticationService
+    public class AuthenticationService : IAuthenticationService
     {
         private readonly ApplicationDbContext _context;
 
@@ -17,12 +19,10 @@ namespace RS1_2024_25.API.Endpoints.LoginEndpoint.Classes
 
         public async Task<MyAppUser> AuthenticateAsync(string username, string password)
         {
-            // Retrieve the user by username
             var user = await _context.MyAppUsers
                 .FirstOrDefaultAsync(u => u.Username == username);
 
-            // Check if user exists and the password matches
-            if (user == null || user.Password != password) // Hash passwords in a real app
+            if (user == null || user.Password != password) 
             {
                 return null;
             }
@@ -30,7 +30,7 @@ namespace RS1_2024_25.API.Endpoints.LoginEndpoint.Classes
             return user;
         }
         //public string GenerateJwtToken(MyAppUser user)
-        //{ 
+        //{
         //    var roles = _userManager.GetRolesAsync(user).Result;
         //    return _tokenService.GenerateToken(user.Username, roles);
         //}

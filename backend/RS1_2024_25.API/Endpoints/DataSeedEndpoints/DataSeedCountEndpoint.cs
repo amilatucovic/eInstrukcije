@@ -1,11 +1,12 @@
-﻿namespace RS1_2024_25.API.Endpoints.DataSeed
+﻿namespace RS1_2024_2025.API.Endpoints.DataSeed
 {
     using Microsoft.AspNetCore.Mvc;
-    using RS1_2024_25.API.Data;
-    using RS1_2024_25.API.Helper.Api;
+    using RS1_2024_2025.Domain;
+    using RS1_2024_2025.API.Helper.Api;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
+    using RS1_2024_2025.Database;
 
     namespace FIT_Api_Example.Endpoints
     {

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using RS1_2024_25.API.Endpoints.LoginEndpoint.DTOs;
-using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
+using RS1_2024_2025.API.Endpoints.LoginEndpoint.DTOs;
+using RS1_2024_2025.API.Endpoints.LoginEndpoint.Interfaces;
 
-namespace RS1_2024_25.API.Endpoints.LoginEndpoint
+namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
 {
     [Route("api/[controller]")]
     [ApiController]

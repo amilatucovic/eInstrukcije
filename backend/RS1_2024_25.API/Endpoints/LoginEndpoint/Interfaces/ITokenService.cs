@@ -1,4 +1,4 @@
-﻿namespace RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces
+﻿namespace RS1_2024_2025.API.Endpoints.LoginEndpoint.Interfaces
 {
     public interface ITokenService
     {

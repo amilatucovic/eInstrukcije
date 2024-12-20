@@ -1,17 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RS1_2024_25.API.Data;
-using RS1_2024_25.API.Data.Models;
-using RS1_2024_25.API.Data.Models.Auth;
-using RS1_2024_25.API.Helper;
-using RS1_2024_25.API.Helper.Api;
-using RS1_2024_25.API.Services;
+using RS1_2024_2025.Domain;
+using RS1_2024_2025.Domain.Entities.Models;
+using RS1_2024_2025.Domain.Entities.Models.Auth;
+using RS1_2024_2025.API.Helper;
+using RS1_2024_2025.API.Helper.Api;
+using RS1_2024_2025.Services;
 using System.Threading;
 using System.Threading.Tasks;
-using static RS1_2024_25.API.Endpoints.Auth.AuthLoginEndpoint;
+using static RS1_2024_2025.API.Endpoints.Auth.AuthLoginEndpoint;
+using RS1_2024_2025.Database;
 
-namespace RS1_2024_25.API.Endpoints.Auth
+namespace RS1_2024_2025.API.Endpoints.Auth
 {
     [Route("auth")]
     public class AuthLoginEndpoint(ApplicationDbContext db, MyAuthService authService) : MyEndpointBaseAsync

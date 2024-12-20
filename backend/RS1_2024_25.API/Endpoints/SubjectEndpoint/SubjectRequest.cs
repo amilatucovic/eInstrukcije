@@ -1,4 +1,4 @@
-﻿namespace RS1_2024_25.API.Endpoints.SubjectEndpoint
+﻿namespace RS1_2024_2025.API.Endpoints.SubjectEndpoint
 {
     public class SubjectRequest
     {

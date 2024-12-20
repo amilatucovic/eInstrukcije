@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
-using RS1_2024_25.API.Data;
-using RS1_2024_25.API.Endpoints.LoginEndpoint.Classes;
-using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
-using RS1_2024_25.API.Helper;
-using RS1_2024_25.API.Helper.Auth;
-using RS1_2024_25.API.Services;
+using Microsoft.Extensions.FileProviders;
+using RS1_2024_2025.Domain;
+using RS1_2024_2025.API.Endpoints.LoginEndpoint.Classes;
+using RS1_2024_2025.API.Endpoints.LoginEndpoint.Interfaces;
+using RS1_2024_2025.API.Helper;
+using RS1_2024_2025.API.Helper.Auth;
+using RS1_2024_2025.Services;
+using RS1_2024_2025.Database;
 
 
 var config = new ConfigurationBuilder()
@@ -16,7 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(config.GetConnectionString("db1")));
+    options.UseSqlServer(config.GetConnectionString("db1"),
+        sqlOptions => sqlOptions.MigrationsAssembly("RS1_2024_2025.Database")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -25,11 +28,17 @@ builder.Services.AddSwaggerGen(x => x.OperationFilter<MyAuthorizationSwaggerHead
 builder.Services.AddHttpContextAccessor();
 
 //dodajte vaše servise
-builder.Services.AddTransient<MyAuthService>();
-builder.Services.AddTransient<MyTokenGenerator>();
-builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+//builder.Services.AddTransient<MyAuthService>();
+//builder.Services.AddTransient<RS1_2024_2025.API.Helper.MyTokenGenerator>();
+//builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 
 var app = builder.Build();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Uploads/Images")),
+    RequestPath = "/Uploads/Images"
+});
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();

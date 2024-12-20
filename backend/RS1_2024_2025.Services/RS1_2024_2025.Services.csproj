@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RS1_2024_2025.Database\RS1_2024_2025.Database.csproj" />
+    <ProjectReference Include="..\RS1_2024_2025.Domain\RS1_2024_2025.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

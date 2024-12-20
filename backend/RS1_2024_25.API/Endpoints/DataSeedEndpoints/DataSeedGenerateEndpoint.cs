@@ -1,13 +1,14 @@
-﻿namespace RS1_2024_25.API.Endpoints.DataSeed;
+﻿namespace RS1_2024_2025.API.Endpoints.DataSeed;
 
 using Microsoft.AspNetCore.Mvc;
-using RS1_2024_25.API.Data;
-using RS1_2024_25.API.Data.Models;
-using RS1_2024_25.API.Data.Models.Auth;
-using RS1_2024_25.API.Helper.Api;
+using RS1_2024_2025.Domain;
+using RS1_2024_2025.Domain.Entities;
+using RS1_2024_2025.Domain.Entities.Models.Auth;
+using RS1_2024_2025.API.Helper.Api;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using RS1_2024_2025.Database;
 
 [Route("data-seed")]
 public class DataSeedGenerateEndpoint(ApplicationDbContext db)

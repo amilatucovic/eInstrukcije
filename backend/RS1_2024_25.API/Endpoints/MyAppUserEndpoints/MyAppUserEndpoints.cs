@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RS1_2024_25.API.Data.Models;
-using RS1_2024_25.API.Data;
-using RS1_2024_25.API.Endpoints.SubjectEndpoint;
-using RS1_2024_25.API.Data.Models.Auth;
+using RS1_2024_2025.Domain.Entities.Models;
+using RS1_2024_2025.Domain;
+using RS1_2024_2025.API.Endpoints.SubjectEndpoint;
+using RS1_2024_2025.Domain.Entities.Models.Auth;
+using RS1_2024_2025.Database;
+using RS1_2024_2025.Domain.Entities;
 
-namespace RS1_2024_25.API.Endpoints.MyAppUserEndpoints
+namespace RS1_2024_2025.API.Endpoints.MyAppUserEndpoints
 {
 
     [Route("api/[controller]")]
@@ -52,7 +54,7 @@ namespace RS1_2024_25.API.Endpoints.MyAppUserEndpoints
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] MyAppUserInsertRequest request)
+        public async Task<IActionResult> Post([FromBody] MyAppUserInsertRequest request, CancellationToken cancellationToken)
         {
             var newAppUser = new MyAppUser
             {
@@ -65,11 +67,12 @@ namespace RS1_2024_25.API.Endpoints.MyAppUserEndpoints
                 PhoneNumber=request.PhoneNumber,
                 CityId=request.CityId,
                 UserType=request.UserType,
-                Gender=request.Gender
+                Gender=request.Gender,
+                ProfileImageUrl = await UploadImageHelper.UploadFile(request.ProfileImage)
             };
 
             db.MyAppUsers.Add(newAppUser);
-            db.SaveChanges();
+            await db.SaveChangesAsync(cancellationToken);
 
             var userInsert = new MyAppUser
             {

@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace RS1_2024_25.API.Helper;
+namespace RS1_2024_2025.API.Helper;
 
 public static class MyExtensionMethods
 {

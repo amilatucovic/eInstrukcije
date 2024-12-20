@@ -4,6 +4,8 @@ import { UnauthorizedComponent } from './modules/shared/unauthorized/unauthorize
 import { AuthGuard } from './auth-guards/auth-guard.service';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 
+
+
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },

@@ -1,4 +1,4 @@
-﻿namespace RS1_2024_25.API.Endpoints.MyAppUserEndpoints
+﻿namespace RS1_2024_2025.API.Endpoints.MyAppUserEndpoints
 {
     public class MyAppUserUpdateRequest
     {
