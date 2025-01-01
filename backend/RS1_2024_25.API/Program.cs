@@ -5,6 +5,7 @@ using RS1_2024_2025.API.Endpoints.LoginEndpoint.Classes;
 using RS1_2024_2025.API.Endpoints.LoginEndpoint.Interfaces;
 using RS1_2024_2025.API.Helper.Auth;
 using RS1_2024_2025.Database;
+using RS1_2024_2025.Database.DatabaseSeeder;
 using RS1_2024_2025.Services;
 using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
 using System.Text;
@@ -52,6 +53,13 @@ builder.Services.AddSwaggerGen(x => x.OperationFilter<MyAuthorizationSwaggerHead
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ApplicationDbContext>();
+
+    await DatabaseSeeder.SeedAsync(context);
+}
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
