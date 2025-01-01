@@ -10,12 +10,16 @@ import {SharedModule} from './modules/shared/shared.module';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {LoginComponent} from './login/login.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPageComponent,
-    LoginComponent
+    LoginComponent,
+    NavbarComponent,
+    FooterComponent
   ],
   imports: [
     BrowserModule,
