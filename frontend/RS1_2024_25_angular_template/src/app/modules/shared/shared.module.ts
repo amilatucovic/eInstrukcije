@@ -3,10 +3,12 @@ import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UnauthorizedComponent} from './unauthorized/unauthorized.component';
 import {RouterLink} from '@angular/router';
+import { TutorSearchComponent } from './tutor-search/tutor-search.component';
 
 @NgModule({
   declarations: [
-    UnauthorizedComponent, // Dodajemo UnauthorizedComponent u deklaracije
+    UnauthorizedComponent,
+    TutorSearchComponent, // Dodajemo UnauthorizedComponent u deklaracije
   ],
   imports: [
     CommonModule,
