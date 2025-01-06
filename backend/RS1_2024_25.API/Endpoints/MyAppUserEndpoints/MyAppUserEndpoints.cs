@@ -5,6 +5,7 @@ using RS1_2024_2025.API.Endpoints.SubjectEndpoint;
 using RS1_2024_2025.Domain.Entities.Models.Auth;
 using RS1_2024_2025.Database;
 using RS1_2024_2025.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace RS1_2024_2025.API.Endpoints.MyAppUserEndpoints
 {
@@ -56,37 +57,57 @@ namespace RS1_2024_2025.API.Endpoints.MyAppUserEndpoints
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] MyAppUserInsertRequest request, CancellationToken cancellationToken)
         {
+            // Check if a user with the same username or email already exists
+            var existingUser = await db.MyAppUsers
+                .FirstOrDefaultAsync(u => u.Username == request.Username || u.Email == request.Email, cancellationToken);
+
+            if (existingUser != null)
+            {
+                return BadRequest(new { Message = "A user with the same username or email already exists." });
+            }
+
+            // Check if the password already exists for another user
+            var existingPassword = await db.MyAppUsers
+                .AnyAsync(u => u.Password == request.Password, cancellationToken);
+
+            if (existingPassword)
+            {
+                return BadRequest(new { Message = "The password is already in use. Please choose a different password." });
+            }
+
+            // Create a new user if validations pass
             var newAppUser = new MyAppUser
             {
                 Username = request.Username,
-                Password= request.Password,
-                FirstName=request.FirstName,
-                LastName=request.LastName,
-                Age=request.Age,
-                Email=request.Email,
-                PhoneNumber=request.PhoneNumber,
-                CityId=request.CityId,
-                UserType=request.UserType,
-                Gender=request.Gender,
+                Password = request.Password,
+                FirstName = request.FirstName,
+                LastName = request.LastName,
+                Age = request.Age,
+                Email = request.Email,
+                PhoneNumber = request.PhoneNumber,
+                CityId = request.CityId,
+                UserType = request.UserType,
+                Gender = request.Gender,
                 ProfileImageUrl = await UploadImageHelper.UploadFile(request.ProfileImage)
             };
 
             db.MyAppUsers.Add(newAppUser);
             await db.SaveChangesAsync(cancellationToken);
 
-            var userInsert = new MyAppUser
+            // Return a response without sensitive data like the password
+            var userInsert = new
             {
-                Username = request.Username,
-                Password= request.Password,
-                FirstName=request.FirstName,
-                LastName=request.LastName,
-                Age=request.Age,
-                Email=request.Email,
-                PhoneNumber=request.PhoneNumber,
+                newAppUser.Username,
+                newAppUser.FirstName,
+                newAppUser.LastName,
+                newAppUser.Age,
+                newAppUser.Email,
+                newAppUser.PhoneNumber
             };
 
             return Ok(userInsert);
         }
+
 
         [HttpPut("{id}")]
         public IActionResult Put(int id, [FromBody] MyAppUserUpdateRequest request)

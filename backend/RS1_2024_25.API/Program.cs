@@ -7,6 +7,7 @@ using RS1_2024_2025.API.Helper.Auth;
 using RS1_2024_2025.Database;
 using RS1_2024_2025.Database.DatabaseSeeder;
 using RS1_2024_2025.Services;
+using RS1_2024_2025.Services.Services;
 using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
 using System.Text;
 
@@ -21,6 +22,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(config.GetConnectionString("db1")));
+
+
+
+builder.Services.AddTransient<RedundancyChecker>();
+
 
 // Add JWT Authentication
 var jwtSettings = config.GetSection("Jwt");
@@ -53,13 +59,19 @@ builder.Services.AddSwaggerGen(x => x.OperationFilter<MyAuthorizationSwaggerHead
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
+//using (var scope = app.Services.CreateScope())
+//{
+//    var services = scope.ServiceProvider;
+//    var context = services.GetRequiredService<ApplicationDbContext>();
+
+//    await DatabaseSeeder.SeedAsync(context);
+//}
 using (var scope = app.Services.CreateScope())
 {
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-
-    await DatabaseSeeder.SeedAsync(context);
+    var cleanupService = scope.ServiceProvider.GetRequiredService<RedundancyChecker>();
+    await cleanupService.RemoveDuplicatesAsync();
 }
+
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
