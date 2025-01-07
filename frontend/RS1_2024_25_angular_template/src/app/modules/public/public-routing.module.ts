@@ -1,28 +1,25 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {PublicLayoutComponent} from './public-layout/public-layout.component';
-import {HomeComponent} from './home/home.component';
-import {AboutComponent} from './about/about.component';
-import {BlogComponent} from './blog/blog.component';
-import {ContactUsComponent} from './contact-us/contact-us.component';
-import {TravelsComponent} from './travels/travels.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { TutorRegistrationComponent } from './tutor-registration/tutor-registration.component';
+
 
 const routes: Routes = [
   {
-    path: '', component: PublicLayoutComponent, children: [
-      {path: '', redirectTo: 'home', pathMatch: 'full'},
-      {path: 'home', component: HomeComponent},
-      {path: 'about', component: AboutComponent},
-      {path: 'blog', component: BlogComponent},
-      {path: 'contact-us', component: ContactUsComponent},
-      {path: 'travels', component: TravelsComponent},
-      {path: '**', redirectTo: 'home', pathMatch: 'full'}  // Default ruta koja vodi na public
+    path: '',
+    component: LandingPageComponent, // Koristi LandingPageComponent kao parent
+    children: [
+      { path: '', redirectTo: 'landing-page', pathMatch: 'full' }, // Redirekcija na landing page
+
     ]
-  }
+  },
+  { path: 'tutor-registration', component: TutorRegistrationComponent }, // Posebna ruta
+  { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class PublicRoutingModule { }
+export class PublicRoutingModule {}

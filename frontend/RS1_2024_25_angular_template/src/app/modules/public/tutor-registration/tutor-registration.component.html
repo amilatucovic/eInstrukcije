@@ -1,0 +1,117 @@
+<div class="form-container">
+  <div class="container mt-5">
+    <h2 class="text-center">Postani instruktor u našem timu</h2>
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+      <div class="wizard">
+        <!-- Stepper -->
+        <ul class="nav nav-pills mb-3">
+          <li class="nav-item" *ngFor="let step of steps; let i = index">
+            <a class="nav-link" [ngClass]="{'active': activeStep === i+1}" (click)="setActiveStep(i+1)">
+              {{ step }}
+            </a>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <!-- Step 1 -->
+          <div class="tab-pane fade show" [ngClass]="{'show': activeStep === 1}" id="step1">
+            <div class="form-group mb-3">
+              <label for="firstName">Ime</label>
+              <input type="text" id="firstName" class="form-control" formControlName="firstName" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="lastName">Prezime</label>
+              <input type="text" id="lastName" class="form-control" formControlName="lastName" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="gender">Spol</label>
+              <select id="gender" class="form-select" formControlName="gender">
+                <option value="Muški">Muški</option>
+                <option value="Ženski">Ženski</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label for="city">Grad</label>
+              <select id="city" class="form-select" formControlName="city">
+                <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+              </select>
+            </div>
+            <div class="form-group mb-3">
+              <label for="age">Godine</label>
+              <input type="number" id="age" class="form-control" formControlName="age" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="email">Email</label>
+              <input type="email" id="email" class="form-control" formControlName="email" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="phoneNumber">Broj telefona</label>
+              <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber" required>
+            </div>
+            <div class="button-container-step1">
+              <button type="button" id="btnDalje" class="btn btn-primary" (click)="setActiveStep(2)">Dalje</button>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="tab-pane fade" [ngClass]="{'show': activeStep === 2}" id="step2">
+            <div class="form-group mb-3">
+              <label for="profilePicture">Profilna slika</label>
+              <input type="file" id="profilePicture" class="form-control" formControlName="profilePicture" (change)="onFileChange($event)">
+            </div>
+            <div class="form-group mb-3">
+              <label for="qualifications">Kvalifikacije</label>
+              <textarea id="qualifications" class="form-control" formControlName="qualifications" rows="3"></textarea>
+            </div>
+            <div class="form-group mb-3">
+              <label for="experience">Broj godina iskustva</label>
+              <input type="number" id="experience" class="form-control" formControlName="experience" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="availability">Dostupnost</label>
+              <input type="text" id="availability" class="form-control" formControlName="availability">
+            </div>
+            <div class="form-group mb-3">
+              <label for="cancellationPolicy">Pravila za otkazivanje časova</label>
+              <textarea id="cancellationPolicy" class="form-control" formControlName="cancellationPolicy" rows="3"></textarea>
+            </div>
+            <div class="form-group mb-3">
+              <label for="rate">Satnica (KM)</label>
+              <input type="number" id="rate" class="form-control" formControlName="rate">
+              <small class="form-text text-muted">
+                Napomena: Kompanija uzima 10% od svake naplate učenika za čas.
+              </small>
+            </div>
+            <div class="button-container">
+              <button type="button" id="btnNazadStep2" class="btn btn-primary" (click)="setActiveStep(1)">Nazad</button>
+              <button type="button" id="btnDaljeStep2" class="btn btn-primary" (click)="setActiveStep(3)">Dalje</button>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="tab-pane fade" [ngClass]="{'show': activeStep === 3}" id="step3">
+            <div class="form-group mb-3">
+              <label for="username">Korisničko ime</label>
+              <input type="text" id="username" class="form-control" formControlName="username" required>
+            </div>
+            <div class="form-group mb-3">
+              <label for="password">Lozinka</label>
+              <input type="password" id="password" class="form-control" formControlName="password" required (keyup)="checkPasswordStrength()">
+              <div *ngIf="passwordStrength" [ngClass]="passwordStrengthClass">
+                {{ passwordStrength }}
+              </div>
+            </div>
+            <div class="form-group mb-3">
+              <label for="confirmPassword">Ponovljena lozinka</label>
+              <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword" required>
+            </div>
+            <div class="button-container">
+              <button type="button" id="btnNazadStep3" class="btn btn-primary" (click)="setActiveStep(2)">Nazad</button>
+              <button type="submit" id="btnRegistrujSe" class="btn btn-success">Registruj se</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

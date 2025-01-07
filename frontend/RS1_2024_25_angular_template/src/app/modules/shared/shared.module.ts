@@ -4,11 +4,15 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UnauthorizedComponent} from './unauthorized/unauthorized.component';
 import {RouterLink} from '@angular/router';
 import { TutorSearchComponent } from './tutor-search/tutor-search.component';
+import {NavbarComponent} from './navbar/navbar.component';
+import {FooterComponent} from './footer/footer.component';
 
 @NgModule({
   declarations: [
     UnauthorizedComponent,
-    TutorSearchComponent, // Dodajemo UnauthorizedComponent u deklaracije
+    TutorSearchComponent,
+    NavbarComponent,
+    FooterComponent// Dodajemo UnauthorizedComponent u deklaracije
   ],
   imports: [
     CommonModule,
@@ -20,7 +24,9 @@ import { TutorSearchComponent } from './tutor-search/tutor-search.component';
     UnauthorizedComponent, // Omogućavamo ponovno korištenje UnauthorizedComponent
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NavbarComponent,
+    FooterComponent
   ]
 })
 export class SharedModule {

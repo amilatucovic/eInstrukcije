@@ -1,0 +1,110 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background-color: #d4e6f1; /* Svijetloplava boja */
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.tab-content .tab-pane {
+  display: none;
+}
+
+.tab-content .tab-pane.show {
+  display: block;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #20C1BD;
+  color: white;
+}
+
+.nav-pills .nav-link {
+  cursor: pointer;
+  border-radius: 0;
+  color: black;
+}
+app-root, .form-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Da sadržaj bude centriran vertikalno */
+  align-items: center;
+  background-color: #d4e6f1; /* Svijetloplava boja */
+}
+
+
+/* Dodajte padding na container za dodatni razmak */
+.container {
+  margin: 0 auto; /* Centriranje forme */
+  background-color: #f7f7f7; /* Svijetla siva pozadina */
+  padding: 30px; /* Razmak oko forme */
+  border-radius: 10px; /* Zaobljeni rubovi */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Blaga sjena za 3D efekt */
+  width:60%;
+}
+
+.nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 35px;
+
+}
+
+.form-control {
+  border-radius: 5px;
+  border: 1px solid #ccc; /* Blaga siva linija */
+  padding: 10px;
+}
+
+.form-select {
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+/* Stilizacija dugmadi */
+.btn {
+  border-radius: 5px;
+  padding: 10px 20px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between; /* Raspoređuje dugmadi na lijevu i desnu stranu */
+  margin-top: 20px; /* Razmak između forme i dugmadi */
+}
+
+/* Stil za dugmadi */
+.button-container .btn {
+  width: 15%;
+}
+
+.button-container-step1{
+  display: flex;
+  justify-content: flex-end; /* Premješta samo ovo dugme na desnu stranu */
+  margin-top: 20px;
+
+}
+#btnDalje{
+  background-color: #00B2A9;
+}
+#btnNazadStep2{
+  background-color: #dc3545;
+}
+#btnDaljeStep2{
+  background-color: #00B2A9;
+}
+#btnNazadStep3{
+  background-color: #dc3545;
+}
+#btnRegistrujSe{
+  background-color: #00B2A9;
+}
