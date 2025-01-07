@@ -16,8 +16,9 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Pronađi instruktora</a>
         </li>
+        <!-- Promijenjeni href u routerLink za navigaciju unutar Angular aplikacije -->
         <li class="nav-item">
-          <a class="nav-link" href="#">Postani instruktor</a>
+          <a class="nav-link" [routerLink]="['/public/tutor-registration']">Postani instruktor</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Kontaktirajte nas</a>
@@ -29,5 +30,4 @@
       <a class="btn ml-2" href="/register">Registracija</a>
     </div>
   </div>
-
 </nav>

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UnauthorizedComponent } from './modules/shared/unauthorized/unauthorized.component';
 import { AuthGuard } from './auth-guards/auth-guard.service';
-import { LandingPageComponent } from './landing-page/landing-page.component';
+import { LandingPageComponent } from './modules/public/landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
@@ -18,11 +18,11 @@ const routes: Routes = [
   {
     path: 'student-dashboard',
     canActivate: [AuthGuard],
-    data: { isStudent: true }, // Add this data to restrict route to students if needed
+    data: { isStudent: true },
     loadChildren: () => import('./modules/student/student.module').then(m => m.StudentModule)
   },
   {
-    path: 'public',
+    path: 'public', // Ovdje samo pozivamo public modulu
     loadChildren: () => import('./modules/public/public.module').then(m => m.PublicModule)
   },
   {
@@ -39,7 +39,7 @@ const routes: Routes = [
     data: {isTutor: true},
     loadChildren: () => import('./modules/tutor/tutor.module').then(m => m.TutorModule)
   },
-  { path: '**', redirectTo: 'public', pathMatch: 'full' } // Default route
+  { path: '**', redirectTo: 'public', pathMatch: 'full' }
 ];
 
 @NgModule({
