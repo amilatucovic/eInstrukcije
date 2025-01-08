@@ -1,17 +1,3 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  background-color: #d4e6f1; /* Svijetloplava boja */
-}
-
-body {
-  display: flex;
-  flex-direction: column;
-}
-
-
-
 .tab-content .tab-pane {
   display: none;
 }
@@ -30,47 +16,38 @@ body {
   border-radius: 0;
   color: black;
 }
+
 app-root, .form-container {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Da sadržaj bude centriran vertikalno */
+  justify-content: center;
   align-items: center;
-  background-color: #d4e6f1; /* Svijetloplava boja */
+  background-color: #d4e6f1;
 }
 
-
-/* Dodajte padding na container za dodatni razmak */
 .container {
-  margin: 0 auto; /* Centriranje forme */
-  background-color: #f7f7f7; /* Svijetla siva pozadina */
-  padding: 30px; /* Razmak oko forme */
-  border-radius: 10px; /* Zaobljeni rubovi */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Blaga sjena za 3D efekt */
-  width:60%;
+  margin: 0 auto;
+  background-color: #f7f7f7;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 60%;
 }
 
-.nav{
+.nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-top: 35px;
-
 }
 
-.form-control {
-  border-radius: 5px;
-  border: 1px solid #ccc; /* Blaga siva linija */
-  padding: 10px;
-}
-
-.form-select {
+.form-control, .form-select {
   border-radius: 5px;
   border: 1px solid #ccc;
   padding: 10px;
 }
 
-/* Stilizacija dugmadi */
 .btn {
   border-radius: 5px;
   padding: 10px 20px;
@@ -78,33 +55,126 @@ app-root, .form-container {
 
 .button-container {
   display: flex;
-  justify-content: space-between; /* Raspoređuje dugmadi na lijevu i desnu stranu */
-  margin-top: 20px; /* Razmak između forme i dugmadi */
+  justify-content: space-between;
+  margin-top: 20px;
 }
 
-/* Stil za dugmadi */
 .button-container .btn {
   width: 15%;
 }
 
-.button-container-step1{
+.button-container-step1 {
   display: flex;
-  justify-content: flex-end; /* Premješta samo ovo dugme na desnu stranu */
+  justify-content: flex-end;
   margin-top: 20px;
+}
+
+#btnDalje, #btnDaljeStep2, #btnRegistrujSe {
+  background-color: #00B2A9;
+  border-color: #00B2A9;
+}
+
+#btnNazadStep2, #btnNazadStep3 {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+/* Grid Layout for Step 2 */
+.row {
+  display: flex;
+}
+
+.left-column, .right-column {
+  flex: 1;
+  padding: 10px;
+}
+
+.upload-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px dashed #cccccc;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  background-color: #f9f9f9;
+  max-width: 300px; /* Ograničena širina */
+  margin-left: 0;
 
 }
-#btnDalje{
-  background-color: #00B2A9;
+
+.upload-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-#btnNazadStep2{
+
+.upload-box p {
+  margin: 0;
+  font-size: 16px;
+  color: #333333;
+}
+
+.upload-box button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.upload-box button:hover {
+  background-color: #0056b3;
+}
+
+.image-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.image-preview img {
+  max-width: 100%; /* Prilagodba veličini okvira */
+  max-height: 200px; /* Maksimalna visina */
+  border-radius: 5px;
+  border: 1px solid #cccccc;
+}
+
+.image-preview button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
   background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
-#btnDaljeStep2{
+
+#odaberiButton {
   background-color: #00B2A9;
 }
-#btnNazadStep3{
-  background-color: #dc3545;
+
+.drag-drop-area {
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #f9f9f9;
 }
-#btnRegistrujSe{
-  background-color: #00B2A9;
+
+.drag-drop-area:hover {
+  background-color: #e9ecef;
+}
+
+.drag-drop-text {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #6c757d;
 }
