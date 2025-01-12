@@ -1,4 +1,6 @@
 ﻿using RS1_2024_2025.Domain.Entities.Models.Auth;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 
 namespace RS1_2024_2025.Domain.Entities
@@ -8,9 +10,10 @@ namespace RS1_2024_2025.Domain.Entities
         ElementarySchool,
         HighSchool
     }
-    public class Student : MyAppUser
+    public class Student
     {
-        
+        [Key]
+        public int ID { get; set; }
         public string Grade { get; set; }
         public string PreferredMode { get; set; }
         public EducationLevel EducationLevel { get; set; }
@@ -20,5 +23,9 @@ namespace RS1_2024_2025.Domain.Entities
         public ICollection<Attendance> Attendances { get; set; }
         public ICollection<ReservationPayment> ReservationsPayment { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
+
+        [ForeignKey(nameof(MyAppUser))]
+        public int MyAppUserID { get; set; }
+        public MyAppUser MyAppUser { get; set; }
     }
 }

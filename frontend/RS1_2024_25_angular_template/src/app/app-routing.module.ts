@@ -2,11 +2,13 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UnauthorizedComponent } from './modules/shared/unauthorized/unauthorized.component';
 import { AuthGuard } from './auth-guards/auth-guard.service';
+import { RegistrationComponent } from './registration/registration.component';
 import { LandingPageComponent } from './modules/public/landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
+  { path: 'register', component: RegistrationComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'login', component: LoginComponent },
   {

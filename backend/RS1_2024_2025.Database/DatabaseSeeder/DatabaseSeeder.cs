@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer.ValueGeneration.Internal;
 using Microsoft.Identity.Client;
 using RS1_2024_2025.Domain.Entities;
 using System;
@@ -11,7 +12,7 @@ namespace RS1_2024_2025.Database.DatabaseSeeder
 {
     public static class DatabaseSeeder
     {
-        
+
         public static async Task SeedAsync(ApplicationDbContext context)
         {
             await context.Database.EnsureCreatedAsync();
@@ -20,7 +21,7 @@ namespace RS1_2024_2025.Database.DatabaseSeeder
             {
                 var users = new List<MyAppUser>
                 {
-                    new Student
+                    new MyAppUser
                     {
                         Username="maida",
                         FirstName="Maida",
@@ -29,28 +30,20 @@ namespace RS1_2024_2025.Database.DatabaseSeeder
                         Age=7,
                         Email="maida@gmail.com",
                         PhoneNumber="060000100",
-                        UserType=UserType.Student,Grade="Drugi",
-                        PreferredMode="Uzivo",
-                        EducationLevel=EducationLevel.ElementarySchool
+                        UserType=UserType.Student
                     },
-                    new Tutor
+                    new MyAppUser
                     {
-                        Username = "emmaTutor",
+                        Username = "emmaStudent",
                         FirstName = "Emma",
                         LastName = "Johnson",
                         Password = "emma123",
                         Age = 35,
                         Email = "emma.johnson@example.com",
                         PhoneNumber = "060000101",
-                        UserType = UserType.Tutor,
-                        Qualifications = "Doktor nauka iz oblasti Softverski inzinjering",
-                        YearsOfExperience = 8,
-                        Availability = "Radnim danima od 10:00 - 18:00",
-                        Rating = 0,
-                        Policy = "Otkazivanje je moguće samo u roku od 24 sata",
-                        HourlyRate = "40KM/h"
+                        UserType = UserType.Student
                     },
-                    new Tutor
+                    new MyAppUser
                     {
                         Username = "liamTutor",
                         FirstName = "Liam",
@@ -60,14 +53,8 @@ namespace RS1_2024_2025.Database.DatabaseSeeder
                         Email = "liam.brown@example.com",
                         PhoneNumber = "060000102",
                         UserType = UserType.Tutor,
-                        Qualifications = "Magistar Matematike",
-                        YearsOfExperience = 12,
-                        Availability = "Vikendom od 10:00 - 13:00",
-                        Rating = 0,
-                        Policy = "Otkazivanje je moguće samo u roku od 24 sata",
-                        HourlyRate = "50KM/h"
                     },
-                    new Tutor
+                    new MyAppUser
                     {
                         Username = "oliviaTutor",
                         FirstName = "Olivia",
@@ -77,23 +64,25 @@ namespace RS1_2024_2025.Database.DatabaseSeeder
                         Email = "olivia.davis@example.com",
                         PhoneNumber = "060000103",
                         UserType = UserType.Tutor,
-                        Qualifications = "Licencirani profesor prirodnih nauka",
-                        YearsOfExperience = 5,
-                        Availability = "Ponedjeljkom od 10:00 - 13:00, Srijedom od 17:00 - 20:00",
-                        Rating = 0,
-                        Policy = "Otkazivanje je moguće samo u roku od 32 sata",
-                        HourlyRate = "35KM/h"
                     },
+					 new MyAppUser
+					{
+						Username = "AdminAdmin",
+						FirstName = "Admin",
+						LastName = "Adminovic",
+						Password = "admin123",
+						Age = 27,
+						Email = "admin.adminovic@example.com",
+						PhoneNumber = "060000104",
+						UserType = UserType.Admin,
+					}
+
+				};
+
+                var tutors = new List<Tutor> {
                     new Tutor
                     {
-                        Username = "noahTutor",
-                        FirstName = "Noah",
-                        LastName = "Wilson",
-                        Password = "noah123",
-                        Age = 33,
-                        Email = "noah.wilson@example.com",
-                        PhoneNumber = "060000104",
-                        UserType = UserType.Tutor,
+                        MyAppUserID=3,
                         Qualifications = "Bachelor Fizike",
                         YearsOfExperience = 7,
                         Availability = "Fleksibilni termini, samo vikendom",
@@ -103,101 +92,42 @@ namespace RS1_2024_2025.Database.DatabaseSeeder
                     },
                     new Tutor
                     {
-                        Username = "sophiaTutor",
-                        FirstName = "Sophia",
-                        LastName = "Taylor",
-                        Password = "sophia123",
-                        Age = 28,
-                        Email = "sophia.taylor@example.com",
-                        PhoneNumber = "060000105",
-                        UserType = UserType.Tutor,
+                        MyAppUserID=4,
                         Qualifications = "Magistar Engleskog jezika",
                         YearsOfExperience = 4,
                         Availability = "Vikendom od 14:00 - 18:00",
                         Rating = 0,
                         Policy = "Otkazivanje u roku od 48 sati",
                         HourlyRate = "30KM/h"
-                    },
-                    new Tutor
-                    {
-                        Username = "masonTutor",
-                        FirstName = "Mason",
-                        LastName = "Martinez",
-                        Password = "mason123",
-                        Age = 37,
-                        Email = "mason.martinez@example.com",
-                        PhoneNumber = "060000106",
-                        UserType = UserType.Tutor,
-                        Qualifications = "Profesor Historije",
-                        YearsOfExperience = 9,
-                        Availability = "Utorkom od 17:00 - 20:00, Petkom od 18:00 - 21:00",
-                        Rating = 0,
-                        Policy = "Nema otkazivanja na dan instrukcija",
-                        HourlyRate = "55KM/h"
-                    },
-                    new Tutor
-                    {
-                        Username = "avaTutor",
-                        FirstName = "Ava",
-                        LastName = "Moore",
-                        Password = "ava123",
-                        Age = 32,
-                        Email = "ava.moore@example.com",
-                        PhoneNumber = "060000107",
-                        UserType = UserType.Tutor,
-                        Qualifications = "Magistar Hemije",
-                        YearsOfExperience = 6,
-                        Availability = "Radnim danima od 19:00 - 22:00",
-                        Rating = 4.4,
-                        Policy = "Otkazivanje je moguće samo u roku od 42 sata",
-                        HourlyRate = "35KM/h"
-                    },
-                    new Tutor
-                    {
-                        Username = "loganTutor",
-                        FirstName = "Logan",
-                        LastName = "Thomas",
-                        Password = "logan123",
-                        Age = 30,
-                        Email = "logan.thomas@example.com",
-                        PhoneNumber = "060000108",
-                        UserType = UserType.Tutor,
-                        Qualifications = "Magistar Likovnih umjetnosti",
-                        YearsOfExperience = 5,
-                        Availability = "Vikendom od 11:00 - 17:00",
-                        Rating = 4.2,
-                        Policy = "Otkazivanje je moguće samo u roku od 24 sata",
-                        HourlyRate = "40KM/h"
-                    },
+                    }
+                };
+
+                var students = new List<Student> {
                     new Student
                     {
-                        Username = "aliceStudent",
-                        FirstName = "Alice",
-                        LastName = "Green",
-                        Password = "alice123",
-                        Age = 20,
-                        Email = "alice.green@example.com",
-                        PhoneNumber = "060000109",
-                        UserType = UserType.Student,
-                        Grade="Treci",
-                        PreferredMode="Online",
-                        EducationLevel=EducationLevel.ElementarySchool
-                    },
-                    new Student
-                    {
-                        Username = "bobStudent",
-                        FirstName = "Bob",
-                        LastName = "White",
-                        Password = "bob123",
-                        Age = 22,
-                        Email = "bob.white@example.com",
-                        PhoneNumber = "060000110",
-                        UserType = UserType.Student,
+                        MyAppUserID=1,
                         Grade="Peti",
                         PreferredMode="Online",
                         EducationLevel=EducationLevel.ElementarySchool
+                    },
+                    new Student
+                    {
+                        MyAppUserID=2,
+                        Grade="Drugi",
+                        PreferredMode="Online",
+                        EducationLevel=EducationLevel.HighSchool
                     }
                 };
+                var admins = new List<Admin> {
+                    new Admin
+                    {
+                        MyAppUserID=5,
+                        Role="Admin",
+                        CanApproveRequests=true,
+                        CanViewLogs=true
+                    }
+                };
+
                 var subjects = new List<Subject>
                 {
                     new Subject { Name = "Matematika", Description = "Osnovni koncepti brojeva, operacija i geometrije", DifficultyLevel = "osnovna skola" },
@@ -251,7 +181,10 @@ namespace RS1_2024_2025.Database.DatabaseSeeder
 
 
                 await context.MyAppUsers.AddRangeAsync(users);
-                await context.Subjects.AddRangeAsync(subjects);
+                await context.Tutors.AddRangeAsync(tutors);
+                await context.Students.AddRangeAsync(students);
+                await context.Admins.AddRangeAsync(admins);
+				await context.Subjects.AddRangeAsync(subjects);
                 await context.Cities.AddRangeAsync(cities);
                 await context.Categories.AddRangeAsync(categories);
 

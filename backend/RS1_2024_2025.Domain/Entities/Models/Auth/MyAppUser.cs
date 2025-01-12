@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-public class MyAppUser : IMyBaseEntity
+public class MyAppUser
 {
     [Key]
     public int ID { get; set; }

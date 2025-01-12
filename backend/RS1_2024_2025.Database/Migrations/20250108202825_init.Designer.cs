@@ -12,8 +12,8 @@ using RS1_2024_2025.Database;
 namespace RS1_2024_2025.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241221190214_DatabaseSeeder")]
-    partial class DatabaseSeeder
+    [Migration("20250108202825_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -381,6 +381,35 @@ namespace RS1_2024_2025.Database.Migrations
                     b.ToTable("Reviews");
                 });
 
+            modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Student", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("EducationLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Grade")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MyAppUserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PreferredMode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MyAppUserID");
+
+                    b.ToTable("Students");
+                });
+
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.StudentSubject", b =>
                 {
                     b.Property<int>("StudentID")
@@ -436,6 +465,46 @@ namespace RS1_2024_2025.Database.Migrations
                     b.ToTable("SubjectsCategories");
                 });
 
+            modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Tutor", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Availability")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HourlyRate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MyAppUserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Policy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Qualifications")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<int>("YearsOfExperience")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MyAppUserID");
+
+                    b.ToTable("Tutors");
+                });
+
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.TutorSubject", b =>
                 {
                     b.Property<int>("TutorID")
@@ -461,58 +530,16 @@ namespace RS1_2024_2025.Database.Migrations
                     b.Property<bool>("CanViewLogs")
                         .HasColumnType("bit");
 
+                    b.Property<int>("MyAppUserID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.HasIndex("MyAppUserID");
+
                     b.HasDiscriminator().HasValue("Admin");
-                });
-
-            modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Student", b =>
-                {
-                    b.HasBaseType("RS1_2024_2025.Domain.Entities.MyAppUser");
-
-                    b.Property<int>("EducationLevel")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Grade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PreferredMode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasDiscriminator().HasValue("Student");
-                });
-
-            modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Tutor", b =>
-                {
-                    b.HasBaseType("RS1_2024_2025.Domain.Entities.MyAppUser");
-
-                    b.Property<string>("Availability")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HourlyRate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Policy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Qualifications")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Rating")
-                        .HasColumnType("float");
-
-                    b.Property<int>("YearsOfExperience")
-                        .HasColumnType("int");
-
-                    b.HasDiscriminator().HasValue("Tutor");
                 });
 
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Attendance", b =>
@@ -673,6 +700,17 @@ namespace RS1_2024_2025.Database.Migrations
                     b.Navigation("Tutor");
                 });
 
+            modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Student", b =>
+                {
+                    b.HasOne("RS1_2024_2025.Domain.Entities.MyAppUser", "MyAppUser")
+                        .WithMany()
+                        .HasForeignKey("MyAppUserID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("MyAppUser");
+                });
+
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.StudentSubject", b =>
                 {
                     b.HasOne("RS1_2024_2025.Domain.Entities.Student", "Student")
@@ -711,6 +749,17 @@ namespace RS1_2024_2025.Database.Migrations
                     b.Navigation("Subject");
                 });
 
+            modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Tutor", b =>
+                {
+                    b.HasOne("RS1_2024_2025.Domain.Entities.MyAppUser", "MyAppUser")
+                        .WithMany()
+                        .HasForeignKey("MyAppUserID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("MyAppUser");
+                });
+
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.TutorSubject", b =>
                 {
                     b.HasOne("RS1_2024_2025.Domain.Entities.Subject", "Subject")
@@ -728,6 +777,17 @@ namespace RS1_2024_2025.Database.Migrations
                     b.Navigation("Subject");
 
                     b.Navigation("Tutor");
+                });
+
+            modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Admin", b =>
+                {
+                    b.HasOne("RS1_2024_2025.Domain.Entities.MyAppUser", "MyAppUser")
+                        .WithMany()
+                        .HasForeignKey("MyAppUserID")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("MyAppUser");
                 });
 
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Category", b =>
@@ -757,15 +817,6 @@ namespace RS1_2024_2025.Database.Migrations
                     b.Navigation("ReservationPayments");
                 });
 
-            modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Subject", b =>
-                {
-                    b.Navigation("StudentSubjects");
-
-                    b.Navigation("SubjectCategories");
-
-                    b.Navigation("TutorSubjects");
-                });
-
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Student", b =>
                 {
                     b.Navigation("Attendances");
@@ -777,6 +828,15 @@ namespace RS1_2024_2025.Database.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("StudentSubjects");
+                });
+
+            modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Subject", b =>
+                {
+                    b.Navigation("StudentSubjects");
+
+                    b.Navigation("SubjectCategories");
+
+                    b.Navigation("TutorSubjects");
                 });
 
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Tutor", b =>
