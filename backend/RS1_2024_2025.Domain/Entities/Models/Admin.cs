@@ -1,7 +1,5 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace RS1_2024_2025.Domain.Entities
 {
     public class Admin

@@ -6,7 +6,6 @@ namespace RS1_2024_2025.Domain.Entities
 {
     public class Tutor
     {
-
         [Key]
         public int ID { get; set; }
         public string Qualifications { get; set; }
@@ -16,14 +15,14 @@ namespace RS1_2024_2025.Domain.Entities
         public string Policy { get; set; }
         public string HourlyRate { get; set; }
        
+        [ForeignKey(nameof(MyAppUser))]
+        public int MyAppUserID { get; set; }
+        public MyAppUser MyAppUser { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
         public ICollection<ReservationPayment> ReservationsPayment { get; set; }    
         public ICollection<TutorSubject> TutorSubjects { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
 
-        [ForeignKey(nameof(MyAppUser))]
-        public int MyAppUserID { get; set; }
-        public MyAppUser MyAppUser { get; set; }
     }
 }
