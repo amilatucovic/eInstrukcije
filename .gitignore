@@ -18,6 +18,9 @@ history/
 .idea/
 *.iml
 
+# Local appsettings file
+appsettings.json
+
 # Angular specific files
 node_modules/
 dist/
