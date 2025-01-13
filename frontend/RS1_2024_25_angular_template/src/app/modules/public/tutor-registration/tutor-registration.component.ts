@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-tutor-registration',
   templateUrl: './tutor-registration.component.html',
@@ -8,14 +8,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 export class TutorRegistrationComponent implements OnInit {
   registrationForm: FormGroup;
-  cities: string[] = []; // Popuniti iz baze podataka
+  cities: any[] = []; // Popuniti iz baze podataka
   passwordStrength: string = '';
   passwordStrengthClass: string = '';
   activeStep: number = 1; // Aktivni korak (1 - Step 1, 2 - Step 2, 3 - Step 3)
   steps: string[] = ['Osnovne informacije', 'Dodatne informacije', 'Korisnički podaci'];
   preview: string | ArrayBuffer | null = null; // Pregled slike
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient) {
     this.registrationForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -37,7 +37,18 @@ export class TutorRegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Učitati gradove iz baze podataka
+    this.loadCities();
+  }
+
+  loadCities() {
+    this.http.get('http://localhost:7000/api/CityEndpoint').subscribe(
+      (data: any) => {
+        this.cities = data;
+      },
+      (error) => {
+        console.error('Error loading cities', error);
+      }
+    );
   }
 
   // Validacija za podudaranje lozinki

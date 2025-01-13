@@ -24,7 +24,7 @@ const routes: Routes = [
     loadChildren: () => import('./modules/student/student.module').then(m => m.StudentModule)
   },
   {
-    path: 'public', // Ovdje samo pozivamo public modulu
+    path: 'public',
     loadChildren: () => import('./modules/public/public.module').then(m => m.PublicModule)
   },
   {
