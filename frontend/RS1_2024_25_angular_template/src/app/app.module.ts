@@ -6,7 +6,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {MyAuthInterceptor} from './services/auth-services/my-auth-interceptor.service';
 import {MyAuthService} from './services/auth-services/my-auth.service';
 import {SharedModule} from './modules/shared/shared.module';
-import { LandingPageComponent } from './modules/public/landing-page/landing-page.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { FormsModule } from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -18,8 +17,6 @@ import { TutorRegistrationComponent } from './public/tutor-registration/tutor-re
 @NgModule({
   declarations: [
     AppComponent,
-    LandingPageComponent,
-    RegistrationComponent,
     LoginComponent,
     TutorRegistrationComponent
   ],
@@ -30,7 +27,8 @@ import { TutorRegistrationComponent } from './public/tutor-registration/tutor-re
     SharedModule, // Omogućava korištenje UnauthorizedComponent u AppRoutingModule
     FormsModule,
     PublicModule,
-    ReactiveFormsModule// Omogućava korištenje UnauthorizedComponent u AppRoutingModule
+    ReactiveFormsModule,// Omogućava korištenje UnauthorizedComponent u AppRoutingModule
+    RegistrationComponent
   ],
   providers: [
     {
