@@ -28,9 +28,43 @@ namespace RS1_2024_2025.Services.Services
 
             db.MyAppUsers.RemoveRange(duplicateUsers);
 
-            await db.SaveChangesAsync();
+            var students = await db.Students.ToListAsync();
+            var duplicateStudents = students
+            .GroupBy(s => s.MyAppUser.Username)
+            .Where(s => s.Count() > 1)
+            .SelectMany(s => s.Skip(1))
+            .ToList();
 
-            
+            db.Students.RemoveRange(duplicateStudents);
+
+            var tutors = await db.Tutors.ToListAsync();
+            var duplicateTutors = tutors
+                .GroupBy(t => t.MyAppUser.Username)
+                .Where(t => t.Count() > 1)
+                .SelectMany(t => t.Skip(1))
+                .ToList();
+
+            db.Tutors.RemoveRange(duplicateTutors);
+
+            var subjects = await db.Subjects.ToListAsync();
+            var duplicateSubjects = subjects
+                .GroupBy(s => s.Name)
+                .Where(s => s.Count() > 1)
+                .SelectMany(s => s.Skip(1))
+                .ToList();
+
+            db.Subjects.RemoveRange(duplicateSubjects);
+
+            var cities = await db.Cities.ToListAsync();
+            var duplicateCities = cities
+                .GroupBy(c => c.Name)
+                .Where(c => c.Count() > 1)
+                .SelectMany(c => c.Skip(1))
+                .ToList();
+
+            db.Cities.RemoveRange(duplicateCities);
+
+            await db.SaveChangesAsync();
         }
     }
 }
