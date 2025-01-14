@@ -10,9 +10,13 @@
               class="nav-link"
               [ngClass]="{ 'active': activeStep === i + 1 }"
               (click)="setActiveStep(i + 1)"
+              [class.disabled]="!isStepValid(i + 1)"
+              style="cursor: pointer"
             >
               {{ step }}
             </a>
+
+
           </li>
         </ul>
 
@@ -32,6 +36,9 @@
                 formControlName="firstName"
                 required
               />
+              <div *ngIf="registrationForm.get('firstName')?.invalid && registrationForm.get('firstName')?.touched" class="text-danger">
+                Ovo polje je obavezno.
+              </div>
             </div>
             <div class="form-group mb-3">
               <label for="lastName">Prezime</label>
@@ -42,6 +49,9 @@
                 formControlName="lastName"
                 required
               />
+              <div *ngIf="registrationForm.get('lastName')?.invalid && registrationForm.get('lastName')?.touched" class="text-danger">
+                Ovo polje je obavezno.
+              </div>
             </div>
             <div class="form-group mb-3">
               <label for="gender">Spol</label>
@@ -49,6 +59,9 @@
                 <option value="Muški">Muški</option>
                 <option value="Ženski">Ženski</option>
               </select>
+              <div *ngIf="registrationForm.get('gender')?.invalid && registrationForm.get('gender')?.touched" class="text-danger">
+                Ovo polje je obavezno.
+              </div>
             </div>
             <div class="form-group mb-3">
               <label for="city">Grad</label>
@@ -56,6 +69,9 @@
                 <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}
                 </option>
               </select>
+              <div *ngIf="registrationForm.get('city')?.invalid && registrationForm.get('city')?.touched" class="text-danger">
+                Ovo polje je obavezno.
+              </div>
             </div>
             <div class="form-group mb-3">
               <label for="age">Godine</label>
@@ -66,6 +82,12 @@
                 formControlName="age"
                 required
               />
+              <div *ngIf="registrationForm.get('age')?.hasError('required') && registrationForm.get('age')?.touched" class="text-danger">
+                Ovo polje je obavezno.
+              </div>
+              <div *ngIf="registrationForm.get('age')?.hasError('min') && registrationForm.get('age')?.touched" class="text-danger">
+                Morate imati minimalno 14 godina.
+              </div>
             </div>
             <div class="form-group mb-3">
               <label for="email">Email</label>
@@ -76,6 +98,12 @@
                 formControlName="email"
                 required
               />
+              <div *ngIf="registrationForm.get('email')?.hasError('required') && registrationForm.get('email')?.touched" class="text-danger">
+                Ovo polje je obavezno.
+              </div>
+              <div *ngIf="registrationForm.get('email')?.hasError('invalidEmail') && registrationForm.get('email')?.touched" class="text-danger">
+                Neispravan format (primjer validne e-mail adrese: johndoe&#64;gmail.com/johndoe&#64;unmo.ba)
+              </div>
             </div>
             <div class="form-group mb-3">
               <label for="phoneNumber">Broj telefona</label>
@@ -86,12 +114,22 @@
                 formControlName="phoneNumber"
                 required
               />
+              <div *ngIf="registrationForm.get('phoneNumber')?.hasError('required') && registrationForm.get('phoneNumber')?.touched" class="text-danger">
+                Ovo polje je obavezno.
+              </div>
+              <div *ngIf="registrationForm.get('phoneNumber')?.hasError('invalidPhoneNumber') && registrationForm.get('phoneNumber')?.touched" class="text-danger">
+                Broj telefona sadrži minimalno 9 cifri.
+              </div>
+              <div *ngIf="registrationForm.get('phoneNumber')?.hasError('invalidPhoneType') && registrationForm.get('phoneNumber')?.touched" class="text-danger">
+                Unesite brojeve (npr. 061 111 111)
+              </div>
             </div>
             <div class="button-container-step1">
               <button
                 type="button"
                 id="btnDalje"
                 class="btn btn-primary"
+                [disabled]="!isStepValid(1)"
                 (click)="setActiveStep(2)"
               >
                 Dalje
@@ -142,6 +180,10 @@
                         hidden
                       />
                     </div>
+
+                  </div>
+                  <div *ngIf="registrationForm.get('profilePicture')?.invalid && registrationForm.get('profilePicture')?.touched" class="text-danger">
+                    Slika je obavezna.
                   </div>
                 </div>
 
@@ -154,6 +196,9 @@
                     formControlName="experience"
                     required
                   />
+                  <div *ngIf="registrationForm.get('experience')?.invalid && registrationForm.get('experience')?.touched" class="text-danger">
+                    Ovo polje je obavezno.
+                  </div>
                 </div>
 
                 <div class="form-group mb-3">
@@ -168,6 +213,9 @@
                     Napomena: Kompanija uzima 10% od svake naplate učenika za čas.
                   </small>
                 </div>
+                <div *ngIf="registrationForm.get('rate')?.invalid && registrationForm.get('rate')?.touched" class="text-danger">
+                  Ovo polje je obavezno.
+                </div>
               </div>
 
               <!-- Desna strana -->
@@ -180,6 +228,9 @@
                     formControlName="qualifications"
                     rows="3"
                   ></textarea>
+                  <div *ngIf="registrationForm.get('qualifications')?.invalid && registrationForm.get('qualifications')?.touched" class="text-danger">
+                    Ovo polje je obavezno.
+                  </div>
                 </div>
                 <div class="form-group mb-3">
                   <label for="availability">Dostupnost</label>
@@ -189,6 +240,9 @@
                     formControlName="availability"
                     rows="3"
                   ></textarea>
+                  <div *ngIf="registrationForm.get('availability')?.invalid && registrationForm.get('availability')?.touched" class="text-danger">
+                    Ovo polje je obavezno.
+                  </div>
                 </div>
                 <div class="form-group mb-3">
                   <label for="cancellationPolicy">Pravila za otkazivanje časova</label>
@@ -198,10 +252,26 @@
                     formControlName="cancellationPolicy"
                     rows="3"
                   ></textarea>
+                  <div *ngIf="registrationForm.get('cancellationPolicy')?.invalid && registrationForm.get('cancellationPolicy')?.touched" class="text-danger">
+                    Ovo polje je obavezno.
+                  </div>
                 </div>
+
+            <div class="form-group mb-3">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  id="liveAvailability"
+                  class="form-check-input"
+                  formControlName="liveAvailability"
+                />
+                <label class="form-check-label" for="liveAvailability">
+                  Dostupan uživo
+                </label>
               </div>
             </div>
-
+            </div>
+            </div>
             <div class="button-container">
               <button
                 type="button"
@@ -215,6 +285,7 @@
                 type="button"
                 id="btnDaljeStep2"
                 class="btn btn-primary"
+                [disabled]="!isStepValid(2)"
                 (click)="setActiveStep(3)"
               >
                 Dalje
@@ -238,31 +309,70 @@
                 formControlName="username"
                 required
               />
+              <div *ngIf="registrationForm.get('username')?.hasError('required') && registrationForm.get('username')?.touched" class="text-danger">
+                Ovo polje je obavezno.
+              </div>
+              <div *ngIf="registrationForm.get('username')?.hasError('usernameTaken')" class="text-danger">
+                Korisničko ime je već zauzeto. Molimo unesite novo korisničko ime.
+              </div>
             </div>
             <div class="form-group mb-3">
               <label for="password">Lozinka</label>
+              <div class="password-container">
               <input
-                type="password"
+                [type]="showPassword ? 'text' : 'password'"
                 id="password"
                 class="form-control"
                 formControlName="password"
                 required
                 (keyup)="checkPasswordStrength()"
               />
+                <span
+                  class="toggle-password-icon"
+                  (click)="togglePasswordVisibility('password')"
+                >
+                <i [ngClass]="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+               </span>
+              </div>
+              <div *ngIf="registrationForm.get('password')?.hasError('required') && registrationForm.get('password')?.touched" class="text-danger">
+                Ovo polje je obavezno.
+              </div>
+              <div *ngIf="registrationForm.get('password')?.hasError('passwordTaken')" class="text-danger">
+                Lozinka je već zauzeta. Molimo unesite novu lozinku.
+              </div>
               <div *ngIf="passwordStrength" [ngClass]="passwordStrengthClass">
                 {{ passwordStrength }}
               </div>
+
+
             </div>
+
             <div class="form-group mb-3">
-              <label for="confirmPassword">Ponovljena lozinka</label>
+              <label for="confirmPassword">Potvrdite lozinku</label>
+              <div class="password-container">
+
               <input
-                type="password"
+                [type]="showConfirmPassword ? 'text' : 'password'"
                 id="confirmPassword"
                 class="form-control"
                 formControlName="confirmPassword"
                 required
               />
+              <span
+                class="toggle-password-icon"
+                (click)="togglePasswordVisibility('confirmPassword')"
+              >
+                <i [ngClass]="showConfirmPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+               </span>
             </div>
+              <div *ngIf="registrationForm.get('confirmPassword')?.hasError('required') && registrationForm.get('confirmPassword')?.touched" class="text-danger">
+                Ovo polje je obavezno.
+              </div>
+              <div *ngIf="registrationForm.get('confirmPassword')?.hasError('passwordMismatch') && registrationForm.get('confirmPassword')?.dirty" class="text-danger">
+                Lozinke se ne poklapaju. Molimo unesite istu lozinku.
+              </div>
+            </div>
+
             <div class="button-container">
               <button
                 type="button"
@@ -276,6 +386,7 @@
                 type="submit"
                 id="btnRegistrujSe"
                 class="btn btn-success"
+                [disabled]="!isStepValid(3)"
               >
                 Registruj se
               </button>

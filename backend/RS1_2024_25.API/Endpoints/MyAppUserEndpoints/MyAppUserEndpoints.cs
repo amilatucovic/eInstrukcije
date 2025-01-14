@@ -153,5 +153,33 @@ namespace RS1_2024_2025.API.Endpoints.MyAppUserEndpoints
                 return Ok(appUser);
             }
         }
+
+        [HttpGet("check-username-availability")]
+        public async Task<IActionResult> CheckUsernameAvailability(string username, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return BadRequest(new { Message = "Username is required." });
+            }
+
+            var isAvailable = !await db.MyAppUsers.AnyAsync(u => u.Username == username, cancellationToken);
+
+            return Ok(new { Available = isAvailable });
+        }
+
+        [HttpGet("check-password-availability")]
+        public async Task<IActionResult> CheckPasswordAvailability(string password, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                return BadRequest(new { Message = "Username is required." });
+            }
+
+            var isAvailable = !await db.MyAppUsers.AnyAsync(p => p.Password == password, cancellationToken);
+
+            return Ok(new { Available = isAvailable });
+        }
+
+
     }
 }
