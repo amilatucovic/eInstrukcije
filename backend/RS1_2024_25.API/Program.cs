@@ -26,7 +26,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 
 builder.Services.AddTransient<RedundancyChecker>();
-
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 // Add JWT Authentication
 var jwtSettings = config.GetSection("Jwt");
