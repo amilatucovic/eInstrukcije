@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { TutorRegistrationComponent } from './tutor-registration/tutor-registration.component';
 
-
 const routes: Routes = [
   {
     path: '',

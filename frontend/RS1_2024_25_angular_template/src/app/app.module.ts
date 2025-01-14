@@ -11,14 +11,13 @@ import { FormsModule } from '@angular/forms';
 import {ReactiveFormsModule} from '@angular/forms';
 import { PublicModule } from './modules/public/public.module';
 import {LoginComponent} from './login/login.component';
-import { TutorRegistrationComponent } from './public/tutor-registration/tutor-registration.component';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    TutorRegistrationComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +25,6 @@ import { TutorRegistrationComponent } from './public/tutor-registration/tutor-re
     HttpClientModule,
     SharedModule, // Omogućava korištenje UnauthorizedComponent u AppRoutingModule
     FormsModule,
-    PublicModule,
     ReactiveFormsModule,// Omogućava korištenje UnauthorizedComponent u AppRoutingModule
     RegistrationComponent
   ],
