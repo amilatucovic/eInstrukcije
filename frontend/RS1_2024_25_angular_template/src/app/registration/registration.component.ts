@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+
+declare var window: any; //za pristup globalnim objektima jer koristimo bootstrap
 
 @Component({
   selector: 'app-registration',
@@ -17,7 +21,7 @@ export class RegistrationComponent {
   passwordMatch: string = '';
   passwordMatchClass: string = '';
 
-  constructor() {
+  constructor(private http: HttpClient, private router: Router) {
     this.UserForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
@@ -26,16 +30,15 @@ export class RegistrationComponent {
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       city: new FormControl('', Validators.required),
       educationalLevel: new FormControl('', Validators.required),
-      passwordConfirmation: new FormControl('', [Validators.required, Validators.minLength(6)]),
+      passwordConfirmation: new FormControl('', [Validators.required, Validators.minLength(8)]),
       preferredMode: new FormControl('', Validators.required),
-      grade: new FormControl('', Validators.required),
-      age: new FormControl('', [Validators.required, Validators.min(6), Validators.max(20)]),
+      grade: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]+$')]),
+      age: new FormControl('', [Validators.required, Validators.min(6), Validators.max(20), Validators.pattern('^[0-9]+$')]),
       gender: new FormControl('', Validators.required),
-      phoneNumber: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(13), Validators.pattern('^[0-9]*$')]),
+      phoneNumber: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(13), Validators.pattern('^[0-9]+$')]),
     })
   }
 
-  // Validacija za podudaranje lozinki
   checkPasswordMatch() {
     return this.UserForm.get("password")?.value === this.UserForm.get("passwordConfirmation")?.value;
   }
@@ -62,7 +65,7 @@ export class RegistrationComponent {
       numberPattern.test(password) &&
       specialCharPattern.test(password)
     ) {
-      this.passwordStrength = 'Snažna lozinka';
+      this.passwordStrength = 'Jaka lozinka';
       this.passwordStrengthClass = 'text-success small';
     } else {
       this.passwordStrength = 'Srednje jaka lozinka';
@@ -72,15 +75,28 @@ export class RegistrationComponent {
 
   registriraj() {
     if (!this.checkPasswordMatch()) {
-      console.log("Šifre se ne poklapaju");
-      this.passwordMatch = 'Lozinke se ne poklapaju!';
+      //console.log("Šifre se ne poklapaju");
+      this.passwordMatch = 'Šifre se ne poklapaju!';
       this.passwordMatchClass = 'text-danger small';
       return;
     }
     if (this.UserForm.valid) {
       const formValues = this.UserForm.value;
-      console.log('Forma je validna:', this.UserForm.value);
-    } else {
+      // console.log('Forma je validna:', this.UserForm.value);
+      this.http.post('http://localhost:7000/api/StudentEndpoints', formValues)
+        .subscribe({
+          next: (response: any) => {
+            // const successModal = new window.bootstrap.Modal(document.getElementById('successModal'));
+            // successModal.show();
+            this.router.navigate(['/student-dashboard']);
+          },
+          error: (error) => {
+            //const errorModal = new window.bootstrap.Modal(document.getElementById('errorModal'));
+            //errorModal.show();
+          }
+        });
+    }
+    else {
       console.log('Forma nije validna!');
       return
     }

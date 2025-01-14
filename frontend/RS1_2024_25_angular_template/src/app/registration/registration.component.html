@@ -1,6 +1,6 @@
 <div class="form-container">
   <h2>Registracija</h2>
-  <form>
+  <form [formGroup]="UserForm" (ngSubmit)="registriraj()">
     <div class="row">
       <!-- First Name -->
       <div class="form-group col-md-6" [formGroup]="UserForm">
@@ -115,6 +115,7 @@
         <input type="grade" id="grade" class="form-control" placeholder="Unesite razred" formControlName="grade">
         <div class="text-danger small" *ngIf="UserForm.controls['grade'].invalid && (UserForm.controls['grade'].touched || UserForm.controls['grade'].dirty)">
           <span *ngIf="UserForm.controls['grade'].errors?.['required']">Ovo polje je obavezno!</span>
+          <span *ngIf="UserForm.controls['grade'].errors?.['pattern']">Razred napišite slovima!</span>
         </div>
       </div>
     </div>
@@ -142,6 +143,7 @@
           <span *ngIf="UserForm.controls['age'].errors?.['required']">Ovo polje je obavezno!</span>
           <span *ngIf="UserForm.controls['age'].errors?.['min']">Najmlađi učenik može imati 6 godina!</span>
           <span *ngIf="UserForm.controls['age'].errors?.['max']">Najstariji učenik može imati 20 godina!</span>
+          <span *ngIf="UserForm.controls['age'].errors?.['pattern']">Godine napišite brojevima!</span>
         </div>
       </div>
       <!-- Phone number -->
@@ -157,13 +159,51 @@
     </div>
     </div>
 
+
     <div class="row">
       <div class="col text-center">
-        <button type="button" class="btn btn-primary-gradient" (click)="registriraj()">Registriraj</button>
+        <button type="submit" class="btn btn-primary-gradient" (ngSubmit)="registriraj()">Registriraj</button>
       </div>
     </div>
   </form>
   <div class="form-footer">
-    <p>Već imate nalog? <a href="#">Prijavite se ovdje</a>.</p>
+    <p>Već imate nalog? <a href="/login">Prijavite se ovdje</a>.</p>
   </div>
+
+  <!-- Modal - Obavijest uspjeha
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">Info</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Vaš nalog je uspješno kreiran.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+Modal - Obavijest o grešci 
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalLabel">Greška prilikom registracije</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Došlo je do greške prilikom registracije. Molimo pokušajte ponovo.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 </div>
