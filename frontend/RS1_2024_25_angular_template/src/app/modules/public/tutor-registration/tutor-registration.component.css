@@ -178,3 +178,30 @@ app-root, .form-container {
   font-size: 0.9rem;
   color: #6c757d;
 }
+
+.password-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-container input {
+  width: 100%;
+  padding-right: 40px;
+}
+
+.toggle-password-icon {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #6c757d;
+  font-size: 1.2rem;
+}
+.toggle-password-icon:hover {
+  color: #17a2b8;
+}
+.disabled {
+  pointer-events: none;
+  color: #ccc;
+}
+
