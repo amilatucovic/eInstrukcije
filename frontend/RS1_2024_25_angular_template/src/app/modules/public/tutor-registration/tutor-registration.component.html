@@ -53,8 +53,7 @@
             <div class="form-group mb-3">
               <label for="city">Grad</label>
               <select id="city" class="form-select" formControlName="city">
-                <option *ngFor="let city of cities" [value]="city">
-                  {{ city }}
+                <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}
                 </option>
               </select>
             </div>
