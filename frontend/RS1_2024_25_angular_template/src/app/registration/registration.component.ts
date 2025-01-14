@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { CitiesService } from '../services/auth-services/services/cities.service';
+import { City } from '../models/city.model';
 
 declare var window: any; //za pristup globalnim objektima jer koristimo bootstrap
 
@@ -13,22 +15,23 @@ declare var window: any; //za pristup globalnim objektima jer koristimo bootstra
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule]
 })
-export class RegistrationComponent {
+export class RegistrationComponent implements OnInit {
 
   UserForm: FormGroup;
   passwordStrength: string = '';
   passwordStrengthClass: string = '';
   passwordMatch: string = '';
   passwordMatchClass: string = '';
+  cities: City[] = [];
 
-  constructor(private http: HttpClient, private router: Router) {
+  constructor(private http: HttpClient, private router: Router, private citiesService: CitiesService) {
     this.UserForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
       username: new FormControl('', Validators.required),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-      city: new FormControl('', Validators.required),
+      cityId: new FormControl('', Validators.required),
       educationalLevel: new FormControl('', Validators.required),
       passwordConfirmation: new FormControl('', [Validators.required, Validators.minLength(8)]),
       preferredMode: new FormControl('', Validators.required),
@@ -37,6 +40,18 @@ export class RegistrationComponent {
       gender: new FormControl('', Validators.required),
       phoneNumber: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(13), Validators.pattern('^[0-9]+$')]),
     })
+  }
+
+  ngOnInit(): void {
+    this.citiesService.getCities().subscribe(
+      (data) => {
+        this.cities = data.map(cityData => new City(cityData.id, cityData.name, cityData.postalCode));
+        console.log(this.cities);
+      },
+      (error) => {
+        console.error('Greška pri učitavanju gradova', error);
+      }
+    );
   }
 
   checkPasswordMatch() {
@@ -82,19 +97,19 @@ export class RegistrationComponent {
     }
     if (this.UserForm.valid) {
       const formValues = this.UserForm.value;
-      // console.log('Forma je validna:', this.UserForm.value);
-      this.http.post('http://localhost:7000/api/StudentEndpoints', formValues)
-        .subscribe({
-          next: (response: any) => {
-            // const successModal = new window.bootstrap.Modal(document.getElementById('successModal'));
-            // successModal.show();
-            this.router.navigate(['/student-dashboard']);
-          },
-          error: (error) => {
-            //const errorModal = new window.bootstrap.Modal(document.getElementById('errorModal'));
-            //errorModal.show();
-          }
-        });
+      console.log('Forma je validna:', this.UserForm.value);
+      this.http.post('http://localhost:7000/api/StudentEndpoints', formValues).subscribe({
+        next: (response: any) => {
+          // const successModal = new window.bootstrap.Modal(document.getElementById('successModal'));
+          // successModal.show();
+          this.router.navigate(['/student-dashboard']);
+        },
+        error: (error) => {
+          //const errorModal = new window.bootstrap.Modal(document.getElementById('errorModal'));
+          //errorModal.show();
+          console.log(error.error)
+        }
+      });
     }
     else {
       console.log('Forma nije validna!');
