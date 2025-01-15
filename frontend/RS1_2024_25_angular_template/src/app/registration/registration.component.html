@@ -1,22 +1,52 @@
 <div class="form-container">
   <h2>Registracija</h2>
-  <form>
+  <form [formGroup]="UserForm" (ngSubmit)="registriraj()">
     <div class="row">
       <!-- First Name -->
       <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="firstName">Ime</label>
-        <input type="text" id="firstName" class="form-control" formControlName="firstName" placeholder="Unesite ime">
-        <div class="text-danger small" *ngIf="UserForm.controls['firstName'].invalid && (UserForm.controls['firstName'].touched || UserForm.controls['firstName'].dirty)">
-          <span *ngIf="UserForm.controls['firstName'].errors?.['required']">Ovo polje je obavezno!</span>
+        <input
+          type="text"
+          id="firstName"
+          class="form-control"
+          formControlName="firstName"
+          placeholder="Unesite ime"
+        />
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['firstName'].invalid &&
+            (UserForm.controls['firstName'].touched ||
+              UserForm.controls['firstName'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['firstName'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
         </div>
       </div>
 
       <!-- Last Name -->
       <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="lastName">Prezime</label>
-        <input type="text" id="lastName" class="form-control" formControlName="lastName" placeholder="Unesite prezime">
-        <div class="text-danger small" *ngIf="UserForm.controls['lastName'].invalid && (UserForm.controls['lastName'].touched || UserForm.controls['lastName'].dirty)">
-          <span *ngIf="UserForm.controls['lastName'].errors?.['required']">Ovo polje je obavezno!</span>
+        <input
+          type="text"
+          id="lastName"
+          class="form-control"
+          formControlName="lastName"
+          placeholder="Unesite prezime"
+        />
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['lastName'].invalid &&
+            (UserForm.controls['lastName'].touched ||
+              UserForm.controls['lastName'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['lastName'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
         </div>
       </div>
     </div>
@@ -25,20 +55,54 @@
       <!-- Email -->
       <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="email">Email</label>
-        <input type="text" id="email" class="form-control" formControlName="email" placeholder="Unesite E-mail">
-        <div class="text-danger small" *ngIf="UserForm.controls['email'].invalid && (UserForm.controls['email'].touched || UserForm.controls['email'].dirty)">
-          <span *ngIf="UserForm.controls['email'].errors?.['required']">Ovo polje je obavezno!</span>
-          <span *ngIf="UserForm.controls['email'].errors?.['email']">E-mail nije u ispravnom formatu!</span>
+        <input
+          type="text"
+          id="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="Unesite E-mail"
+        />
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['email'].invalid &&
+            (UserForm.controls['email'].touched ||
+              UserForm.controls['email'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['email'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
+          <span *ngIf="UserForm.controls['email'].errors?.['email']"
+            >E-mail nije u ispravnom formatu!</span
+          >
         </div>
       </div>
 
-       <!-- Username -->
-       <div class="form-group col-md-6" [formGroup]="UserForm">
+      <!-- Username -->
+      <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="username">Korisničko ime</label>
-        <input type="text" id="username" class="form-control" formControlName="username" placeholder="Unesite korisničko ime">
-        <div class="text-danger small" *ngIf="UserForm.controls['email'].invalid && (UserForm.controls['username'].touched || UserForm.controls['username'].dirty)">
-          <span *ngIf="UserForm.controls['username'].errors?.['required']">Ovo polje je obavezno!</span>
-          <span *ngIf="UserForm.controls['username'].errors?.['username']">E-mail nije u ispravnom formatu!</span>
+        <input
+          type="text"
+          id="username"
+          class="form-control"
+          formControlName="username"
+          placeholder="Unesite korisničko ime"
+        />
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['email'].invalid &&
+            (UserForm.controls['username'].touched ||
+              UserForm.controls['username'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['username'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
+          <span *ngIf="UserForm.controls['username'].errors?.['username']"
+            >E-mail nije u ispravnom formatu!</span
+          >
         </div>
       </div>
     </div>
@@ -47,22 +111,63 @@
       <!-- Password -->
       <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="password">Šifra</label>
-        <input type="password" id="password" class="form-control" placeholder="Unesite šifru" formControlName="password" (keyup)="checkPasswordStrength()">
-        <div class="text-danger small" *ngIf="UserForm.controls['password'].invalid && (UserForm.controls['password'].touched || UserForm.controls['password'].dirty)">
-          <span *ngIf="UserForm.controls['password'].errors?.['required']">Ovo polje je obavezno!</span>
-          <span *ngIf="UserForm.controls['password'].errors?.['minlength']">Šifra mora sadržavati najmanje 8 karaktera!</span>
+        <input
+          type="password"
+          id="password"
+          class="form-control"
+          placeholder="Unesite šifru"
+          formControlName="password"
+          (keyup)="checkPasswordStrength()"
+        />
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['password'].invalid &&
+            (UserForm.controls['password'].touched ||
+              UserForm.controls['password'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['password'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
+          <span *ngIf="UserForm.controls['password'].errors?.['minlength']"
+            >Šifra mora sadržavati najmanje 8 karaktera!</span
+          >
         </div>
-        <div *ngIf="passwordStrength" [ngClass]="passwordStrengthClass">{{ passwordStrength }}</div>
+        <div *ngIf="passwordStrength" [ngClass]="passwordStrengthClass">
+          {{ passwordStrength }}
+        </div>
       </div>
       <!-- Password confirmation-->
       <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="password">Potvrda šifre</label>
-        <input type="password" id="passwordConfirmation" class="form-control" placeholder="Unesite potvrdu šifre" formControlName="passwordConfirmation">
-        <div class="text-danger small" *ngIf="UserForm.controls['passwordConfirmation'].invalid && (UserForm.controls['passwordConfirmation'].touched || UserForm.controls['passwordConfirmation'].dirty)">
-          <span *ngIf="UserForm.controls['passwordConfirmation'].errors?.['required']">Ovo polje je obavezno!</span>
-          <span *ngIf="UserForm.controls['passwordConfirmation'].errors?.['minlength']">Šifra mora sadržavati najmanje 6 karaktera!</span>
+        <input
+          type="password"
+          id="passwordConfirmation"
+          class="form-control"
+          placeholder="Unesite potvrdu šifre"
+          formControlName="passwordConfirmation"
+        />
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['passwordConfirmation'].invalid &&
+            (UserForm.controls['passwordConfirmation'].touched ||
+              UserForm.controls['passwordConfirmation'].dirty)
+          "
+        >
+          <span
+            *ngIf="UserForm.controls['passwordConfirmation'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
+          <span
+            *ngIf="UserForm.controls['passwordConfirmation'].errors?.['minlength']"
+            >Šifra mora sadržavati najmanje 6 karaktera!</span
+          >
         </div>
-        <div *ngIf="passwordMatch" [ngClass]="passwordMatchClass">{{ passwordMatch }}</div>
+        <div *ngIf="passwordMatch" [ngClass]="passwordMatchClass">
+          {{ passwordMatch }}
+        </div>
       </div>
     </div>
 
@@ -70,26 +175,57 @@
       <!-- Preferred mode -->
       <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="preferredMode">Način održavanja instrukcija</label>
-        <select id="preferredMode" class="form-control custom-dropdown" formControlName="preferredMode">
-          <option value="" disabled selected hidden>Odaberite način izvođenja nastave</option>
+        <select
+          id="preferredMode"
+          class="form-control custom-dropdown"
+          formControlName="preferredMode"
+        >
+          <option value="" disabled selected hidden>
+            Odaberite način izvođenja nastave
+          </option>
           <option value="Online">Online</option>
           <option value="Inclass">Uživo</option>
         </select>
-        <div class="text-danger small" *ngIf="UserForm.controls['preferredMode'].invalid && (UserForm.controls['preferredMode'].touched || UserForm.controls['preferredMode'].dirty)">
-          <span *ngIf="UserForm.controls['preferredMode'].errors?.['required']">Ovo polje je obavezno!</span>
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['preferredMode'].invalid &&
+            (UserForm.controls['preferredMode'].touched ||
+              UserForm.controls['preferredMode'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['preferredMode'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
         </div>
       </div>
 
       <!-- Educational level -->
       <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="preferredMode">Stepen obrazovanja</label>
-        <select id="educationalLevel" class="form-control custom-dropdown" formControlName="educationalLevel">
-          <option value="" disabled selected hidden>Odaberite stepen obrazovanja</option>
+        <select
+          id="educationalLevel"
+          class="form-control custom-dropdown"
+          formControlName="educationalLevel"
+        >
+          <option value="" disabled selected hidden>
+            Odaberite stepen obrazovanja
+          </option>
           <option value="Osnovna skola">Osnovna škola</option>
           <option value="Srednja skola">Srednja škola</option>
         </select>
-        <div class="text-danger small" *ngIf="UserForm.controls['educationalLevel'].invalid && (UserForm.controls['educationalLevel'].touched || UserForm.controls['educationalLevel'].dirty)">
-          <span *ngIf="UserForm.controls['educationalLevel'].errors?.['required']">Ovo polje je obavezno!</span>
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['educationalLevel'].invalid &&
+            (UserForm.controls['educationalLevel'].touched ||
+              UserForm.controls['educationalLevel'].dirty)
+          "
+        >
+          <span
+            *ngIf="UserForm.controls['educationalLevel'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
         </div>
       </div>
     </div>
@@ -97,24 +233,55 @@
     <div class="row">
       <!-- City -->
       <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="city">Grad</label>
-        <select id="city" class="form-control custom-dropdown" formControlName="city">
+        <label for="cityId">Grad</label>
+        <select
+          id="cityId"
+          class="form-control custom-dropdown"
+          formControlName="cityId"
+        >
           <option value="" disabled selected hidden>Odaberite grad</option>
-          <option value="Mostar">Mostar</option>
-          <option value="Bihać">Bihać</option>
-          <option value="Sarajevo">Sarajevo</option>
+          <option *ngFor="let city of this.cities" [value]="city.id">
+            {{ city.name }}
+          </option>
         </select>
-        <div class="text-danger small" *ngIf="UserForm.controls['city'].invalid && (UserForm.controls['city'].touched || UserForm.controls['city'].dirty)">
-          <span *ngIf="UserForm.controls['city'].errors?.['required']">Ovo polje je obavezno!</span>
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['cityId'].invalid &&
+            (UserForm.controls['cityId'].touched ||
+              UserForm.controls['cityId'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['cityId'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
         </div>
       </div>
 
       <!-- Grade -->
       <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="grade">Razred</label>
-        <input type="grade" id="grade" class="form-control" placeholder="Unesite razred" formControlName="grade">
-        <div class="text-danger small" *ngIf="UserForm.controls['grade'].invalid && (UserForm.controls['grade'].touched || UserForm.controls['grade'].dirty)">
-          <span *ngIf="UserForm.controls['grade'].errors?.['required']">Ovo polje je obavezno!</span>
+        <input
+          type="grade"
+          id="grade"
+          class="form-control"
+          placeholder="Unesite razred"
+          formControlName="grade"
+        />
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['grade'].invalid &&
+            (UserForm.controls['grade'].touched ||
+              UserForm.controls['grade'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['grade'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
+          <span *ngIf="UserForm.controls['grade'].errors?.['pattern']"
+            >Razred napišite slovima!</span
+          >
         </div>
       </div>
     </div>
@@ -124,46 +291,145 @@
       <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="gender">Spol</label>
         <div class="dropdown">
-          <select id="gender" class="form-control custom-dropdown" formControlName="gender">
+          <select
+            id="gender"
+            class="form-control custom-dropdown"
+            formControlName="gender"
+          >
             <option value="" disabled selected hidden>Odaberite</option>
             <option value="Musko">Muško</option>
             <option value="Zensko">Žensko</option>
           </select>
         </div>
-        <div class="text-danger small" *ngIf="UserForm.controls['gender'].invalid && (UserForm.controls['gender'].touched || UserForm.controls['gender'].dirty)">
-            <span *ngIf="UserForm.controls['gender'].errors?.['required']">Ovo polje je obavezno!</span>
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['gender'].invalid &&
+            (UserForm.controls['gender'].touched ||
+              UserForm.controls['gender'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['gender'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
         </div>
       </div>
       <!-- Age -->
       <div class="form-group col-md-6" [formGroup]="UserForm">
         <label for="age">Godine</label>
-        <input type="number" id="age" class="form-control" placeholder="Unesite godine" formControlName="age">
-        <div class="text-danger small" *ngIf="UserForm.controls['age'].invalid && (UserForm.controls['age'].touched || UserForm.controls['age'].dirty)">
-          <span *ngIf="UserForm.controls['age'].errors?.['required']">Ovo polje je obavezno!</span>
-          <span *ngIf="UserForm.controls['age'].errors?.['min']">Najmlađi učenik može imati 6 godina!</span>
-          <span *ngIf="UserForm.controls['age'].errors?.['max']">Najstariji učenik može imati 20 godina!</span>
+        <input
+          type="number"
+          id="age"
+          class="form-control"
+          placeholder="Unesite godine"
+          formControlName="age"
+        />
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['age'].invalid &&
+            (UserForm.controls['age'].touched || UserForm.controls['age'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['age'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
+          <span *ngIf="UserForm.controls['age'].errors?.['min']"
+            >Najmlađi učenik može imati 6 godina!</span
+          >
+          <span *ngIf="UserForm.controls['age'].errors?.['max']"
+            >Najstariji učenik može imati 20 godina!</span
+          >
+          <span *ngIf="UserForm.controls['age'].errors?.['pattern']"
+            >Godine napišite brojevima!</span
+          >
         </div>
       </div>
       <!-- Phone number -->
-    <div class="form-group col-md-6" [formGroup]="UserForm">
-      <label for="phoneNumber">Kontakt telefon</label>
-      <input type="tel" id="phoneNumber" class="form-control" placeholder="Unesite kontakt telefon" formControlName="phoneNumber">
-      <div class="text-danger small" *ngIf="UserForm.controls['phoneNumber'].invalid && (UserForm.controls['phoneNumber'].touched || UserForm.controls['phoneNumber'].dirty)">
-        <span *ngIf="UserForm.controls['phoneNumber'].errors?.['required']">Ovo polje je obavezno!</span>
-        <span *ngIf="UserForm.controls['phoneNumber'].errors?.['minlength']">Format broja telefona ne odgovara!</span>
-        <span *ngIf="UserForm.controls['phoneNumber'].errors?.['maxlength']">Format broja telefona ne odgovara!</span>
-        <div><span *ngIf="UserForm.controls['phoneNumber'].errors?.['pattern']">Polje mora sadrzavati samo brojeve!!</span></div>
+      <div class="form-group col-md-6" [formGroup]="UserForm">
+        <label for="phoneNumber">Kontakt telefon</label>
+        <input
+          type="tel"
+          id="phoneNumber"
+          class="form-control"
+          placeholder="Unesite kontakt telefon"
+          formControlName="phoneNumber"
+        />
+        <div
+          class="text-danger small"
+          *ngIf="
+            UserForm.controls['phoneNumber'].invalid &&
+            (UserForm.controls['phoneNumber'].touched ||
+              UserForm.controls['phoneNumber'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['phoneNumber'].errors?.['required']"
+            >Ovo polje je obavezno!</span
+          >
+          <span *ngIf="UserForm.controls['phoneNumber'].errors?.['minlength']"
+            >Format broja telefona ne odgovara!</span
+          >
+          <span *ngIf="UserForm.controls['phoneNumber'].errors?.['maxlength']"
+            >Format broja telefona ne odgovara!</span
+          >
+          <div>
+            <span *ngIf="UserForm.controls['phoneNumber'].errors?.['pattern']"
+              >Polje mora sadrzavati samo brojeve!!</span
+            >
+          </div>
+        </div>
       </div>
-    </div>
     </div>
 
     <div class="row">
       <div class="col text-center">
-        <button type="button" class="btn btn-primary-gradient" (click)="registriraj()">Registriraj</button>
+        <button
+          type="submit"
+          class="btn btn-primary-gradient"
+          (ngSubmit)="registriraj()"
+        >
+          Registriraj
+        </button>
       </div>
     </div>
   </form>
   <div class="form-footer">
-    <p>Već imate nalog? <a href="#">Prijavite se ovdje</a>.</p>
+    <p>Već imate nalog? <a href="/login">Prijavite se ovdje</a>.</p>
   </div>
+
+  <!-- Modal - Obavijest uspjeha
+<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="successModalLabel">Info</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Vaš nalog je uspješno kreiran.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+Modal - Obavijest o grešci 
+<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalLabel">Greška prilikom registracije</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Došlo je do greške prilikom registracije. Molimo pokušajte ponovo.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
+      </div>
+    </div>
+  </div>
+</div> -->
 </div>
