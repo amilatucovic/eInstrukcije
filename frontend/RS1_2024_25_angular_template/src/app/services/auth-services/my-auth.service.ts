@@ -1,43 +1,42 @@
-import {HttpClient} from "@angular/common/http";
-import {Injectable} from "@angular/core";
-import {MyAuthInfo} from "./dto/my-auth-info";
-import {LoginTokenDto} from './dto/login-token-dto';
+import { Injectable } from '@angular/core';
 
-@Injectable({providedIn: 'root'})
+@Injectable({
+  providedIn: 'root'
+})
 export class MyAuthService {
-  constructor(private httpClient: HttpClient) {
+
+  getUserRole(): string {
+    const token = localStorage.getItem('accessToken');
+    if (!token) return '';
+
+    const payload = this.parseToken(token);
+    return payload ? payload['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] : '';
   }
 
-  getMyAuthInfo(): MyAuthInfo | null {
-    return this.getLoginToken()?.myAuthInfo ?? null;
+  hasRole(requiredRole: string): boolean {
+    return this.getUserRole() === requiredRole;
   }
 
-  isLoggedIn(): boolean {
-    return this.getMyAuthInfo() != null && this.getMyAuthInfo()!.isLoggedIn;
-  }
-
-  isAdmin(): boolean {
-    return this.getMyAuthInfo()?.isAdmin ?? false;
-  }
-
-  isManager(): boolean {
-    return this.getMyAuthInfo()?.isManager ?? false;
-  }
-
-  setLoggedInUser(x: LoginTokenDto | null) {
-    if (x == null) {
-      window.localStorage.setItem("my-auth-token", '');
-    } else {
-      window.localStorage.setItem("my-auth-token", JSON.stringify(x));
-    }
-  }
-
-  getLoginToken(): LoginTokenDto | null {
-    let tokenString = window.localStorage.getItem("my-auth-token") ?? "";
+  private parseToken(token: string): any {
     try {
-      return JSON.parse(tokenString);
-    } catch (e) {
+      const payload = token.split('.')[1];
+      return JSON.parse(atob(payload));
+    } catch (error) {
+      console.error('Error parsing token:', error);
       return null;
     }
+  }
+
+  setLoggedInUser(user: any): void {
+    if (user) {
+      localStorage.setItem('loggedInUser', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('loggedInUser');
+    }
+  }
+
+  getLoginToken(): { token: string } | null {
+    const token = localStorage.getItem('accessToken');
+    return token ? { token } : null;
   }
 }

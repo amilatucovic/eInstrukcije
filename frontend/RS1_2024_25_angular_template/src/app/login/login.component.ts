@@ -47,7 +47,7 @@ export class LoginComponent {
 
           // Navigate based on the role of the user
           if (response.role === 'Admin') {
-            this.router.navigate(['/admin-dashboard']);
+            this.router.navigate(['/admin/dashboard']);
           } else if (response.role === 'Tutor') {
             this.router.navigate(['/tutor-dashboard']);
           } else if (response.role === 'Student') {
