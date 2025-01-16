@@ -37,8 +37,6 @@ const routes: Routes = [
   },
   {
     path: 'tutor-dashboard',
-    canActivate: [AuthGuard],
-    data: {isTutor: true},
     loadChildren: () => import('./modules/tutor/tutor.module').then(m => m.TutorModule)
   },
   { path: '**', redirectTo: 'public', pathMatch: 'full' }

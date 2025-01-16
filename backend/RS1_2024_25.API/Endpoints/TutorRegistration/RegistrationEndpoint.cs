@@ -19,9 +19,9 @@ namespace RS1_2024_25.API.Endpoints.TutorRegistration
                 return BadRequest(ModelState);
             }
 
-           
+
             var existingUser = await db.MyAppUsers
-                .FirstOrDefaultAsync(u => u.Username == registrationDto.Username);
+                .FirstOrDefaultAsync(u => u.Username.ToLower() == registrationDto.Username.ToLower());
 
             if (existingUser != null)
             {
@@ -30,24 +30,16 @@ namespace RS1_2024_25.API.Endpoints.TutorRegistration
 
             if (!string.IsNullOrEmpty(registrationDto.ProfileImageUrl))
             {
-                try
-                {
-                    var base64Image = registrationDto.ProfileImageUrl.Split(',')[1];
-                    var imageBytes = Convert.FromBase64String(base64Image);
-                    string imageUrl = await UploadImageHelper.UploadFile(imageBytes);
-                    registrationDto.ProfileImageUrl = imageUrl;
-                }
-                catch (Exception ex)
-                {
 
-                }
-
+                var imageBytes = Convert.FromBase64String(registrationDto.ProfileImageUrl);
+                string imageUrl = await UploadImageHelper.UploadFile(imageBytes);
+                registrationDto.ProfileImageUrl = imageUrl;
             }
 
             var myAppUser = new MyAppUser
             {
                 Username = registrationDto.Username,
-                Password = registrationDto.Password, 
+                Password = registrationDto.Password,
                 FirstName = registrationDto.FirstName,
                 LastName = registrationDto.LastName,
                 Age = registrationDto.Age,
@@ -62,7 +54,7 @@ namespace RS1_2024_25.API.Endpoints.TutorRegistration
             db.MyAppUsers.Add(myAppUser);
             await db.SaveChangesAsync();
 
-           
+
             var tutor = new Tutor
             {
                 MyAppUserID = myAppUser.ID,

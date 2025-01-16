@@ -74,7 +74,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
 
-   await DatabaseSeeder.SeedAsync(context);
+   //await DatabaseSeeder.SeedAsync(context);
 }
 using (var scope = app.Services.CreateScope())
 {

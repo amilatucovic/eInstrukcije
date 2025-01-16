@@ -62,7 +62,17 @@ namespace RS1_2024_2025.Services.Services
                 .SelectMany(c => c.Skip(1))
                 .ToList();
 
+
             db.Cities.RemoveRange(duplicateCities);
+
+            var admins = await db.Admins.ToListAsync();
+            var duplicateAdmins = admins
+                .GroupBy(t => t.MyAppUser.Username)
+                .Where(t => t.Count() > 1)
+                .SelectMany(t => t.Skip(1))
+                .ToList();
+
+            db.Admins.RemoveRange(duplicateAdmins);
 
             await db.SaveChangesAsync();
         }

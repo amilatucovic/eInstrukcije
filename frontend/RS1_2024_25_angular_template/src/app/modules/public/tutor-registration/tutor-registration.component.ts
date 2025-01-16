@@ -85,16 +85,17 @@ export class TutorRegistrationComponent implements OnInit {
 
 
 
-  loadCities() {
-    this.http.get('http://localhost:7000/api/CityEndpoint').subscribe(
-      (data: any) => {
-        this.cities = data;
+  loadCities(): void {
+    this.http.get<any>('http://localhost:7000/api/CityEndpoint').subscribe(
+      (response) => {
+        this.cities = response?.$values || []; // Extract cities from response
       },
       (error) => {
-        console.error('Error loading cities', error);
+        console.error('Error fetching cities:', error);
       }
     );
   }
+
 
   passwordMatchValidator(form: FormGroup) {
     const password = form.get('password')?.value;
@@ -164,12 +165,18 @@ export class TutorRegistrationComponent implements OnInit {
           console.log('Registracija uspješna:', response);
           alert('Registracija uspješna!');
           this.isSubmitting = false;
-          this.router.navigate(['/tutor/dashboard']);
+          this.router.navigate(['/tutor-dashboard']); // Preusmeravanje na login
         },
         (error) => {
           console.error('Greška pri registraciji:', error);
+
           alert('Došlo je do greške prilikom registracije. Pokušajte ponovo.');
           this.isSubmitting = false;
+          if (error.status === 401) {
+            alert('Nemate dozvolu za ovu radnju.');
+          } else {
+            alert('Došlo je do greške prilikom registracije. Pokušajte ponovo.');
+          }
         }
       );
     } else {
