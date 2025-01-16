@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
+
+
 
 @Component({
   selector: 'app-tutor-registration',
@@ -18,7 +21,7 @@ export class TutorRegistrationComponent implements OnInit {
   preview: string | ArrayBuffer | null = null; // Pregled slike
   showPassword: boolean=false;
   showConfirmPassword: boolean = false;
-  constructor(private fb: FormBuilder, private http: HttpClient, private cdr: ChangeDetectorRef) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router) {
     this.registrationForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -28,6 +31,7 @@ export class TutorRegistrationComponent implements OnInit {
       email: ['', [Validators.required, this.emailValidator]],
       phoneNumber: ['', [Validators.required, this.phoneNumberValidator]],
       profilePicture: [null, Validators.required],
+      profilePictureBase64: ['', Validators.required], // Polje za Base64 sliku
       qualifications: ['', Validators.required],
       experience: ['', Validators.required],
       availability: ['', Validators.required],
@@ -129,16 +133,53 @@ export class TutorRegistrationComponent implements OnInit {
       this.passwordStrengthClass = 'text-success';
     }
   }
-
-  // Slanje podataka iz forme
+  isSubmitting=false;
+  // Slanje podataka na backend
   onSubmit() {
     if (this.registrationForm.valid) {
-      console.log('Forma je validna:', this.registrationForm.value);
-      // Logika za slanje na backend
+      this.isSubmitting = true; // Onemogućavamo dugme
+      const registrationData = {
+        firstName: this.registrationForm.get('firstName')!.value,
+        lastName: this.registrationForm.get('lastName')!.value,
+        gender: this.registrationForm.get('gender')!.value,
+        cityId: +this.registrationForm.get('city')!.value,
+        age: +this.registrationForm.get('age')!.value,
+        email: this.registrationForm.get('email')!.value,
+        phoneNumber: this.registrationForm.get('phoneNumber')!.value,
+        profileImageUrl: this.registrationForm.get('profilePictureBase64')!.value,
+        username: this.registrationForm.get('username')!.value,
+        password: this.registrationForm.get('password')!.value,
+        yearsOfExperience: +this.registrationForm.get('experience')!.value,
+        hourlyRate: `${this.registrationForm.get('rate')!.value}KM/h`,
+        qualifications: this.registrationForm.get('qualifications')!.value,
+        availability: this.registrationForm.get('availability')!.value,
+        policy: this.registrationForm.get('cancellationPolicy')!.value,
+        isLiveAvailable: this.registrationForm.get('liveAvailability')!.value,
+      };
+
+      console.log('Podaci za slanje:', registrationData);
+
+      this.http.post('http://localhost:7000/api/RegistrationEndpoint/register-tutor', registrationData).subscribe(
+        (response) => {
+          console.log('Registracija uspješna:', response);
+          alert('Registracija uspješna!');
+          this.isSubmitting = false;
+          this.router.navigate(['/tutor/dashboard']);
+        },
+        (error) => {
+          console.error('Greška pri registraciji:', error);
+          alert('Došlo je do greške prilikom registracije. Pokušajte ponovo.');
+          this.isSubmitting = false;
+        }
+      );
     } else {
       console.log('Forma nije validna!');
+      alert('Molimo vas da popunite sva obavezna polja.');
     }
   }
+
+
+
 
   // Postavljanje aktivnog koraka
   setActiveStep(step: number) {
@@ -154,7 +195,7 @@ export class TutorRegistrationComponent implements OnInit {
     }
   }
 
-  // Obrada drag-and-drop događaja
+// Obrada drag-and-drop događaja
   onDragOver(event: DragEvent) {
     event.preventDefault();
   }
@@ -170,23 +211,35 @@ export class TutorRegistrationComponent implements OnInit {
 
   removeImage(): void {
     this.preview = null;
-    this.registrationForm.patchValue({ profilePicture: null });
+    this.registrationForm.patchValue({ profilePicture: null, profilePictureBase64: null });
   }
 
-  // Pomoćna funkcija za obradu datoteke
-
+// Pomoćna funkcija za obradu datoteke
   private handleFile(file: File) {
     if (!file.type.startsWith('image/')) {
       console.error('Neispravan tip datoteke');
       return;
     }
-    this.registrationForm.patchValue({ profilePicture: file }); // Postavljanje datoteke u formu
+    // Prvo postavite datoteku u formu (ako želite koristiti datoteku)
+    this.registrationForm.patchValue({ profilePicture: file });
     const reader = new FileReader();
     reader.onload = () => {
-      this.preview = reader.result; // Generisanje pregleda slike
+      // Postavite preview slike za prikaz
+      this.preview = reader.result;
+
+      // Konverzija datoteke u Base64 string
+      const base64Image = reader.result as string;
+      const cleanBase64 = base64Image.split(",")[1];
+      console.log(cleanBase64);  // Provjeri da li je base64 string ispravan
+
+      // Pohranjivanje Base64 stringa u formu
+      this.registrationForm.patchValue({
+        profilePictureBase64: cleanBase64
+      });
     };
     reader.readAsDataURL(file); // Čitanje datoteke kao Data URL
   }
+
   emailValidator(control: FormControl): ValidationErrors | null {
     const email = control.value;
 
