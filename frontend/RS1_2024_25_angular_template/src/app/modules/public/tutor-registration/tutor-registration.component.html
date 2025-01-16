@@ -182,6 +182,8 @@
                     </div>
 
                   </div>
+                  <!-- Polje za Base64 sliku (ne prikazujemo korisnicima) -->
+                  <input type="hidden" formControlName="profilePictureBase64" />
                   <div *ngIf="registrationForm.get('profilePicture')?.invalid && registrationForm.get('profilePicture')?.touched" class="text-danger">
                     Slika je obavezna.
                   </div>
@@ -387,6 +389,7 @@
                 id="btnRegistrujSe"
                 class="btn btn-success"
                 [disabled]="!isStepValid(3)"
+                [disabled]="isSubmitting"
               >
                 Registruj se
               </button>
