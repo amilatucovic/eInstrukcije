@@ -14,7 +14,8 @@ namespace RS1_2024_2025.Domain.Entities
         public double Rating { get; set; }
         public string Policy { get; set; }
         public string HourlyRate { get; set; }
-       
+        public bool? IsLiveAvailable { get; set; }
+
         [ForeignKey(nameof(MyAppUser))]
         public int MyAppUserID { get; set; }
         public MyAppUser MyAppUser { get; set; }
