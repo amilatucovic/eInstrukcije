@@ -1,0 +1,126 @@
+<app-navbar></app-navbar>
+<div class="container-fluid mt-4">
+  <h2 class="text-center mb-4">Pronađite tutora</h2>
+  <div class="row">
+    <!-- Filter Section -->
+    <div class="col-md-4">
+      <form [formGroup]="searchForm">
+        <!-- Subject Dropdown -->
+        <div class="mb-3">
+          <label for="subjects" class="form-label">Predmet</label>
+          <select
+            id="subjects"
+            formControlName="subjectId"
+            class="form-control"
+            (change)="onSubjectChange($event)"
+          >
+            <option value="" disabled selected>Odaberite predmet</option>
+            <option *ngFor="let subject of subjects" [value]="subject.id">
+              {{ subject.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Category Dropdown (Populated dynamically based on selected subject) -->
+        <div class="mb-3">
+          <label for="categories" class="form-label">Kategorija</label>
+          <select
+            id="categories"
+            formControlName="categoryId"
+            class="form-control"
+            [disabled]="!categories.length"
+          >
+            <option value="" disabled selected>Odaberite kategoriju</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Price Filters -->
+        <div class="mb-3">
+          <label for="minPrice" class="form-label">Minimalna cijena (KM)</label>
+          <input
+            id="minPrice"
+            type="number"
+            formControlName="minPrice"
+            class="form-control"
+            placeholder="Enter Min Price"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="maxPrice" class="form-label">Maksimalna cijena (KM)</label>
+          <input
+            id="maxPrice"
+            type="number"
+            formControlName="maxPrice"
+            class="form-control"
+            placeholder="Enter Max Price"
+          />
+        </div>
+
+        <!-- City Filter -->
+        <div class="mb-3">
+          <label for="city" class="form-label">Grad</label>
+          <select id="city" formControlName="cityId" class="form-control">
+            <option value="" disabled selected>Odaberite grad</option>
+            <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+          </select>
+        </div>
+
+        <!-- In-Person Availability Filter -->
+        <div class="form-check mb-3">
+          <input
+            id="inPersonAvailable"
+            type="checkbox"
+            formControlName="inPersonAvailable"
+            class="form-check-input"
+          />
+          <label for="inPersonAvailable" class="form-check-label">Dostupni uživo</label>
+        </div>
+      </form>
+    </div>
+
+    <!-- Results Section -->
+    <div class="col-md-8 tutor-results">
+      <div *ngIf="isLoading" class="text-center my-4">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Učitavanje...</span>
+        </div>
+      </div>
+      <div *ngIf="!isLoading && tutors.length === 0" class="text-center my-4">
+        <p>Nema tutora prema odabranim filterima. Pokušajte prilagoditi filtere.</p>
+      </div>
+      <div *ngIf="!isLoading && tutors.length > 0">
+        <div
+          class="card mb-3"
+          *ngFor="let tutor of tutors"
+          [style.boxShadow]="'0 4px 6px rgba(0,0,0,0.1)'"
+        >
+          <div class="row g-0">
+            <div class="col-md-3">
+              <img
+                [src]="tutor.profilePicture || 'https://via.placeholder.com/150'"
+                alt="Tutor Image"
+                class="img-fluid rounded-start"
+              />
+            </div>
+            <div class="col-md-9">
+              <div class="card-body">
+                <h5 class="card-title">{{ tutor.name }}</h5>
+                <p class="card-text">
+                  Cijena časa: <strong>{{ tutor.hourlyRate }}</strong><br />
+                  Ocjena: <strong>{{ tutor.rating }}</strong><br />
+                </p>
+                <p class="card-text">
+                  <small class="text-muted">Grad: {{ tutor.city }}</small>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

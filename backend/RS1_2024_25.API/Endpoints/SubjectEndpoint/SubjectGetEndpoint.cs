@@ -1,28 +1,39 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RS1_2024_2025.Database;
-using RS1_2024_2025.Domain;
 using RS1_2024_2025.Domain.Entities;
 using RS1_2024_2025.Domain.Entities.Models;
+using System.Linq;
 
 namespace RS1_2024_2025.API.Endpoints.SubjectEndpoint
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubjectGetEndpoint(ApplicationDbContext db) : ControllerBase
+    public class SubjectGetEndpoint : ControllerBase
     {
+        private readonly ApplicationDbContext db;
+
+        public SubjectGetEndpoint(ApplicationDbContext db)
+        {
+            this.db = db;
+        }
+
         [HttpGet]
         public IActionResult GetAll()
         {
             var subjects = db.Subjects
-                .Select(s => new SubjectResponse
+                .Select(s => new
                 {
-                    ID = s.ID,
-                    Name = s.Name,
-                    Description = s.Description,
-                    DifficultyLevel = s.DifficultyLevel
+                    s.ID,
+                    s.Name,
+                    s.Description,
+                    s.DifficultyLevel,
+                    Categories = s.SubjectCategories.Select(sc => new
+                    {
+                        sc.Category.ID,
+                        sc.Category.Name
+                    }).ToArray() 
                 })
-                .ToArray(); 
+                .ToArray();
 
             return Ok(subjects);
         }
@@ -32,12 +43,17 @@ namespace RS1_2024_2025.API.Endpoints.SubjectEndpoint
         {
             var subject = db.Subjects
                 .Where(s => s.ID == id)
-                .Select(s => new SubjectResponse
+                .Select(s => new
                 {
-                    ID = s.ID,
-                    Name = s.Name,
-                    Description = s.Description,
-                    DifficultyLevel = s.DifficultyLevel
+                    s.ID,
+                    s.Name,
+                    s.Description,
+                    s.DifficultyLevel,
+                    Categories = s.SubjectCategories.Select(sc => new
+                    {
+                        sc.Category.ID,
+                        sc.Category.Name
+                    }).ToArray() 
                 })
                 .FirstOrDefault();
 
@@ -61,7 +77,7 @@ namespace RS1_2024_2025.API.Endpoints.SubjectEndpoint
 
             db.Subjects.Add(subject);
             db.SaveChanges();
-            
+
             var subjectResponse = new SubjectResponse
             {
                 ID = subject.ID,
@@ -86,7 +102,7 @@ namespace RS1_2024_2025.API.Endpoints.SubjectEndpoint
             subject.Description = subjectRequest.Description;
             subject.DifficultyLevel = subjectRequest.DifficultyLevel;
 
-            db.SaveChanges(); 
+            db.SaveChanges();
 
             var subjectResponse = new SubjectResponse
             {
@@ -98,13 +114,34 @@ namespace RS1_2024_2025.API.Endpoints.SubjectEndpoint
 
             return Ok(subjectResponse);
         }
+        [HttpGet("categories/{subjectId}")]
+        public IActionResult GetCategoriesBySubjectId(int subjectId)
+        {
+            var subject = db.Subjects
+                .Where(s => s.ID == subjectId)
+                .Select(s => new
+                {
+                    Categories = s.SubjectCategories.Select(sc => new
+                    {
+                        sc.Category.ID,
+                        sc.Category.Name
+                    }).ToArray()
+                })
+                .FirstOrDefault();
 
+            if (subject == null || subject.Categories.Length == 0)
+            {
+                return NotFound("No categories found for the given subject.");
+            }
+
+            return Ok(subject.Categories);
+        }
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-        { 
+        {
             var subject = db.Subjects.Where(x => x.ID == id).FirstOrDefault();
             if (subject == null)
-            {   
+            {
                 return NotFound();
             }
             else

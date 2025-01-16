@@ -3,18 +3,11 @@ import {RouterModule, Routes} from '@angular/router';
 import {AdminLayoutComponent} from './admin-layout/admin-layout.component';
 import {DashboardComponent} from './dashboard/dashboard.component';
 import {AdminErrorPageComponent} from './admin-error-page/admin-error-page.component';
+import {StudentDashboardComponent} from '../student/student-dashboard/student-dashboard.component';
 
 
 const routes: Routes = [
-  {
-    path: '',
-    component: AdminLayoutComponent,
-    children: [
-      {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
-      {path: 'dashboard', component: DashboardComponent},
-      {path: '**', component: AdminErrorPageComponent} // Default ruta
-    ]
-  },
+  { path: '', component: DashboardComponent }
 ];
 
 @NgModule({

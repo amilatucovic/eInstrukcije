@@ -9,7 +9,10 @@ using RS1_2024_2025.Database.DatabaseSeeder;
 using RS1_2024_2025.Services;
 using RS1_2024_2025.Services.Services;
 using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
+using RS1_2024_25.API.Endpoints.TutorSearch;
 using System.Text;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", false)
@@ -50,8 +53,15 @@ builder.Services.AddTransient<MyAuthService>();
 builder.Services.AddTransient<MyTokenGenerator>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-
+builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddControllers();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; 
+    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -64,7 +74,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
 
-   // await DatabaseSeeder.SeedAsync(context);
+   await DatabaseSeeder.SeedAsync(context);
 }
 using (var scope = app.Services.CreateScope())
 {

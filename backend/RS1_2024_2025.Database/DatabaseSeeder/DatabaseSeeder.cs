@@ -180,9 +180,12 @@ namespace RS1_2024_2025.Database.DatabaseSeeder
 				};
 
 				await context.MyAppUsers.AddRangeAsync(users);
-				await context.Tutors.AddRangeAsync(tutors);
-				await context.Students.AddRangeAsync(students);
-				await context.Admins.AddRangeAsync(admins);
+				if(context.MyAppUsers.Count() != 0)
+				{
+					await context.Tutors.AddRangeAsync(tutors);
+					await context.Students.AddRangeAsync(students);
+					await context.Admins.AddRangeAsync(admins);
+				}
 				await context.Subjects.AddRangeAsync(subjects);
 				await context.Cities.AddRangeAsync(cities);
 				await context.Categories.AddRangeAsync(categories);
