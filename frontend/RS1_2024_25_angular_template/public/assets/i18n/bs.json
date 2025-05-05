@@ -1,0 +1,77 @@
+{
+  "title": { "title": "Registracija" },
+  "form": {
+    "firstName": "Ime",
+    "lastName": "Prezime",
+    "email": "Email adresa",
+    "username": "Korisničko ime",
+    "password": "Šifra",
+    "passwordConfirmation": "Potvrda šifre",
+    "cityId": "Grad",
+    "educationalLevel": "Stepen obrazovanja",
+    "preferredMode": "Način održavanja nastave",
+    "grade": "Razred",
+    "age": "Godine",
+    "gender": "Spol",
+    "phoneNumber": "Kontakt telefon",
+    "submitButton": "Registriraj",
+    "passwordStrength": {
+      "weak": "Slaba šifra",
+      "medium": "Srednje jaka šifra",
+      "strong": "Jaka šifra"
+    },
+    "passwordMatch": "Šifre se ne poklapaju!"
+  },
+  "placeholders": {
+    "firstName": "Unesite ime",
+    "lastName": "Unesite prezime",
+    "email": "Unesite e-mail adresu",
+    "username": "Unesite korisničko ime",
+    "password": "Unesite šifru",
+    "passwordConfirmation": "Unesite potvrdu šifre",
+    "phoneNumber": "Unesite kontakt telefon",
+    "grade": "Odaberite razred",
+    "age": "Unesite godine",
+    "gender": "Odaberite spol",
+    "cityId": "Odaberite grad",
+    "preferredMode": "Odaberite način održavanja nastave",
+    "educationalLevel": "Odaberite stepen obrazovanja"
+  },
+  "errors": {
+    "requiredField": "Ovo polje je obavezno!",
+    "invalidEmail": "E-mail nije u ispravnom formatu!",
+    "minLength5": "Ovo polje mora sadržavati najmanje 5 karaktera!",
+    "minLength6": "Ovo polje mora sadržavati najmanje 6 karaktera!",
+    "minLength8": "Ovo polje mora sadržavati najmanje 8 karaktera!",
+    "pattern": "Format broja telefona nije validan!",
+    "young": "Najmlađi učenik može imati 6 godina!",
+    "old": "Najstariji učenik može imati 20 godina!"
+  },
+  "genderOptions": {
+    "male": "Muško",
+    "female": "Žensko"
+  },
+  "modeOptions": {
+    "online": "Online",
+    "offline": "Inclass"
+  },
+  "educationLevelOptions": {
+    "primary": "Osnovna škola",
+    "high": "Srednja škola"
+  },
+  "login": {
+    "haveAnAcc": "Već imate nalog?",
+    "loginHere": "Prijavite se ovdje!"
+  },
+  "grades": {
+    "first": "Prvi",
+    "second": "Drugi",
+    "third": "Treći",
+    "fourth": "Četvrti",
+    "fifth": "Peti",
+    "sixth": "Šesti",
+    "seventh": "Sedmi",
+    "eight": "Osmi",
+    "ninth": "Deveti"
+  }
+}

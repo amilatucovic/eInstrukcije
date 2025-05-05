@@ -1,0 +1,77 @@
+{
+  "title": { "title": "Registration" },
+  "form": {
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email Address",
+    "username": "Username",
+    "password": "Password",
+    "passwordConfirmation": "Confirm Password",
+    "cityId": "City",
+    "educationalLevel": "Educational Level",
+    "preferredMode": "Preferred Mode",
+    "grade": "Grade",
+    "age": "Age",
+    "gender": "Gender",
+    "phoneNumber": "Phone Number",
+    "submitButton": "Register",
+    "passwordStrength": {
+      "weak": "Weak password",
+      "medium": "Medium strength password",
+      "strong": "Strong password"
+    },
+    "passwordMatch": "Passwords do not match!"
+  },
+  "placeholders": {
+    "firstName": "Enter your first name",
+    "lastName": "Enter your last name",
+    "email": "Enter your email address",
+    "username": "Enter a username",
+    "password": "Enter your password",
+    "passwordConfirmation": "Confirm your password",
+    "phoneNumber": "Enter your phone number",
+    "grade": "Select a grade",
+    "age": "Enter your age",
+    "gender": "Select a gender",
+    "cityId": "Select your city",
+    "preferredMode": "Select teaching mode",
+    "educationalLevel": "Select level of education"
+  },
+  "errors": {
+    "requiredField": "This field is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "minLength5": "This field must contain at least 5 characters!",
+    "minLength6": "This field must contain at least 6 characters!",
+    "minLength8": "This field must contain at least 8 characters!",
+    "pattern": "The phone number format is not valid!",
+    "young": "The youngest student can be 6!",
+    "old": "The oldest student can be 20!"
+  },
+  "genderOptions": {
+    "male": "Male",
+    "female": "Female"
+  },
+  "modeOptions": {
+    "online": "Online",
+    "offline": "Inclass"
+  },
+  "educationLevelOptions": {
+    "primary": "Primary School",
+    "high": "High School"
+  },
+  "login": {
+    "haveAnAcc": "Already have an account?",
+    "loginHere": "Login here!"
+  },
+  "grades": {
+    "first": "First",
+    "second": "Second",
+    "third": "Third",
+    "fourth": "Fourth",
+    "fifth": "Fifth",
+    "sixth": "Sixth",
+    "seventh": "Seventh",
+    "eight": "Eight",
+    "ninth": "Ninth"
+  }
+}

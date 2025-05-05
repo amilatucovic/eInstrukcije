@@ -1,6 +1,6 @@
 body {
   background: linear-gradient(135deg, #e0f7fa, #80deea);
-  font-family: 'Work Sans', sans-serif;
+  font-family: "Work Sans", sans-serif;
   margin: 0;
   padding: 0;
   color: #333;
@@ -22,7 +22,7 @@ body {
 
 .form-container h2 {
   text-align: center;
-  color: #20C1BD;
+  color: #20c1bd;
   font-weight: bold;
   margin-bottom: 25px;
   font-size: 24px;
@@ -46,12 +46,12 @@ body {
 }
 
 .form-control:focus {
-  border-color: #20C1BD;
+  border-color: #20c1bd;
   box-shadow: 0 0 10px rgba(0, 151, 167, 0.4);
 }
 
 .btn-primary {
-  background-color: #20C1BD;
+  background-color: #20c1bd;
   border: none;
   border-radius: 25px;
   padding: 12px 30px;
@@ -75,8 +75,9 @@ body {
 }
 
 .form-footer a {
-  color: #20C1BD;
+  color: #20c1bd;
   text-decoration: none;
+  margin-left: 5px;
 }
 
 .form-footer a:hover {
@@ -96,7 +97,6 @@ body {
   font-weight: bold;
   font-size: 16px;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-
 }
 
 select.form-control {
@@ -120,17 +120,10 @@ select.form-control:focus {
   transform: translateY(-3px);
 }
 
+.text-success .text-warning .text-danger {
+  font-size: small;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+.form-group {
+  font-size: smaller;
+}
