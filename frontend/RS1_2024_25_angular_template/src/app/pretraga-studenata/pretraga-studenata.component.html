@@ -1,0 +1,171 @@
+<div class="search-container">
+  <h2>Pretražite Studente</h2>
+
+  <!-- Forma sa filterima -->
+  <div class="search-form">
+    <div class="search-input-group">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Ime"
+        [(ngModel)]="firstName"
+        (input)="filterStudents()"
+      />
+    </div>
+    <div class="search-input-group">
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Prezime"
+        [(ngModel)]="lastName"
+        (input)="filterStudents()"
+      />
+    </div>
+    <div class="search-input-group">
+      <select
+        class="search-input"
+        (change)="filterStudents()"
+        [(ngModel)]="selectedCity"
+      >
+        <option value="" disabled selected hidden>Izaberite grad</option>
+        <option *ngFor="let city of cities" [value]="city.id">
+          {{ city.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="search-input-group">
+      <select
+        class="search-input"
+        (change)="filterStudents()"
+        [(ngModel)]="selectedGrade"
+      >
+        <option value="" disabled selected hidden>Izaberite razred</option>
+        <option *ngFor="let grade of grades" [value]="grade">
+          {{ grade }}
+        </option>
+      </select>
+    </div>
+
+    <div class="search-input-group">
+      <select
+        class="search-input"
+        (change)="filterStudents()"
+        [(ngModel)]="selectedSchoolType"
+      >
+        <option value="" disabled selected hidden>Izaberite tip škole</option>
+        <option *ngFor="let school of schoolTypes" [value]="school.value">
+          {{ school.name }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Tabela sa rezultatima -->
+  <div *ngIf="this.students.length > 0" class="results-container">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Ime</th>
+          <th>Prezime</th>
+          <th>Email</th>
+          <th>Grad</th>
+          <th>Razred</th>
+          <th>Škola</th>
+          <th>Akcija</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of this.students">
+          <td>{{ student.id }}</td>
+          <td>{{ student.myAppUser.firstName }}</td>
+          <td>{{ student.myAppUser.lastName }}</td>
+          <td>{{ student.myAppUser.email }}</td>
+          <td>{{ student.myAppUser.city?.name }}</td>
+          <td>{{ student.grade }}</td>
+          <td>{{ formatEducationlevel(student.educationLevel) }}</td>
+          <td>
+            <button class="btn btn-warning" (click)="editStudent(student)">
+              Edit
+            </button>
+            <button class="btn btn-danger" (click)="deleteStudent(student.id)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="this.students.length === 0" class="no-results">
+    Nema studenata koji odgovaraju pretrazi.
+  </div>
+
+  <div *ngIf="editingStudent" class="edit-form-container">
+    <div class="edit-form">
+      <h3>Edituj Studenta</h3>
+      <form (ngSubmit)="saveStudent()">
+        <div class="form-group">
+          <label for="firstName">Ime</label>
+          <input
+            type="text"
+            id="firstName"
+            [(ngModel)]="editingStudent.myAppUser.firstName"
+            name="firstName"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="lastName">Prezime</label>
+          <input
+            type="text"
+            id="lastName"
+            [(ngModel)]="editingStudent.myAppUser.lastName"
+            name="lastName"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="editingStudent.myAppUser.email"
+            name="email"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="city">Grad</label>
+          <select
+            id="city"
+            [(ngModel)]="editingStudent.myAppUser.city.id"
+            name="city"
+            required
+          >
+            <option *ngFor="let city of cities" [value]="city.id">
+              {{ city.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-success">Save changes</button>
+          <button type="button" class="btn btn-danger" (click)="cancelEdit()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <button class="btn btn-danger" (click)="clearSearch()">
+      Reset filters
+    </button>
+  </div>
+</div>

@@ -123,13 +123,9 @@ export class RegistrationComponent implements OnInit {
       console.log('Forma je validna:', this.UserForm.value);
       this.http.post('http://localhost:7000/api/StudentEndpoints', formValues).subscribe({
         next: (response: any) => {
-          // const successModal = new window.bootstrap.Modal(document.getElementById('successModal'));
-          // successModal.show();
           this.router.navigate(['/student-dashboard']);
         },
         error: (error) => {
-          //const errorModal = new window.bootstrap.Modal(document.getElementById('errorModal'));
-          //errorModal.show();
           console.log(error.error)
         }
       });

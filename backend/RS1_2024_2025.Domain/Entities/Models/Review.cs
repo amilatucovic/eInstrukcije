@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_2024_2025.Domain.Entities
 {
-    public class Review  : IMyBaseEntity
+    public class Review : IMyBaseEntity
     {
         public int ID { get; set; }
 
@@ -18,9 +18,6 @@ namespace RS1_2024_2025.Domain.Entities
         public int Rating { get; set; }
         public string ReviewText { get; set; }
         public DateTime ReviewDate { get; set; }
-
-
-
 
     }
 }

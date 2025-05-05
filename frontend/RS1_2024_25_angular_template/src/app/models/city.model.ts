@@ -4,8 +4,4 @@ export class City {
         public name: string,
         public postalCode: string
     ) { }
-
-    fullDescription(): string {
-        return `${this.name} (${this.postalCode})`;
-    }
 }

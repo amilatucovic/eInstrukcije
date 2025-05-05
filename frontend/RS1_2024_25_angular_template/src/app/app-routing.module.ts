@@ -5,12 +5,14 @@ import { AuthGuard } from './auth-guards/auth-guard.service';
 import { RegistrationComponent } from './registration/registration.component';
 import { LandingPageComponent } from './modules/public/landing-page/landing-page.component';
 import { LoginComponent } from './login/login.component';
+import { PretragaStudenataComponent } from './pretraga-studenata/pretraga-studenata.component';
 
 const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'register', component: RegistrationComponent },
   { path: 'unauthorized', component: UnauthorizedComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'pretraga-studenata', component: PretragaStudenataComponent },
   {
     path: 'admin',
     canActivate: [AuthGuard],
@@ -37,6 +39,8 @@ const routes: Routes = [
   },
   {
     path: 'tutor-dashboard',
+    canActivate: [AuthGuard],
+    data: { isTutor: true },
     loadChildren: () => import('./modules/tutor/tutor.module').then(m => m.TutorModule)
   },
   { path: '**', redirectTo: 'public', pathMatch: 'full' }
@@ -46,4 +50,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

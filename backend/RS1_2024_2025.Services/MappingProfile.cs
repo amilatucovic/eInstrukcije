@@ -9,10 +9,10 @@ namespace RS1_2024_2025.Services
 		public MappingProfile()
 		{
 			CreateMap<StudentInsertRequest, MyAppUser>();
-			CreateMap<StudentUpdateRequest, MyAppUser>();
+			CreateMap<StudentUpdateRequest, MyAppUser>().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); 
 			
 			CreateMap<StudentInsertRequest, Student>();
-			CreateMap<StudentUpdateRequest, Student>();
+			CreateMap<StudentUpdateRequest, Student>().ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null)); 
 		}
 	}
 }

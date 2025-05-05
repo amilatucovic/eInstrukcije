@@ -11,6 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using static RS1_2024_2025.API.Endpoints.Auth.AuthLoginEndpoint;
 using RS1_2024_2025.Database;
+using Microsoft.AspNetCore.Authorization;
 
 namespace RS1_2024_2025.API.Endpoints.Auth
 {
@@ -19,6 +20,7 @@ namespace RS1_2024_2025.API.Endpoints.Auth
         .WithRequest<LoginRequest>
         .WithActionResult<LoginResponse>
     {
+        [AllowAnonymous]
         [HttpPost("login")]
         public override async Task<ActionResult<LoginResponse>> HandleAsync(LoginRequest request, CancellationToken cancellationToken = default)
         {

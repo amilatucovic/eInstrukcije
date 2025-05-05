@@ -30,7 +30,6 @@ namespace RS1_2024_2025.Domain.Entities
         public ICollection<Message> SentMessages { get; set; }
         public ICollection<Message> ReceivedMessages { get; set; }
         public string? ProfileImageUrl { get; set; }
-
     }
     public enum UserType { Admin, Tutor, Student }
 

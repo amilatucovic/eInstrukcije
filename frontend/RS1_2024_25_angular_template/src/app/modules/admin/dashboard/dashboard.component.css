@@ -1,0 +1,59 @@
+body {
+  background-color: #f9f9f9;
+}
+
+.navbar {
+  background-color: #20c1bd;
+  padding: 5px 20px; /* Smanjuje visinu navbar-a */
+}
+
+.navbar .navbar-brand {
+  font-weight: bold;
+  color: white;
+}
+
+.navbar .nav-link {
+  color: white;
+  font-weight: bold;
+}
+
+.navbar .nav-link:hover {
+  text-decoration: underline;
+}
+
+.dashboard-container {
+  padding: 50px 20px;
+  text-align: center;
+}
+
+.dashboard-container h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.dashboard-container p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.btn-custom {
+  background-color: #20c1bd;
+  color: white;
+  transition: background-color 0.3s ease;
+  padding: 6px 15px; /* Manja veličina dugmadi */
+  font-size: 0.9rem; /* Manja veličina fonta */
+  width: 200px; /* Precizna širina dugmadi */
+  margin: 10px auto; /* Centriranje dugmadi */
+  display: block; /* Postavljanje dugmadi u blok element */
+}
+
+.btn-custom:hover {
+  background-color: #17a3a0;
+}
+
+.navbar-brand img {
+  width: 120px; /* Fiksna širina slike */
+  max-width: 100%; /* Održava proporcionalne dimenzije slike */
+  height: auto; /* Održava proporcije slike */
+}

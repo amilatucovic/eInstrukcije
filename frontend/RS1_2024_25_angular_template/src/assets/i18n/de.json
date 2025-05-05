@@ -1,0 +1,55 @@
+{
+  "form": {
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail Adresse",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "passwordConfirmation": "Passwort bestätigen",
+    "city": "Stadt",
+    "educationalLevel": "Bildungsniveau",
+    "preferredMode": "Bevorzugte Methode",
+    "grade": "Klasse",
+    "age": "Jahre",
+    "gender": "Geschlecht",
+    "phoneNumber": "Telefonnummer",
+    "submitButton": "Registrieren",
+    "passwordStrength": {
+      "weak": "Schwaches Passwort",
+      "medium": "Mittleres Passwort",
+      "strong": "Starkes Passwort"
+    },
+    "passwordMatch": "Passwörter stimmen nicht überein!"
+  },
+  "placeholders": {
+    "firstName": "Geben Sie Ihren Vornamen ein",
+    "lastName": "Geben Sie Ihren Nachnamen ein",
+    "email": "Geben Sie Ihre E-Mail-Adresse ein",
+    "username": "Geben Sie einen Benutzernamen ein",
+    "password": "Geben Sie Ihr Passwort ein",
+    "passwordConfirmation": "Bestätigen Sie Ihr Passwort",
+    "phoneNumber": "Geben Sie Ihre Telefonnummer ein"
+  },
+  "errors": {
+    "requiredField": "Dieses Feld ist erforderlich.",
+    "invalidEmail": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    "minLength": "Dieses Feld erfordert mindestens {min} Zeichen.",
+    "maxLength": "Dieses Feld kann höchstens {max} Zeichen enthalten.",
+    "pattern": "Dieses Feld ist ungültig."
+  },
+  "cities": {
+    "selectPrompt": "Wählen Sie eine Stadt"
+  },
+  "genderOptions": {
+    "male": "Männlich",
+    "female": "Weiblich"
+  },
+  "modeOptions": {
+    "online": "Online-Unterricht",
+    "offline": "Präsenzunterricht"
+  },
+  "educationLevelOptions": {
+    "primary": "Grundschule",
+    "secondary": "Sekundarschule"
+  }
+}
