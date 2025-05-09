@@ -56,12 +56,6 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddControllers();
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
-        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase; 
-    });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -74,7 +68,7 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
 
-   await DatabaseSeeder.SeedAsync(context);
+  // await DatabaseSeeder.SeedAsync(context);
 }
 using (var scope = app.Services.CreateScope())
 {

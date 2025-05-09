@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, Validators, FormControl, AbstractControl, Valid
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { CitiesService } from '../../../services/auth-services/services/cities.service';
+import { City } from '../../../models/city.model';
 
 
 
@@ -13,7 +15,7 @@ import { Router } from '@angular/router';
 })
 export class TutorRegistrationComponent implements OnInit {
   registrationForm: FormGroup;
-  cities: any[] = []; // Popuniti iz baze podataka
+  cities: City[] = [];
   passwordStrength: string = '';
   passwordStrengthClass: string = '';
   activeStep: number = 1; // Aktivni korak (1 - Step 1, 2 - Step 2, 3 - Step 3)
@@ -21,7 +23,7 @@ export class TutorRegistrationComponent implements OnInit {
   preview: string | ArrayBuffer | null = null; // Pregled slike
   showPassword: boolean=false;
   showConfirmPassword: boolean = false;
-  constructor(private fb: FormBuilder, private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private cdr: ChangeDetectorRef, private router: Router, private citiesService: CitiesService) {
     this.registrationForm = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -85,13 +87,14 @@ export class TutorRegistrationComponent implements OnInit {
 
 
 
-  loadCities() {
-    this.http.get('http://localhost:7000/api/CityEndpoint').subscribe(
-      (data: any) => {
-        this.cities = data;
+  loadCities(): void {
+    this.citiesService.getCities().subscribe(
+      (data) => {
+        this.cities = data.map(cityData => new City(cityData.id, cityData.name, cityData.postalCode));
+        console.log(this.cities);
       },
       (error) => {
-        console.error('Error loading cities', error);
+        console.error('Greška pri učitavanju gradova', error);
       }
     );
   }

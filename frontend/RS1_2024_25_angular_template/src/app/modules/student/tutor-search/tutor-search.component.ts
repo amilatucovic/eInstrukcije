@@ -1,21 +1,24 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import { CitiesService } from '../../../services/auth-services/services/cities.service';
+import { City } from '../../../models/city.model';
+
 
 @Component({
   selector: 'app-tutor-search',
   templateUrl: './tutor-search.component.html',
-  styleUrls: ['./tutor-search.component.css'],
+  styleUrls: ['./tutor-search.component.css']
 })
 export class TutorSearchComponent implements OnInit {
   searchForm: FormGroup;
   subjects: any[] = [];
   categories: any[] = [];
   tutors: any[] = [];
-  cities: any[] = [];
+  cities: City[] = [];
   isLoading = false;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private http: HttpClient,  private citiesService: CitiesService) {
     this.searchForm = this.fb.group({
       subjectId: [''],
       categoryId: [''],
@@ -51,15 +54,13 @@ export class TutorSearchComponent implements OnInit {
   }
 
   fetchCities(): void {
-    this.isLoading = true;
-    this.http.get<any>('http://localhost:7000/api/CityEndpoint').subscribe(
-      (response) => {
-        this.cities = response?.$values || []; // Extract cities from response
-        this.isLoading = false;
+    this.citiesService.getCities().subscribe(
+      (data) => {
+        this.cities = data.map(cityData => new City(cityData.id, cityData.name, cityData.postalCode));
+        console.log(this.cities);
       },
       (error) => {
-        console.error('Error fetching cities:', error);
-        this.isLoading = false;
+        console.error('Greška pri učitavanju gradova', error);
       }
     );
   }
@@ -91,16 +92,17 @@ export class TutorSearchComponent implements OnInit {
 
   fetchTutors(filters: any): void {
     this.isLoading = true;
-    this.http.post<any>('http://localhost:7000/api/SearchEndpoint/search-tutors', filters).subscribe(
-      (data) => {
-        console.log('Response from API:', data);  // Log the entire response from the API for debugging
-        this.tutors = data.$values;  // Access the array of tutors from the $values property
-        console.log(`Number of tutors found: ${this.tutors.length}`); // Log the number of tutors fetched
-        this.isLoading = false;  // Set loading to false once the data is fetched
+
+    this.http.post<any[]>('http://localhost:7000/api/SearchEndpoint/search-tutors', filters).subscribe(
+      (tutors) => {
+        console.log('Tutors received:', tutors);
+        this.tutors = tutors; // now the response is just the array itself
+        console.log(`Number of tutors found: ${this.tutors.length}`);
+        this.isLoading = false;
       },
       (error) => {
-        console.error('Error fetching tutors', error); // Log any errors
-        this.isLoading = false;  // Set loading to false if there is an error
+        console.error('Error fetching tutors', error);
+        this.isLoading = false;
       }
     );
   }
