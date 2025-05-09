@@ -1,0 +1,209 @@
+/* Stilovi za formu i pretragu */
+.search-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+.search-input {
+  flex: 1;
+  padding: 8px 15px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.search-btn {
+  background-color: #20c1bd;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-btn i {
+  font-size: 1.2rem;
+}
+
+.search-btn:hover {
+  background-color: #17a3a0;
+}
+
+/* Stil za tabelu rezultata */
+.results-container {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+button {
+  margin: 5px;
+}
+
+/* Stil za dugmadi sačuvaj, obriši, edituj */
+.action-buttons {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.action-buttons button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  font-size: 1rem;
+}
+
+.no-results {
+  text-align: center;
+  color: #888;
+}
+
+/* Stil za dugmadi sačuvaj, obriši, edituj */
+.btn-warning {
+  background-color: #f0ad4e;
+  color: white;
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  color: white;
+}
+
+.btn-success {
+  background-color: #5bc0de;
+  color: white;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+/* Raspored svih podataka studenta u jedan red */
+.student-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 0;
+}
+
+.student-row div {
+  flex: 1;
+  padding: 5px;
+  text-align: center;
+}
+
+.student-row div label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.student-row div span {
+  display: block;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Forma za editovanje */
+.edit-form-container {
+  position: fixed; /* Da bude u fokusu */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Zatamnjenje pozadine */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Da bude iznad svih ostalih elemenata */
+}
+
+.edit-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 400px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h3 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: left;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form-group button {
+  width: 48%;
+  padding: 8px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group button.btn-success {
+  background-color: #3dbc5b;
+  color: white;
+}
+
+.form-group button.btn-danger {
+  background-color: #d9534f;
+  color: white;
+}
+
+.form-group button:hover {
+  opacity: 0.8;
+}

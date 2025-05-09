@@ -6,6 +6,7 @@ namespace RS1_2024_2025.Domain.Requests
 	public class StudentInsertRequest
 	{
 		[Required]
+		[MinLength(5)]
 		public string Username { get; set; }
 
 		[Required]
@@ -41,7 +42,6 @@ namespace RS1_2024_2025.Domain.Requests
 		public string Gender { get; set; }
 
 		[Required]
-		[RegularExpression("^[a-zA-Z0-9]*$")]
 		public string Grade { get; set; }
 
 		[Required]

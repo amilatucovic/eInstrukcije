@@ -1,155 +1,158 @@
 <div class="form-container">
-  <h2>Registracija</h2>
+  <h2>{{ "title.title" | translate }}</h2>
   <form [formGroup]="UserForm" (ngSubmit)="registriraj()">
     <div class="row">
       <!-- First Name -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="firstName">Ime</label>
+      <div class="form-group col-md-6">
+        <label for="firstName">{{ "form.firstName" | translate }}</label>
         <input
           type="text"
           id="firstName"
           class="form-control"
           formControlName="firstName"
-          placeholder="Unesite ime"
+          [placeholder]="'placeholders.firstName' | translate"
         />
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['firstName'].invalid &&
             (UserForm.controls['firstName'].touched ||
               UserForm.controls['firstName'].dirty)
           "
         >
-          <span *ngIf="UserForm.controls['firstName'].errors?.['required']"
-            >Ovo polje je obavezno!</span
-          >
+          <span *ngIf="UserForm.controls['firstName'].errors?.['required']">{{
+            "errors.requiredField" | translate
+          }}</span>
         </div>
       </div>
 
       <!-- Last Name -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="lastName">Prezime</label>
+      <div class="form-group col-md-6">
+        <label for="lastName">{{ "form.lastName" | translate }}</label>
         <input
           type="text"
           id="lastName"
           class="form-control"
           formControlName="lastName"
-          placeholder="Unesite prezime"
+          [placeholder]="'placeholders.lastName' | translate"
         />
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['lastName'].invalid &&
             (UserForm.controls['lastName'].touched ||
               UserForm.controls['lastName'].dirty)
           "
         >
-          <span *ngIf="UserForm.controls['lastName'].errors?.['required']"
-            >Ovo polje je obavezno!</span
-          >
+          <span *ngIf="UserForm.controls['lastName'].errors?.['required']">{{
+            "errors.requiredField" | translate
+          }}</span>
         </div>
       </div>
     </div>
 
     <div class="row">
       <!-- Email -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="email">Email</label>
+      <div class="form-group col-md-6">
+        <label for="email">{{ "form.email" | translate }}</label>
         <input
           type="text"
           id="email"
           class="form-control"
           formControlName="email"
-          placeholder="Unesite E-mail"
+          [placeholder]="'placeholders.email' | translate"
         />
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['email'].invalid &&
             (UserForm.controls['email'].touched ||
               UserForm.controls['email'].dirty)
           "
         >
-          <span *ngIf="UserForm.controls['email'].errors?.['required']"
-            >Ovo polje je obavezno!</span
-          >
-          <span *ngIf="UserForm.controls['email'].errors?.['email']"
-            >E-mail nije u ispravnom formatu!</span
-          >
+          <span *ngIf="UserForm.controls['email'].errors?.['required']">{{
+            "errors.requiredField" | translate
+          }}</span>
+          <span *ngIf="UserForm.controls['email'].errors?.['email']">{{
+            "errors.invalidEmail" | translate
+          }}</span>
         </div>
       </div>
 
       <!-- Username -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="username">Korisničko ime</label>
+      <div class="form-group col-md-6">
+        <label for="username">{{ "form.username" | translate }}</label>
         <input
           type="text"
           id="username"
           class="form-control"
           formControlName="username"
-          placeholder="Unesite korisničko ime"
+          [placeholder]="'placeholders.username' | translate"
         />
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
-            UserForm.controls['email'].invalid &&
+            UserForm.controls['username'].invalid &&
             (UserForm.controls['username'].touched ||
               UserForm.controls['username'].dirty)
           "
         >
-          <span *ngIf="UserForm.controls['username'].errors?.['required']"
-            >Ovo polje je obavezno!</span
-          >
-          <span *ngIf="UserForm.controls['username'].errors?.['username']"
-            >E-mail nije u ispravnom formatu!</span
-          >
+          <span *ngIf="UserForm.controls['username'].errors?.['required']">{{
+            "errors.requiredField" | translate
+          }}</span>
+          <span *ngIf="UserForm.controls['username'].errors?.['minlength']">{{
+            "errors.minLength5" | translate
+          }}</span>
         </div>
       </div>
     </div>
 
     <div class="row">
       <!-- Password -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="password">Šifra</label>
+      <div class="form-group col-md-6">
+        <label for="password">{{ "form.password" | translate }}</label>
         <input
           type="password"
           id="password"
           class="form-control"
-          placeholder="Unesite šifru"
+          [placeholder]="'placeholders.password' | translate"
           formControlName="password"
           (keyup)="checkPasswordStrength()"
         />
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['password'].invalid &&
             (UserForm.controls['password'].touched ||
               UserForm.controls['password'].dirty)
           "
         >
-          <span *ngIf="UserForm.controls['password'].errors?.['required']"
-            >Ovo polje je obavezno!</span
-          >
-          <span *ngIf="UserForm.controls['password'].errors?.['minlength']"
-            >Šifra mora sadržavati najmanje 8 karaktera!</span
-          >
+          <span *ngIf="UserForm.controls['password'].errors?.['required']">{{
+            "errors.requiredField" | translate
+          }}</span>
+          <span *ngIf="UserForm.controls['password'].errors?.['minlength']">{{
+            "errors.minLength8" | translate
+          }}</span>
         </div>
         <div *ngIf="passwordStrength" [ngClass]="passwordStrengthClass">
           {{ passwordStrength }}
         </div>
       </div>
+
       <!-- Password confirmation-->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="password">Potvrda šifre</label>
+      <div class="form-group col-md-6">
+        <label for="password">{{
+          "form.passwordConfirmation" | translate
+        }}</label>
         <input
           type="password"
           id="passwordConfirmation"
           class="form-control"
-          placeholder="Unesite potvrdu šifre"
+          [placeholder]="'placeholders.passwordConfirmation' | translate"
           formControlName="passwordConfirmation"
         />
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['passwordConfirmation'].invalid &&
             (UserForm.controls['passwordConfirmation'].touched ||
@@ -158,13 +161,14 @@
         >
           <span
             *ngIf="UserForm.controls['passwordConfirmation'].errors?.['required']"
-            >Ovo polje je obavezno!</span
+            >{{ "errors.requiredField" | translate }}</span
           >
           <span
             *ngIf="UserForm.controls['passwordConfirmation'].errors?.['minlength']"
-            >Šifra mora sadržavati najmanje 6 karaktera!</span
+            >{{ "errors.minLength8" | translate }}</span
           >
         </div>
+
         <div *ngIf="passwordMatch" [ngClass]="passwordMatchClass">
           {{ passwordMatch }}
         </div>
@@ -173,49 +177,60 @@
 
     <div class="row">
       <!-- Preferred mode -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="preferredMode">Način održavanja instrukcija</label>
+      <div class="form-group col-md-6">
+        <label for="preferredMode">{{
+          "form.preferredMode" | translate
+        }}</label>
         <select
           id="preferredMode"
           class="form-control custom-dropdown"
           formControlName="preferredMode"
         >
           <option value="" disabled selected hidden>
-            Odaberite način izvođenja nastave
+            {{ "placeholders.preferredMode" | translate }}
           </option>
-          <option value="Online">Online</option>
-          <option value="Inclass">Uživo</option>
+          <option value="Online">{{ "modeOptions.online" | translate }}</option>
+          <option value="Inclass">
+            {{ "modeOptions.offline" | translate }}
+          </option>
         </select>
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['preferredMode'].invalid &&
             (UserForm.controls['preferredMode'].touched ||
               UserForm.controls['preferredMode'].dirty)
           "
         >
-          <span *ngIf="UserForm.controls['preferredMode'].errors?.['required']"
-            >Ovo polje je obavezno!</span
+          <span
+            *ngIf="UserForm.controls['preferredMode'].errors?.['required']"
+            >{{ "errors.requiredField" | translate }}</span
           >
         </div>
       </div>
 
       <!-- Educational level -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="preferredMode">Stepen obrazovanja</label>
+      <div class="form-group col-md-6">
+        <label for="educationalLevel">{{
+          "form.educationalLevel" | translate
+        }}</label>
         <select
           id="educationalLevel"
           class="form-control custom-dropdown"
           formControlName="educationalLevel"
         >
           <option value="" disabled selected hidden>
-            Odaberite stepen obrazovanja
+            {{ "placeholders.educationalLevel" | translate }}
           </option>
-          <option value="Osnovna skola">Osnovna škola</option>
-          <option value="Srednja skola">Srednja škola</option>
+          <option value="Osnovna skola">
+            {{ "educationLevelOptions.primary" | translate }}
+          </option>
+          <option value="Srednja skola">
+            {{ "educationLevelOptions.high" | translate }}
+          </option>
         </select>
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['educationalLevel'].invalid &&
             (UserForm.controls['educationalLevel'].touched ||
@@ -224,7 +239,7 @@
         >
           <span
             *ngIf="UserForm.controls['educationalLevel'].errors?.['required']"
-            >Ovo polje je obavezno!</span
+            >{{ "errors.requiredField" | translate }}</span
           >
         </div>
       </div>
@@ -232,149 +247,161 @@
 
     <div class="row">
       <!-- City -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="cityId">Grad</label>
+      <div class="form-group col-md-6">
+        <label for="cityId">{{ "form.cityId" | translate }}</label>
         <select
           id="cityId"
           class="form-control custom-dropdown"
           formControlName="cityId"
         >
-          <option value="" disabled selected hidden>Odaberite grad</option>
+          <option value="" disabled selected hidden>
+            {{ "placeholders.cityId" | translate }}
+          </option>
           <option *ngFor="let city of this.cities" [value]="city.id">
             {{ city.name }}
           </option>
         </select>
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['cityId'].invalid &&
             (UserForm.controls['cityId'].touched ||
               UserForm.controls['cityId'].dirty)
           "
         >
-          <span *ngIf="UserForm.controls['cityId'].errors?.['required']"
-            >Ovo polje je obavezno!</span
-          >
+          <span *ngIf="UserForm.controls['cityId'].errors?.['required']">{{
+            "errors.requiredField" | translate
+          }}</span>
         </div>
       </div>
 
       <!-- Grade -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="grade">Razred</label>
-        <input
-          type="grade"
-          id="grade"
-          class="form-control"
-          placeholder="Unesite razred"
-          formControlName="grade"
-        />
+      <div class="form-group col-md-6">
+        <label for="grade">{{ "form.grade" | translate }}</label>
+        <div class="dropdown">
+          <select
+            id="grade"
+            class="form-control custom-dropdown"
+            formControlName="grade"
+          >
+            <option value="" disabled selected hidden>
+              {{ "placeholders.grade" | translate }}
+            </option>
+            <option value="Prvi">{{ "grades.first" | translate }}</option>
+            <option value="Drugi">{{ "grades.second" | translate }}</option>
+            <option value="Treci">{{ "grades.third" | translate }}</option>
+            <option value="Cetvrti">{{ "grades.fourth" | translate }}</option>
+            <option value="Peti">{{ "grades.fifth" | translate }}</option>
+            <option value="Sesti">{{ "grades.sixth" | translate }}</option>
+            <option value="Sedmi">{{ "grades.seventh" | translate }}</option>
+            <option value="Osmi">{{ "grades.eight" | translate }}</option>
+            <option value="Deveti">{{ "grades.ninth" | translate }}</option>
+          </select>
+        </div>
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['grade'].invalid &&
             (UserForm.controls['grade'].touched ||
               UserForm.controls['grade'].dirty)
           "
         >
-          <span *ngIf="UserForm.controls['grade'].errors?.['required']"
-            >Ovo polje je obavezno!</span
-          >
-          <span *ngIf="UserForm.controls['grade'].errors?.['pattern']"
-            >Razred napišite slovima!</span
-          >
+          <span *ngIf="UserForm.controls['grade'].errors?.['required']">{{
+            "errors.requiredField" | translate
+          }}</span>
         </div>
       </div>
     </div>
 
     <div class="row">
       <!-- Gender -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="gender">Spol</label>
+      <div class="form-group col-md-6">
+        <label for="gender">{{ "form.gender" | translate }}</label>
         <div class="dropdown">
           <select
             id="gender"
             class="form-control custom-dropdown"
             formControlName="gender"
           >
-            <option value="" disabled selected hidden>Odaberite</option>
-            <option value="Musko">Muško</option>
-            <option value="Zensko">Žensko</option>
+            <option value="" disabled selected hidden>
+              {{ "placeholders.gender" | translate }}
+            </option>
+            <option value="Musko">
+              {{ "genderOptions.male" | translate }}
+            </option>
+            <option value="Zensko">
+              {{ "genderOptions.female" | translate }}
+            </option>
           </select>
         </div>
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['gender'].invalid &&
             (UserForm.controls['gender'].touched ||
               UserForm.controls['gender'].dirty)
           "
         >
-          <span *ngIf="UserForm.controls['gender'].errors?.['required']"
-            >Ovo polje je obavezno!</span
-          >
+          <span *ngIf="UserForm.controls['gender'].errors?.['required']">{{
+            "errors.requiredField" | translate
+          }}</span>
         </div>
       </div>
       <!-- Age -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="age">Godine</label>
+      <div class="form-group col-md-6">
+        <label for="age">{{ "form.age" | translate }}</label>
         <input
           type="number"
           id="age"
           class="form-control"
-          placeholder="Unesite godine"
+          [placeholder]="'placeholders.age' | translate"
           formControlName="age"
         />
         <div
-          class="text-danger small"
+          class="text-danger"
           *ngIf="
             UserForm.controls['age'].invalid &&
             (UserForm.controls['age'].touched || UserForm.controls['age'].dirty)
           "
         >
-          <span *ngIf="UserForm.controls['age'].errors?.['required']"
-            >Ovo polje je obavezno!</span
-          >
-          <span *ngIf="UserForm.controls['age'].errors?.['min']"
-            >Najmlađi učenik može imati 6 godina!</span
-          >
-          <span *ngIf="UserForm.controls['age'].errors?.['max']"
-            >Najstariji učenik može imati 20 godina!</span
-          >
-          <span *ngIf="UserForm.controls['age'].errors?.['pattern']"
-            >Godine napišite brojevima!</span
-          >
+          <span *ngIf="UserForm.controls['age'].errors?.['required']">{{
+            "errors.requiredField" | translate
+          }}</span>
+          <span *ngIf="UserForm.controls['age'].errors?.['min']">{{
+            "errors.young" | translate
+          }}</span>
+          <span *ngIf="UserForm.controls['age'].errors?.['max']">{{
+            "errors.young" | translate
+          }}</span>
         </div>
       </div>
-      <!-- Phone number -->
-      <div class="form-group col-md-6" [formGroup]="UserForm">
-        <label for="phoneNumber">Kontakt telefon</label>
-        <input
-          type="tel"
-          id="phoneNumber"
-          class="form-control"
-          placeholder="Unesite kontakt telefon"
-          formControlName="phoneNumber"
-        />
-        <div
-          class="text-danger small"
-          *ngIf="
-            UserForm.controls['phoneNumber'].invalid &&
-            (UserForm.controls['phoneNumber'].touched ||
-              UserForm.controls['phoneNumber'].dirty)
-          "
-        >
-          <span *ngIf="UserForm.controls['phoneNumber'].errors?.['required']"
-            >Ovo polje je obavezno!</span
+
+      <div class="row">
+        <!-- Phone number -->
+        <div class="form-group col-md-6">
+          <label for="phoneNumber">{{ "form.phoneNumber" | translate }}</label>
+          <input
+            type="tel"
+            id="phoneNumber"
+            class="form-control"
+            [placeholder]="'placeholders.phoneNumber' | translate"
+            formControlName="phoneNumber"
+          />
+          <div
+            class="text-danger"
+            *ngIf="
+              UserForm.controls['phoneNumber'].invalid &&
+              (UserForm.controls['phoneNumber'].touched ||
+                UserForm.controls['phoneNumber'].dirty)
+            "
           >
-          <span *ngIf="UserForm.controls['phoneNumber'].errors?.['minlength']"
-            >Format broja telefona ne odgovara!</span
-          >
-          <span *ngIf="UserForm.controls['phoneNumber'].errors?.['maxlength']"
-            >Format broja telefona ne odgovara!</span
-          >
-          <div>
-            <span *ngIf="UserForm.controls['phoneNumber'].errors?.['pattern']"
-              >Polje mora sadrzavati samo brojeve!!</span
+            <span
+              *ngIf="UserForm.controls['phoneNumber'].errors?.['required']"
+              >{{ "errors.requiredField" | translate }}</span
+            >
+            <span
+              *ngIf="UserForm.controls['phoneNumber'].errors?.['minlength'] || UserForm.controls['phoneNumber'].errors?.['maxlength'] || UserForm.controls['phoneNumber'].errors?.['pattern']"
+              >{{ "errors.pattern" | translate }}</span
             >
           </div>
         </div>
@@ -388,48 +415,48 @@
           class="btn btn-primary-gradient"
           (ngSubmit)="registriraj()"
         >
-          Registriraj
+          {{ "form.submitButton" | translate }}
         </button>
       </div>
     </div>
   </form>
+
   <div class="form-footer">
-    <p>Već imate nalog? <a href="/login">Prijavite se ovdje</a>.</p>
+    <p>
+      {{ "login.haveAnAcc" | translate
+      }}<a href="/login">{{ "login.loginHere" | translate }}</a>
+    </p>
   </div>
 
-  <!-- Modal - Obavijest uspjeha
-<div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="successModalLabel">Info</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Vaš nalog je uspješno kreiran.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
-      </div>
-    </div>
-  </div>
-</div>
+  <div class="language-selector" style="text-align: center; margin-top: 20px">
+    <button
+      (click)="switchLanguage('bs')"
+      style="border: none; background: none"
+    >
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/b/bf/Flag_of_Bosnia_and_Herzegovina.svg"
+        width="30"
+      />
+    </button>
 
-Modal - Obavijest o grešci 
-<div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="errorModalLabel">Greška prilikom registracije</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        Došlo je do greške prilikom registracije. Molimo pokušajte ponovo.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zatvori</button>
-      </div>
-    </div>
+    <button
+      (click)="switchLanguage('en')"
+      style="border: none; background: none"
+    >
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/b/be/Flag_of_England.svg"
+        width="30"
+      />
+    </button>
+
+    <button
+      (click)="switchLanguage('de')"
+      style="border: none; background: none"
+    >
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Flag_of_Germany.svg"
+        width="30"
+      />
+    </button>
   </div>
-</div> -->
 </div>

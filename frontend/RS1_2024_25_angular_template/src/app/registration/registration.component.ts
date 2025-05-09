@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CitiesService } from '../services/auth-services/services/cities.service';
 import { City } from '../models/city.model';
+import { TranslateService } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 declare var window: any; //za pristup globalnim objektima jer koristimo bootstrap
 
@@ -13,7 +15,7 @@ declare var window: any; //za pristup globalnim objektima jer koristimo bootstra
   templateUrl: './registration.component.html',
   styleUrls: ['./registration.component.css'],
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule, TranslateModule]
 })
 export class RegistrationComponent implements OnInit {
 
@@ -24,12 +26,12 @@ export class RegistrationComponent implements OnInit {
   passwordMatchClass: string = '';
   cities: City[] = [];
 
-  constructor(private http: HttpClient, private router: Router, private citiesService: CitiesService) {
+  constructor(private http: HttpClient, private router: Router, private citiesService: CitiesService, private translate: TranslateService) {
     this.UserForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      username: new FormControl('', Validators.required),
+      username: new FormControl('', [Validators.required, Validators.minLength(5)]),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       cityId: new FormControl('', Validators.required),
       educationalLevel: new FormControl('', Validators.required),
@@ -39,7 +41,13 @@ export class RegistrationComponent implements OnInit {
       age: new FormControl('', [Validators.required, Validators.min(6), Validators.max(20), Validators.pattern('^[0-9]+$')]),
       gender: new FormControl('', Validators.required),
       phoneNumber: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(13), Validators.pattern('^[0-9]+$')]),
-    })
+    });
+
+    this.translate.setDefaultLang('bs');
+  }
+
+  switchLanguage(lang: string) {
+    this.translate.use(lang);
   }
 
   ngOnInit(): void {
@@ -52,10 +60,23 @@ export class RegistrationComponent implements OnInit {
         console.error('Greška pri učitavanju gradova', error);
       }
     );
+
+    this.UserForm.get('password')?.valueChanges.subscribe(() => {
+      this.checkPasswordMatch();
+    });
+
+    this.UserForm.get('passwordConfirmation')?.valueChanges.subscribe(() => {
+      this.checkPasswordMatch();
+    });
   }
 
-  checkPasswordMatch() {
-    return this.UserForm.get("password")?.value === this.UserForm.get("passwordConfirmation")?.value;
+  checkPasswordMatch(): boolean {
+    const matches = this.UserForm.get("password")?.value === this.UserForm.get("passwordConfirmation")?.value;
+    if (matches) {
+      this.passwordMatch = '';
+      this.passwordMatchClass = '';
+    }
+    return matches;
   }
 
   checkPasswordStrength() {
@@ -72,27 +93,29 @@ export class RegistrationComponent implements OnInit {
     const specialCharPattern = /[!@#$%^&*(),.?":{}|<>]/;
 
     if (password.length < 8) {
-      this.passwordStrength = 'Slaba lozinka';
-      this.passwordStrengthClass = 'text-danger small';
+      this.passwordStrength = this.translate.instant('form.passwordStrength.weak');
+      this.passwordStrengthClass = 'text-danger';
     } else if (
       lowerCasePattern.test(password) &&
       upperCasePattern.test(password) &&
       numberPattern.test(password) &&
       specialCharPattern.test(password)
     ) {
-      this.passwordStrength = 'Jaka lozinka';
-      this.passwordStrengthClass = 'text-success small';
+      this.passwordStrength = this.translate.instant('form.passwordStrength.strong');
+      this.passwordStrengthClass = 'text-success';
     } else {
-      this.passwordStrength = 'Srednje jaka lozinka';
-      this.passwordStrengthClass = 'text-warning small';
+      this.passwordStrength = this.translate.instant('form.passwordStrength.medium');
+      this.passwordStrengthClass = 'text-warning';
     }
   }
 
   registriraj() {
+    this.UserForm.markAllAsTouched();
+
+    console.log(this.checkPasswordMatch())
     if (!this.checkPasswordMatch()) {
-      //console.log("Šifre se ne poklapaju");
-      this.passwordMatch = 'Šifre se ne poklapaju!';
-      this.passwordMatchClass = 'text-danger small';
+      this.passwordMatch = this.translate.instant('form.passwordMatch');
+      this.passwordMatchClass = 'text-danger';
       return;
     }
     if (this.UserForm.valid) {
@@ -100,13 +123,9 @@ export class RegistrationComponent implements OnInit {
       console.log('Forma je validna:', this.UserForm.value);
       this.http.post('http://localhost:7000/api/StudentEndpoints', formValues).subscribe({
         next: (response: any) => {
-          // const successModal = new window.bootstrap.Modal(document.getElementById('successModal'));
-          // successModal.show();
           this.router.navigate(['/student-dashboard']);
         },
         error: (error) => {
-          //const errorModal = new window.bootstrap.Modal(document.getElementById('errorModal'));
-          //errorModal.show();
           console.log(error.error)
         }
       });
