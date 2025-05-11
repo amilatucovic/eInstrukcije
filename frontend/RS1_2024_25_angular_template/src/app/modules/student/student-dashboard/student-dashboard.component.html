@@ -1,9 +1,80 @@
+<!-- index.html -->
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
 <div class="dashboard-container">
-  <h1>Welcome to the Student Dashboard</h1>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="profile-section">
+      <div
+        class="profile-picture-wrapper"
+        (click)="fileInput.click()"
+        (mouseenter)="hovering = true"
+        (mouseleave)="hovering = false"
+      >
+        <img
+          [src]="profileImageUrl"
+          *ngIf="profileImageUrl"
+          class="profile-image"
+        />
+        <i class="fas fa-camera" *ngIf="!profileImageUrl"></i>
+        <div
+          class="remove-overlay"
+          *ngIf="profileImageUrl && hovering"
+          (click)="removeProfileImage($event)"
+        >
+          <i class="material-icons">delete</i>
+          <span>Ukloni</span>
+        </div>
+        <input
+          type="file"
+          hidden
+          #fileInput
+          (change)="onFileSelected($event)"
+        />
+      </div>
+      <h3>
+        <p>John Doe</p>
+        <p>john.doeATgmail.com</p>
+        <!-- {{ student?.myAppUser?.firstName }} {{ student?.myAppUser?.lastName }} -->
+      </h3>
 
-  <!-- Add this button -->
-  <button class="btn btn-primary mt-3" routerLink="tutor-search">
-    Search for Tutors
-  </button>
+      <!-- <p>{{ student?.myAppUser?.email }}</p> -->
+    </div>
+
+    <nav class="nav-links">
+      <a
+        routerLink="/dashboard"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        <span class="material-icons">home</span> Početna stranica
+      </a>
+      <a routerLink="/classes" routerLinkActive="active">
+        <span class="material-icons">menu_book</span> Predavanja
+      </a>
+      <a routerLink="tutor-search" routerLinkActive="active">
+        <span class="material-icons">school</span> Instruktori
+      </a>
+      <a routerLink="/reservations" routerLinkActive="active">
+        <span class="material-icons">event</span> Termini
+      </a>
+      <a routerLink="/payments" routerLinkActive="active">
+        <span class="material-icons">credit_card</span> Transakcije
+      </a>
+      <a routerLink="/account" routerLinkActive="active">
+        <span class="material-icons">account_circle</span> Moj profil
+      </a>
+    </nav>
+  </div>
+
+  <!-- Main content -->
+  <div class="main-content">
+    <h1>
+      Dobrodošli nazad!
+      <!--{{ student?.myAppUser?.firstName }}-->
+    </h1>
+    <p>Učimo i napredujemo, zajedno!</p>
+  </div>
 </div>
-
