@@ -1,0 +1,38 @@
+.card {
+  border-radius: 8px;
+}
+
+nav {
+  min-height: 100vh;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+.sidebar {
+  background-color: rgba(32, 155, 193, 0.78);
+  min-height: 100vh;
+  width: 250px;
+}
+
+.profile-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid white;
+}
+
+.nav-link {
+  font-weight: 500;
+}
+
+.nav-link.active {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.role-text {
+  font-size: 14px;
+  opacity: 0.8;
+}

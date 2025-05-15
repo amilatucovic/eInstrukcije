@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using RS1_2024_2025.API.Endpoints.LoginEndpoint.Classes;
 using RS1_2024_2025.API.Endpoints.LoginEndpoint.Interfaces;
@@ -10,9 +11,10 @@ using RS1_2024_2025.Services;
 using RS1_2024_2025.Services.Services;
 using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
 using RS1_2024_25.API.Endpoints.TutorSearch;
+using System.IO;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", false)
@@ -25,8 +27,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(config.GetConnectionString("db1")));
-
-
 
 builder.Services.AddTransient<RedundancyChecker>();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
@@ -56,26 +56,25 @@ builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddControllers();
 
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(x => x.OperationFilter<MyAuthorizationSwaggerHeader>());
 builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
 
-  // await DatabaseSeeder.SeedAsync(context);
+    // await DatabaseSeeder.SeedAsync(context);
 }
 using (var scope = app.Services.CreateScope())
 {
     var cleanupService = scope.ServiceProvider.GetRequiredService<RedundancyChecker>();
     await cleanupService.RemoveDuplicatesAsync();
 }
-
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
@@ -87,10 +86,18 @@ app.UseCors(
         .AllowAnyMethod()
         .AllowAnyHeader()
         .AllowCredentials()
-); // Allow all CORS requests
+);
 
-app.UseAuthentication(); // Add authentication middleware
-app.UseAuthorization(); // Add authorization middleware
+// **Dodano: Omogućeno serviranje statičkih fajlova iz foldera Uploads**
+var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadsPath),
+    RequestPath = "/Uploads"
+});
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

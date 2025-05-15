@@ -1,1 +1,73 @@
-<p>tutor-dashboard works!</p>
+<div class="d-flex" style="min-height: 100vh;">
+
+  <!-- Sidebar -->
+  <nav class="d-flex flex-column align-items-center p-3 text-white" style="background-color: #209BC1C6; width: 250px;">
+
+    <!-- Dinamička profilna slika -->
+    <img [src]="profileImageUrl"
+         alt="Profilna slika"
+         style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid white; margin-bottom: 15px;">
+
+
+    <!-- Dinamičko ime -->
+    <h4>{{ tutorProfile?.firstName }} {{ tutorProfile?.lastName }}</h4>
+    <p style="opacity: 0.8; margin-top: 0;">Tutor</p>
+
+    <ul class="nav flex-column w-100 mt-4">
+      <li class="nav-item mb-3">
+        <a routerLink="/tutor-dashboard" class="nav-link text-white fw-bold" style="text-decoration: underline;">Dashboard</a>
+      </li>
+      <li class="nav-item mb-3">
+        <a routerLink="/tutor-lessons" class="nav-link text-white">Lekcije</a>
+      </li>
+      <li class="nav-item mb-3">
+        <a routerLink="/tutor-profile" class="nav-link text-white">Profil</a>
+      </li>
+      <li class="nav-item mb-3">
+        <a routerLink="/tutor-settings" class="nav-link text-white">Razgovori</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-danger" style="cursor:pointer;">Odjava</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Glavni sadržaj -->
+  <main class="flex-grow-1 p-4" style="background-color: #f8f9fa;">
+
+    <h2 *ngIf="tutorProfile">Dobrodošao nazad, {{ tutorProfile.firstName }}!</h2>
+    <p>Danas imate <strong>{{ lessons.length }}</strong> zakazanih časova.</p>
+
+    <div class="row">
+      <div class="col-md-4 mb-4" *ngFor="let lesson of lessons">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ lesson.subjectName }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ lesson.studentName }}</h6>
+            <p class="card-text mb-1">
+              Vrijeme: {{ lesson.startTime }} - {{ lesson.endTime }}
+            </p>
+            <p class="card-text">
+              Način: {{ lesson.mode }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="lessons.length === 0" class="alert alert-info">
+      Nemate zakazanih časova za danas.
+    </div>
+
+    <hr>
+
+    <div class="dashboard-info mt-4" style="max-width: 600px;">
+      <h5>Podsjetnici</h5>
+      <ul>
+        <li>Ne zaboravite potvrditi prisustvo učenicima.</li>
+        <li>Provjerite nove poruke i obavijesti.</li>
+        <li>Ukoliko imate slobodno vrijeme, pripremite materijale za naredne časove.</li>
+      </ul>
+    </div>
+  </main>
+</div>
