@@ -6,6 +6,7 @@ namespace RS1_2024_2025.Domain.Entities
 
     public enum LessonStatus
     {
+        Scheduled,
         Held,     
         Missed,
         Cancelled,
