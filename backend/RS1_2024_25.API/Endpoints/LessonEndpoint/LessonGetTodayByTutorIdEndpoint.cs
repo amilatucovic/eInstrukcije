@@ -16,19 +16,19 @@ namespace RS1_2024_25.API.Endpoints.LessonEndpoint
         {
             this.db = db;
         }
-
+ 
         [HttpGet("tutor/{tutorId}")]
         public IActionResult GetTodayLessonsByTutor(int tutorId)
         {
-            var today = DateTime.Today;
+            var today = DateTime.Now.Date;
             var tomorrow = today.AddDays(1);
 
             var lessons = db.Lessons
                                   .Include(l => l.Student)
                                   .ThenInclude(s => s.MyAppUser)
                                   .Where(l => l.TutorID == tutorId &&
-                                   l.LessonDate >= today &&
-                                   l.LessonDate < tomorrow &&
+                                   //l.LessonDate >= today &&
+                                   //l.LessonDate < tomorrow &&
                                    l.Status == LessonStatus.Scheduled)
                         .Select(l => new LessonTodayResponse
                         {
