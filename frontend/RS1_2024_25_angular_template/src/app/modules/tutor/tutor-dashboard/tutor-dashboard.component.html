@@ -1,15 +1,13 @@
 <div class="d-flex" style="min-height: 100vh;">
-
   <!-- Sidebar -->
-  <nav class="d-flex flex-column align-items-center p-3 text-white" style="background-color: #209BC1C6; width: 250px;">
+  <nav class="d-flex flex-column align-items-center p-3 text-white" style="background-color: #8AABBCC6; width: 250px;">
 
-    <!-- Dinamička profilna slika -->
+
     <img [src]="profileImageUrl"
          alt="Profilna slika"
          style="width: 130px; height: 130px;
             border-radius: 50%;
             object-fit: cover;
-            image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
             image-rendering: pixelated;
             -ms-interpolation-mode: nearest-neighbor;
@@ -23,22 +21,34 @@
 
     <ul class="nav flex-column w-100 mt-4">
       <li class="nav-item mb-3">
-        <a routerLink="/tutor-dashboard" class="nav-link text-white fw-bold" style="text-decoration: underline;">Dashboard</a>
+        <a routerLink="/tutor-dashboard" class="nav-link text-white fw-bold" style="text-decoration: underline;">
+          <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
       </li>
       <li class="nav-item mb-3">
-        <a routerLink="/tutor-lessons" class="nav-link text-white">Lekcije</a>
+        <a routerLink="/tutor-lessons" class="nav-link text-white">
+          <i class="fas fa-book-open me-2"></i> Lekcije
+        </a>
       </li>
       <li class="nav-item mb-3">
-        <a routerLink="/tutor-profile" class="nav-link text-white">Profil</a>
+        <a routerLink="/tutor-profile" class="nav-link text-white">
+          <i class="fas fa-user me-2"></i> Profil
+        </a>
       </li>
       <li class="nav-item mb-3">
-        <a routerLink="/tutor-settings" class="nav-link text-white">Razgovori</a>
+        <a routerLink="/tutor-messages" class="nav-link text-white">
+          <i class="fas fa-comments me-2"></i> Razgovori
+        </a>
       </li>
       <li class="nav-item mb-3">
-        <a routerLink="/tutor-reservations" class="nav-link text-white">Rezervacije</a>
+        <a routerLink="/tutor-reservations" class="nav-link text-white">
+          <i class="fas fa-calendar-check me-2"></i> Rezervacije
+        </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link text-danger" style="cursor:pointer;">Odjava</a>
+        <a class="nav-link text-danger" style="cursor:pointer;">
+          <i class="fas fa-sign-out-alt me-2"></i> Odjava
+        </a>
       </li>
     </ul>
   </nav>
@@ -46,7 +56,7 @@
   <!-- Glavni sadržaj -->
   <main class="flex-grow-1 p-4" style="background-color: #f8f9fa;">
 
-    <h2 *ngIf="tutorProfile">Dobrodošao nazad, {{ tutorProfile.firstName }}!</h2>
+    <h2 *ngIf="tutorProfile">Dobrodošao/la nazad, {{ tutorProfile.firstName }}!</h2>
     <p>Danas imate <strong>{{ lessons.length }}</strong> zakazanih časova.</p>
 
     <div class="row">
@@ -72,13 +82,63 @@
 
     <hr>
 
-    <div class="dashboard-info mt-4" style="max-width: 600px;">
-      <h5>Podsjetnici</h5>
-      <ul>
-        <li>Ne zaboravite potvrditi prisustvo učenicima.</li>
-        <li>Provjerite nove poruke i obavijesti.</li>
-        <li>Ukoliko imate slobodno vrijeme, pripremite materijale za naredne časove.</li>
-      </ul>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <h5><i class="fas fa-bell me-2"></i>Podsjetnici</h5>
+        <div class="row">
+          <div class="col-md-3 mb-3">
+            <div class="card reminder-card h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-user-check me-2 text-primary"></i>
+                  <h6 class="card-title mb-0">Potvrda prisustva</h6>
+                </div>
+                <p class="card-text flex-grow-1">Molimo Vas da potvrdite Vaše prisustvo učenicima za nadolazeće sesije.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card reminder-card h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-envelope me-2 text-info"></i>
+                  <h6 class="card-title mb-0">Nove poruke</h6>
+                </div>
+                <p class="card-text flex-grow-1">Imate nove poruke od studenata ili administratora? Provjerite ih.</p>
+                <a routerLink="/tutor-messages" class="btn btn-sm btn-outline-danger mt-2">
+                  <i class="fas fa-envelope me-2"></i> Pregledaj
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card reminder-card h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-book me-2 text-success"></i>
+                  <h6 class="card-title mb-0">Priprema materijala</h6>
+                </div>
+                <p class="card-text flex-grow-1">Ne zaboravite pripremiti materijale prije zakazanih termina.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 mb-3">
+            <div class="card reminder-card h-100">
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center mb-2">
+                  <i class="fas fa-calendar-alt me-2 text-warning"></i>
+                  <h6 class="card-title mb-0">Rezervacije uživo</h6>
+                </div>
+                <p class="card-text flex-grow-1">Upravljajte svojim rasporedom - provjerite rezervacije za časove uživo.</p>
+                <a routerLink="/tutor-reservations" class="btn btn-sm btn-outline-danger mt-2">
+                  <i class="fas fa-calendar-check me-1"></i> Pregledaj
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
   </main>
 </div>

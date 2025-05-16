@@ -22,7 +22,7 @@ export class TutorDashboardComponent implements OnInit {
     const tutorId = Number(localStorage.getItem('tutorId'));
 
     if (!tutorId) {
-      console.error('Tutor ID nije pronađen u localStorage.');
+      console.error('TutorId nije pronađen u localStorage.');
       return;
     }
 
