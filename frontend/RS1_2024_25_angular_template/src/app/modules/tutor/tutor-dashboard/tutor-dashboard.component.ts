@@ -19,7 +19,12 @@ export class TutorDashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const tutorId = 1; // fallback
+    const tutorId = Number(localStorage.getItem('tutorId'));
+
+    if (!tutorId) {
+      console.error('Tutor ID nije pronađen u localStorage.');
+      return;
+    }
 
     this.lessonService.getTodayLessons(tutorId).subscribe({
       next: (data) => this.lessons = data,

@@ -37,11 +37,21 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
 
             await _context.SaveChangesAsync();
 
+            // Pronađi tutorId ako je korisnik tutor
+            int? tutorId = null;
+            if (role == "Tutor")
+            {
+                var tutor = _context.Tutors.FirstOrDefault(t => t.MyAppUserID == user.ID);
+                if (tutor != null)
+                    tutorId = tutor.ID;
+            }
+
             var loginResponseDto = new LoginResponseDto()
             {
                 Token = token,
                 RefreshToken = refreshToken,
-                Role = role
+                Role = role,
+                TutorId = tutorId // Dodaj tutorId u odgovor
             };
             return Ok(loginResponseDto);
         }

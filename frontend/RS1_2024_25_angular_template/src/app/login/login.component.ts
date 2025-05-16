@@ -26,26 +26,27 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.loginForm.invalid) {
-      // If the form is invalid, show an error message
       this.errorMessage = 'Popunite sva polja ispravno.';
       return;
     }
 
-    // Construct the loginRequest object with the required properties for the backend
     const loginRequest = {
-      Username: this.loginForm.value.username,  // Matches backend DTO property
-      Password: this.loginForm.value.password   // Matches backend DTO property
+      Username: this.loginForm.value.username,
+      Password: this.loginForm.value.password
     };
 
-    // Send the loginRequest to the backend API
     this.http.post('http://localhost:7000/api/Login/login', loginRequest)
       .subscribe({
         next: (response: any) => {
-          // Store the token and refresh token in localStorage upon successful login
+          // Čuvanje tokena i tutorId-a u localStorage
           localStorage.setItem('accessToken', response.token);
           localStorage.setItem('refreshToken', response.refreshToken);
 
-          // Navigate based on the role of the user
+          if (response.role === 'Tutor' && response.tutorId) {
+            localStorage.setItem('tutorId', response.tutorId.toString());
+          }
+
+          // Navigacija na odgovarajući dashboard
           if (response.role === 'Admin') {
             this.router.navigate(['/admin']);
           } else if (response.role === 'Tutor') {
@@ -57,9 +58,10 @@ export class LoginComponent {
           }
         },
         error: (error) => {
-          // If an error occurs, display the error message
           this.errorMessage = error.error || 'Neispravni podaci za prijavu.';
         }
       });
   }
+
+
 }

@@ -6,5 +6,6 @@
         public string Role { get; set; }
 
         public string RefreshToken { get; set; }
+        public int? TutorId { get; set; }
     }
 }
