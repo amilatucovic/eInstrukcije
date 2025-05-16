@@ -6,7 +6,15 @@
     <!-- Dinamička profilna slika -->
     <img [src]="profileImageUrl"
          alt="Profilna slika"
-         style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid white; margin-bottom: 15px;">
+         style="width: 130px; height: 130px;
+            border-radius: 50%;
+            object-fit: cover;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+            image-rendering: pixelated;
+            -ms-interpolation-mode: nearest-neighbor;
+            border: 3px solid white;
+            margin-bottom: 15px;">
 
 
     <!-- Dinamičko ime -->
@@ -25,6 +33,9 @@
       </li>
       <li class="nav-item mb-3">
         <a routerLink="/tutor-settings" class="nav-link text-white">Razgovori</a>
+      </li>
+      <li class="nav-item mb-3">
+        <a routerLink="/tutor-reservations" class="nav-link text-white">Rezervacije</a>
       </li>
       <li class="nav-item">
         <a class="nav-link text-danger" style="cursor:pointer;">Odjava</a>

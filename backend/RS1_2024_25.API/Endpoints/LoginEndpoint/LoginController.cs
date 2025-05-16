@@ -51,7 +51,7 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
                 Token = token,
                 RefreshToken = refreshToken,
                 Role = role,
-                TutorId = tutorId // Dodaj tutorId u odgovor
+                TutorId = tutorId 
             };
             return Ok(loginResponseDto);
         }
