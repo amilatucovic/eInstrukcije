@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,6 +14,14 @@ import { PretragaStudenataComponent } from './pretraga-studenata/pretraga-studen
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
+import {  LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeBs from '@angular/common/locales/bs';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
+
+
+registerLocaleData(localeBs);
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http);
@@ -30,10 +38,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    SharedModule, // Omogućava korištenje UnauthorizedComponent u AppRoutingModule
+    SharedModule,
     FormsModule,
-    ReactiveFormsModule,// Omogućava korištenje UnauthorizedComponent u AppRoutingModule
+    ReactiveFormsModule,
     RegistrationComponent,
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -46,11 +58,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: MyAuthInterceptor,
-      multi: true // Ensures multiple interceptors can be used if needed
+      multi: true
     },
-    MyAuthService // Ensure MyAuthService is available for the interceptor
+    { provide: LOCALE_ID, useValue: 'bs' },
+    MyAuthService
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
-export class AppModule {
-}
+export class AppModule { }
