@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {LessonService, LessonToday} from '../../../services/auth-services/services/lesson.service';
-import {TutorProfile} from '../tutor-profile.model';
-import {TutorService} from '../../../services/auth-services/services/tutor-profile.service';
+import { Component, OnInit } from '@angular/core';
+import { LessonService, LessonToday } from '../../../services/auth-services/services/lesson.service';
+import { TutorProfile } from '../tutor-profile.model';
+import { TutorService } from '../../../services/auth-services/services/tutor-profile.service';
+import { CalendarEvent, CalendarView } from 'angular-calendar';
+import { Subject } from 'rxjs';
+
 
 @Component({
   selector: 'app-tutor-dashboard',
@@ -12,6 +15,11 @@ export class TutorDashboardComponent implements OnInit {
   lessons: LessonToday[] = [];
   tutorName: string = '';
   tutorProfile?: TutorProfile;
+  view: CalendarView = CalendarView.Week;
+  viewDate: Date = new Date();
+  events: CalendarEvent[] = [];
+  refresh: Subject<any> = new Subject();
+  locale: string = 'bs';
 
   constructor(
     private lessonService: LessonService,
@@ -34,9 +42,38 @@ export class TutorDashboardComponent implements OnInit {
     this.tutorService.getTutorProfile(tutorId).subscribe({
       next: (profile) => {
         this.tutorProfile = profile;
-        this.tutorName = profile.firstName + ' ' + profile.lastName;
+        this.tutorName = `${profile.firstName} ${profile.lastName}`;
       },
       error: (err) => console.error('Error fetching tutor profile', err)
+    });
+
+    this.lessonService.getWeeklyLessons(tutorId).subscribe({
+      next: (data) => {
+        console.log('Dohvaćeni časovi:', data);
+
+        const uniqueLessons = new Map();
+        data.forEach(lesson => {
+          const key = `${lesson.subjectName}-${lesson.start}`;
+          if (!uniqueLessons.has(key)) {
+            uniqueLessons.set(key, lesson);
+          }
+        });
+
+        this.events = data.map(lesson => {
+          return {
+            title: `${lesson.studentName} - ${lesson.subjectName} <br> ${lesson.lessonMode}`,
+            start: new Date(lesson.start),
+            end: new Date(lesson.end),
+            color: lesson.lessonMode === 'InPerson' ? { primary: '#1e90ff', secondary: '#D1E8FF' } : { primary: '#ff6347', secondary: '#FFB6C1' },
+            allDay: false,
+            meta: {
+              lessonMode: lesson.lessonMode
+            }
+          };
+        });
+        this.refresh.next(null);
+      },
+      error: (err) => console.error('Error fetching weekly lessons', err)
     });
   }
 
@@ -45,6 +82,4 @@ export class TutorDashboardComponent implements OnInit {
       ? `http://localhost:7000${this.tutorProfile.profileImageUrl}`
       : 'assets/profile-picture.jpg';
   }
-
 }
-

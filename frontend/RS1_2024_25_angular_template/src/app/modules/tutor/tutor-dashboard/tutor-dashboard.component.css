@@ -76,5 +76,64 @@ h2 {
   font-size: 1.2rem;
 }
 
+::ng-deep .cal-event-title {
+  font-weight: 500;
+}
+.mwl-calendar-week-view {
+  min-height: calc(100vh - 150px);
+  overflow: hidden;
+}
+.cal-event:hover {
+  transform: none !important;
+  z-index: 1 !important;
+}
+
+.cal-hour-segment, .cal-time-label, .cal-time {
+  height: 60px !important; /* Povećaj visinu reda */
+}
+
+.cal-event-title {
+  white-space: normal; /* Omogućava višeredni prikaz teksta */
+  word-break: break-word; /* Prelomi riječi ako su preduge */
+}
+
+.cal-hour-col {
+  min-height: 60px !important; /* Prilagodba visine kolone */
+}
+
+.cal-day-view .cal-hour-rows {
+  height: auto !important; /* Osigurava da se redovi prilagode */
+}
+
+.lesson-card {
+  border-left: 4px solid #28a745; /* zelena za engleski */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.lesson-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.lesson-card .card-title {
+  font-weight: 600;
+  color: #28a745; /* jača zelena nijansa */
+  display: flex;
+  align-items: center;
+}
+
+.lesson-card .card-title i {
+  font-size: 1.2rem;
+  margin-right: 8px;
+}
 
 
+::ng-deep .cal-event {
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 4px !important;
+}
