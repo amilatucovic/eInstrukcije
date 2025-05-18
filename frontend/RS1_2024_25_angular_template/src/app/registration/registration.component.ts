@@ -25,19 +25,21 @@ export class RegistrationComponent implements OnInit {
   passwordMatch: string = '';
   passwordMatchClass: string = '';
   cities: City[] = [];
+  gradeOptions: { label: string, value: string }[] = [];
+
 
   constructor(private http: HttpClient, private router: Router, private citiesService: CitiesService, private translate: TranslateService) {
     this.UserForm = new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
+      firstName: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]+$')]),
+      lastName: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]+$')]),
       email: new FormControl('', [Validators.required, Validators.email]),
       username: new FormControl('', [Validators.required, Validators.minLength(5)]),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),
       cityId: new FormControl('', Validators.required),
-      educationalLevel: new FormControl('', Validators.required),
+      educationLevel: new FormControl('', Validators.required),
       passwordConfirmation: new FormControl('', [Validators.required, Validators.minLength(8)]),
       preferredMode: new FormControl('', Validators.required),
-      grade: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]+$')]),
+      grade: new FormControl({ value: '', disabled: true }, Validators.required),
       age: new FormControl('', [Validators.required, Validators.min(6), Validators.max(20), Validators.pattern('^[0-9]+$')]),
       gender: new FormControl('', Validators.required),
       phoneNumber: new FormControl('', [Validators.required, Validators.minLength(9), Validators.maxLength(13), Validators.pattern('^[0-9]+$')]),
@@ -50,7 +52,9 @@ export class RegistrationComponent implements OnInit {
     this.translate.use(lang);
   }
 
+
   ngOnInit(): void {
+
     this.citiesService.getCities().subscribe(
       (data) => {
         this.cities = data.map(cityData => new City(cityData.id, cityData.name, cityData.postalCode));
@@ -68,6 +72,37 @@ export class RegistrationComponent implements OnInit {
     this.UserForm.get('passwordConfirmation')?.valueChanges.subscribe(() => {
       this.checkPasswordMatch();
     });
+
+    this.UserForm.get('educationLevel')?.valueChanges.subscribe(level => {
+      if (level === 0) {  // Osnovna škola
+        this.gradeOptions = [
+          { label: 'grades.first', value: 'Prvi' },
+          { label: 'grades.second', value: 'Drugi' },
+          { label: 'grades.third', value: 'Treći' },
+          { label: 'grades.fourth', value: 'Četvrti' },
+          { label: 'grades.fifth', value: 'Peti' },
+          { label: 'grades.sixth', value: 'Šesti' },
+          { label: 'grades.seventh', value: 'Sedmi' },
+          { label: 'grades.eight', value: 'Osmi' },
+          { label: 'grades.ninth', value: 'Deveti' }
+        ];
+        this.UserForm.get('grade')?.enable();
+      } else if (level === 1) { // Srednja škola
+        this.gradeOptions = [
+          { label: 'grades.first', value: 'Prvi' },
+          { label: 'grades.second', value: 'Drugi' },
+          { label: 'grades.third', value: 'Treći' },
+          { label: 'grades.fourth', value: 'Četvrti' }
+        ];
+        this.UserForm.get('grade')?.enable();
+      } else {
+        this.gradeOptions = [];
+        this.UserForm.get('grade')?.disable();
+      }
+      this.UserForm.get('grade')?.reset('');
+    });
+
+    this.UserForm.get('grade')?.disable();
   }
 
   checkPasswordMatch(): boolean {
@@ -120,7 +155,6 @@ export class RegistrationComponent implements OnInit {
     }
     if (this.UserForm.valid) {
       const formValues = this.UserForm.value;
-      console.log('Forma je validna:', this.UserForm.value);
       this.http.post('http://localhost:7000/api/StudentEndpoints', formValues).subscribe({
         next: (response: any) => {
           this.router.navigate(['/student-dashboard']);

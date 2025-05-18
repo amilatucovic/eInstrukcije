@@ -1,17 +1,16 @@
-<app-navbar></app-navbar>
-<div class="container-fluid mt-4">
-  <h2 class="text-center mb-4">Pronađite tutora</h2>
-  <div class="row">
+<!-- <app-navbar></app-navbar> -->
+<div class="tutor-search-wrapper">
+  <h2 class="search-title">Pronađite instruktora</h2>
+  <div class="search-container">
     <!-- Filter Section -->
-    <div class="col-md-4">
+    <div class="filter-panel">
       <form [formGroup]="searchForm">
         <!-- Subject Dropdown -->
-        <div class="mb-3">
-          <label for="subjects" class="form-label">Predmet</label>
+        <div class="form-group">
+          <label for="subjects">Predmet</label>
           <select
             id="subjects"
             formControlName="subjectId"
-            class="form-control"
             (change)="onSubjectChange($event)"
           >
             <option value="" disabled selected>Odaberite predmet</option>
@@ -21,13 +20,12 @@
           </select>
         </div>
 
-        <!-- Category Dropdown (Populated dynamically based on selected subject) -->
-        <div class="mb-3">
-          <label for="categories" class="form-label">Kategorija</label>
+        <!-- Category Dropdown -->
+        <div class="form-group">
+          <label for="categories">Kategorija</label>
           <select
             id="categories"
             formControlName="categoryId"
-            class="form-control"
             [disabled]="!categories.length"
           >
             <option value="" disabled selected>Odaberite kategoriju</option>
@@ -38,89 +36,77 @@
         </div>
 
         <!-- Price Filters -->
-        <div class="mb-3">
-          <label for="minPrice" class="form-label">Minimalna cijena (KM)</label>
-          <input
-            id="minPrice"
-            type="number"
-            formControlName="minPrice"
-            class="form-control"
-            placeholder="Enter Min Price"
-          />
-        </div>
-        <div class="mb-3">
-          <label for="maxPrice" class="form-label">Maksimalna cijena (KM)</label>
-          <input
-            id="maxPrice"
-            type="number"
-            formControlName="maxPrice"
-            class="form-control"
-            placeholder="Enter Max Price"
-          />
+        <div class="form-group-inline">
+          <div>
+            <label for="minPrice">Min. cijena (KM)</label>
+            <input
+              type="number"
+              id="minPrice"
+              formControlName="minPrice"
+              placeholder="Min"
+            />
+          </div>
+          <div>
+            <label for="maxPrice">Max. cijena (KM)</label>
+            <input
+              type="number"
+              id="maxPrice"
+              formControlName="maxPrice"
+              placeholder="Max"
+            />
+          </div>
         </div>
 
-        <!-- City Filter -->
-        <div class="mb-3">
-          <label for="city" class="form-label">Grad</label>
-          <select id="city" formControlName="cityId" class="form-control">
+        <!-- City -->
+        <div class="form-group">
+          <label for="city">Grad</label>
+          <select id="city" formControlName="cityId">
             <option value="" disabled selected>Odaberite grad</option>
-            <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+            <option *ngFor="let city of cities" [value]="city.id">
+              {{ city.name }}
+            </option>
           </select>
         </div>
 
-        <!-- In-Person Availability Filter -->
-        <div class="form-check mb-3">
+        <!-- In-Person -->
+        <div class="form-check-inline2">
           <input
-            id="inPersonAvailable"
             type="checkbox"
+            id="inPersonAvailable"
             formControlName="inPersonAvailable"
-            class="form-check-input"
           />
-          <label for="inPersonAvailable" class="form-check-label">Dostupni uživo</label>
+          <label for="inPersonAvailable">Dostupno uživo</label>
         </div>
       </form>
     </div>
 
-    <!-- Results Section -->
-    <div class="col-md-8 tutor-results">
-      <div *ngIf="isLoading" class="text-center my-4">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Učitavanje...</span>
-        </div>
+    <!-- Tutor Cards Section -->
+    <div class="tutor-results">
+      <div *ngIf="isLoading" class="loader">
+        <div class="spinner-border"></div>
       </div>
-      <div *ngIf="!isLoading && tutors.length === 0" class="text-center my-4">
-        <p>Nema tutora prema odabranim filterima. Pokušajte prilagoditi filtere.</p>
+
+      <div *ngIf="!isLoading && tutors.length === 0" class="empty-result">
+        <p>Nema instruktora koji odgovara odabranim filterima.</p>
       </div>
+
       <div *ngIf="!isLoading && tutors.length > 0">
-        <div
-          class="card mb-3"
-          *ngFor="let tutor of tutors"
-          [style.boxShadow]="'0 4px 6px rgba(0,0,0,0.1)'"
-        >
-          <div class="row g-0">
-            <div class="col-md-3">
-              <img
-                [src]="tutor.profilePicture || 'https://via.placeholder.com/150'"
-                alt="Tutor Image"
-                class="img-fluid rounded-start"
-              />
-            </div>
-            <div class="col-md-9">
-              <div class="card-body">
-                <h5 class="card-title">{{ tutor.name }}</h5>
-                <p class="card-text">
-                  Cijena časa: <strong>{{ tutor.hourlyRate }}</strong><br />
-                  Ocjena: <strong>{{ tutor.rating }}</strong><br />
-                </p>
-                <p class="card-text">
-                  <small class="text-muted">Grad: {{ tutor.city }}</small>
-                </p>
-              </div>
-            </div>
+        <div class="tutor-card" *ngFor="let tutor of tutors">
+          <img
+            [src]="tutor.profilePicture || 'https://via.placeholder.com/150'"
+            alt="Tutor Image"
+          />
+          <div class="card-info">
+            <h5>{{ tutor.name }}</h5>
+            <p>
+              <strong>Cijena časa:</strong> {{ tutor.hourlyRate }} KM<br />
+              <strong>Ocjena:</strong> {{ tutor.rating }}
+            </p>
+            <span class="location">📍 {{ tutor.city }}</span>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<app-footer></app-footer>
+<!-- <app-footer></app-footer> -->

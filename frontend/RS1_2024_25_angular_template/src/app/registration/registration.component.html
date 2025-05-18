@@ -17,11 +17,15 @@
           *ngIf="
             UserForm.controls['firstName'].invalid &&
             (UserForm.controls['firstName'].touched ||
+              UserForm.controls['firstName'].dirty ||
               UserForm.controls['firstName'].dirty)
           "
         >
           <span *ngIf="UserForm.controls['firstName'].errors?.['required']">{{
             "errors.requiredField" | translate
+          }}</span>
+          <span *ngIf="UserForm.controls['firstName'].errors?.['pattern']">{{
+            "errors.onlyletters" | translate
           }}</span>
         </div>
       </div>
@@ -46,6 +50,9 @@
         >
           <span *ngIf="UserForm.controls['lastName'].errors?.['required']">{{
             "errors.requiredField" | translate
+          }}</span>
+          <span *ngIf="UserForm.controls['lastName'].errors?.['pattern']">{{
+            "errors.onlyletters" | translate
           }}</span>
         </div>
       </div>
@@ -211,34 +218,34 @@
 
       <!-- Educational level -->
       <div class="form-group col-md-6">
-        <label for="educationalLevel">{{
+        <label for="educationLevel">{{
           "form.educationalLevel" | translate
         }}</label>
         <select
-          id="educationalLevel"
+          id="educationLevel"
           class="form-control custom-dropdown"
-          formControlName="educationalLevel"
+          formControlName="educationLevel"
         >
           <option value="" disabled selected hidden>
             {{ "placeholders.educationalLevel" | translate }}
           </option>
-          <option value="Osnovna skola">
+          <option [ngValue]="0">
             {{ "educationLevelOptions.primary" | translate }}
           </option>
-          <option value="Srednja skola">
+          <option [ngValue]="1">
             {{ "educationLevelOptions.high" | translate }}
           </option>
         </select>
         <div
           class="text-danger"
           *ngIf="
-            UserForm.controls['educationalLevel'].invalid &&
-            (UserForm.controls['educationalLevel'].touched ||
-              UserForm.controls['educationalLevel'].dirty)
+            UserForm.controls['educationLevel'].invalid &&
+            (UserForm.controls['educationLevel'].touched ||
+              UserForm.controls['educationLevel'].dirty)
           "
         >
           <span
-            *ngIf="UserForm.controls['educationalLevel'].errors?.['required']"
+            *ngIf="UserForm.controls['educationLevel'].errors?.['required']"
             >{{ "errors.requiredField" | translate }}</span
           >
         </div>
@@ -283,19 +290,14 @@
             id="grade"
             class="form-control custom-dropdown"
             formControlName="grade"
+            [disabled]="UserForm.get('grade')?.disabled ?? false"
           >
             <option value="" disabled selected hidden>
               {{ "placeholders.grade" | translate }}
             </option>
-            <option value="Prvi">{{ "grades.first" | translate }}</option>
-            <option value="Drugi">{{ "grades.second" | translate }}</option>
-            <option value="Treci">{{ "grades.third" | translate }}</option>
-            <option value="Cetvrti">{{ "grades.fourth" | translate }}</option>
-            <option value="Peti">{{ "grades.fifth" | translate }}</option>
-            <option value="Sesti">{{ "grades.sixth" | translate }}</option>
-            <option value="Sedmi">{{ "grades.seventh" | translate }}</option>
-            <option value="Osmi">{{ "grades.eight" | translate }}</option>
-            <option value="Deveti">{{ "grades.ninth" | translate }}</option>
+            <option *ngFor="let grade of gradeOptions" [value]="grade.value">
+              {{ grade.label | translate }}
+            </option>
           </select>
         </div>
         <div

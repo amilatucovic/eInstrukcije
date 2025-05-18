@@ -45,7 +45,8 @@
     "minLength8": "This field must contain at least 8 characters!",
     "pattern": "The phone number format is not valid!",
     "young": "The youngest student can be 6!",
-    "old": "The oldest student can be 20!"
+    "old": "The oldest student can be 20!",
+    "onlyletters": "This field must contain only letters!"
   },
   "genderOptions": {
     "male": "Male",
