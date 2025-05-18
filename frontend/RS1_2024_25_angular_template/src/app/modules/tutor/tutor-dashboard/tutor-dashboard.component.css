@@ -89,24 +89,24 @@ h2 {
 }
 
 .cal-hour-segment, .cal-time-label, .cal-time {
-  height: 60px !important; /* Povećaj visinu reda */
+  height: 60px !important;
 }
 
 .cal-event-title {
-  white-space: normal; /* Omogućava višeredni prikaz teksta */
-  word-break: break-word; /* Prelomi riječi ako su preduge */
+  white-space: normal;
+  word-break: break-word;
 }
 
 .cal-hour-col {
-  min-height: 60px !important; /* Prilagodba visine kolone */
+  min-height: 60px !important;
 }
 
 .cal-day-view .cal-hour-rows {
-  height: auto !important; /* Osigurava da se redovi prilagode */
+  height: auto !important;
 }
 
 .lesson-card {
-  border-left: 4px solid #28a745; /* zelena za engleski */
+  border-left: 4px solid #28a745;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   height: 100%;
   display: flex;
@@ -121,7 +121,7 @@ h2 {
 
 .lesson-card .card-title {
   font-weight: 600;
-  color: #28a745; /* jača zelena nijansa */
+  color: #28a745;
   display: flex;
   align-items: center;
 }
@@ -133,7 +133,24 @@ h2 {
 
 
 ::ng-deep .cal-event {
-  border: none !important;
-  border-radius: 4px !important;
-  padding: 4px !important;
+  border: 2px solid #333 !important;
+  border-radius: 6px !important;
+  box-shadow: 0 2px 6px #49474726;
+  padding: 6px !important;
 }
+::ng-deep .event-online .cal-event-title {
+  color: #ff0000 !important;
+}
+
+::ng-deep .event-inperson .cal-event-title {
+  color: #02346AFF !important;
+}
+
+
+
+
+
+
+
+
+

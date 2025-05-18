@@ -145,12 +145,13 @@
           [viewDate]="viewDate"
           [events]="events"
           [hourSegments]="2"
-          [hourSegmentHeight]="45"
+          [hourSegmentHeight]="65"
           [dayStartHour]="8"
           [dayEndHour]="20"
           [locale]="locale">
+        </mwl-calendar-week-view>
 
-          <ng-template #headerTemplate let-days="days">
+        <ng-template #headerTemplate let-days="days">
             <div class="cal-day-headers">
               <div class="cal-header" *ngFor="let day of days">
                 <div class="day-name">{{ day.date | date:'EEE' }}</div>
@@ -158,7 +159,7 @@
               </div>
             </div>
           </ng-template>
-        </mwl-calendar-week-view>
+
       </div>
     </div>
 

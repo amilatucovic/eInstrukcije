@@ -4,6 +4,7 @@ import { TutorProfile } from '../tutor-profile.model';
 import { TutorService } from '../../../services/auth-services/services/tutor-profile.service';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { Subject } from 'rxjs';
+import { format } from 'date-fns';
 
 
 @Component({
@@ -60,11 +61,19 @@ export class TutorDashboardComponent implements OnInit {
         });
 
         this.events = data.map(lesson => {
+          const isOnline = lesson.lessonMode === 'Online';
+
           return {
-            title: `${lesson.studentName} - ${lesson.subjectName} <br> ${lesson.lessonMode}`,
+            title: `${lesson.studentName} - ${lesson.subjectName}<br>
+        ${lesson.lessonMode}<br>
+        ${format(new Date(lesson.start), 'HH:mm')} :
+        ${format(new Date(lesson.end), 'HH:mm')}`,
             start: new Date(lesson.start),
             end: new Date(lesson.end),
-            color: lesson.lessonMode === 'InPerson' ? { primary: '#1e90ff', secondary: '#D1E8FF' } : { primary: '#ff6347', secondary: '#FFB6C1' },
+            color: isOnline
+              ? { primary: '#ff6347', secondary: '#FFB6C1' }
+              : { primary: '#1e90ff', secondary: '#D1E8FF' },
+            cssClass: isOnline ? 'event-online' : 'event-inperson',
             allDay: false,
             meta: {
               lessonMode: lesson.lessonMode
