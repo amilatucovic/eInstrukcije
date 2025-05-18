@@ -4,6 +4,7 @@
 
 nav {
   min-height: 100vh;
+  width: 250px;
 }
 
 h2 {
@@ -12,7 +13,7 @@ h2 {
 .sidebar {
   background-color: rgba(138, 171, 188, 0.78);
   min-height: 100vh;
-  width: 250px;
+  width: 370px;
 }
 
 .profile-img {
@@ -145,7 +146,30 @@ h2 {
 ::ng-deep .event-inperson .cal-event-title {
   color: #02346AFF !important;
 }
+::ng-deep .cal-event:hover {
+  transform: scale(1.01);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+.online-lesson {
+  border-left: 4px solid #dc3545;
+  color: #721c24;
+}
+
+.inperson-lesson {
+  border-left: 4px solid #0d6efd;
+  color: #0c4a6e;
+}
+
+.online-lesson .card-title,
+.inperson-lesson .card-title {
+  color: inherit;
+}
+
+.online-lesson .card-title i,
+.inperson-lesson .card-title i {
+  color: inherit;
+}
 
 
 
