@@ -2,14 +2,21 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
+using RS1_2024_2025.Domain.Entities;
 using System;
 
 [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, AllowMultiple = true)]
-public class MyAuthorizationAttribute(bool isAdmin, bool isManager) : Attribute, IAuthorizationFilter
+public class MyAuthorizationAttribute : Attribute, IAuthorizationFilter
 {
+    private readonly UserType[] _allowedRoles;
+
+    public MyAuthorizationAttribute(params UserType[] allowedRoles)
+    {
+        _allowedRoles = allowedRoles;
+    }
+
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        // Dobavi MyAuthService iz servisa
         var authService = context.HttpContext.RequestServices.GetService<MyAuthService>();
         if (authService == null)
         {
@@ -17,25 +24,11 @@ public class MyAuthorizationAttribute(bool isAdmin, bool isManager) : Attribute,
             return;
         }
 
-        // Pozovi GetAuthInfo za dobijanje korisničkih informacija na osnovu tokena
         var authInfo = authService.GetAuthInfo();
-        if (authInfo == null)
-        {
-            context.Result = new UnauthorizedResult();
-            return;
-        }
-
-        // Provjeri role korisnika
-        if (isAdmin && !authInfo.IsAdmin)
+        if (!authInfo.IsLoggedIn || !_allowedRoles.Contains(authInfo.UserType))
         {
             context.Result = new ForbidResult();
-            return;
-        }
-
-        if (isManager && !authInfo.IsManager)
-        {
-            context.Result = new ForbidResult();
-            return;
         }
     }
 }
+

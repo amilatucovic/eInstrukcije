@@ -33,5 +33,5 @@ namespace RS1_2024_2025.Domain.Entities
     }
     public enum UserType { Admin, Tutor, Student }
 
-    //public enum Gender { Male, Female}
+    
 }

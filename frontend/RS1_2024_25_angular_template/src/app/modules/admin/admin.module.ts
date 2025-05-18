@@ -1,14 +1,8 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-
 import {AdminRoutingModule} from './admin-routing.module';
 import {DashboardComponent} from './dashboard/dashboard.component';
-
 import {AdminLayoutComponent} from './admin-layout/admin-layout.component';
-
-import {AdminErrorPageComponent} from './admin-error-page/admin-error-page.component';
-
-
 import {FormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
 
@@ -17,7 +11,6 @@ import {SharedModule} from '../shared/shared.module';
   declarations: [
     DashboardComponent,
     AdminLayoutComponent,
-    AdminErrorPageComponent,
   ],
   imports: [
     CommonModule,

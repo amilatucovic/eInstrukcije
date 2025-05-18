@@ -7,7 +7,6 @@ import { CitiesService } from '../../../services/auth-services/services/cities.s
 import { City } from '../../../models/city.model';
 
 
-
 @Component({
   selector: 'app-tutor-registration',
   templateUrl: './tutor-registration.component.html',

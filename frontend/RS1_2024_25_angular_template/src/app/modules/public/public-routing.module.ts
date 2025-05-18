@@ -6,7 +6,7 @@ import { TutorRegistrationComponent } from './tutor-registration/tutor-registrat
 const routes: Routes = [
   {
     path: '',
-    component: LandingPageComponent, // Koristi LandingPageComponent kao parent
+    component: LandingPageComponent,
     children: [
       { path: '', redirectTo: 'landing-page', pathMatch: 'full' }, // Redirekcija na landing page
 
