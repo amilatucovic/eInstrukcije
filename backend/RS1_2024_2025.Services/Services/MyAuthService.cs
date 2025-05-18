@@ -65,25 +65,26 @@ namespace RS1_2024_2025.Services
 
         public MyAuthInfo GetAuthInfo(MyAuthenticationToken? myAuthToken)
         {
-            if (myAuthToken == null)
+            if (myAuthToken == null || myAuthToken.MyAppUser == null)
             {
                 return new MyAuthInfo
                 {
-                    IsAdmin = false,
-                    IsManager = false,
                     IsLoggedIn = false,
+                    UserType = UserType.Student // ili neka default vrijednost
                 };
             }
 
             return new MyAuthInfo
             {
                 UserId = myAuthToken.MyAppUserId,
-                Username = myAuthToken.MyAppUser!.Username,
+                Username = myAuthToken.MyAppUser.Username,
                 FirstName = myAuthToken.MyAppUser.FirstName,
                 LastName = myAuthToken.MyAppUser.LastName,
-                IsLoggedIn = true
+                IsLoggedIn = true,
+                UserType = myAuthToken.MyAppUser.UserType
             };
         }
+
     }
 
     // DTO to hold authentication information
@@ -93,8 +94,7 @@ namespace RS1_2024_2025.Services
         public string Username { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public bool IsAdmin { get; set; }
-        public bool IsManager { get; set; }
+        public UserType UserType { get; set; }
         public bool IsLoggedIn { get; set; }
         public string SlikaPath {  get; set; }
     }
