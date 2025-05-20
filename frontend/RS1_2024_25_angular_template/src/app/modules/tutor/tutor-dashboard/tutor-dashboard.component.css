@@ -171,6 +171,10 @@ h2 {
   color: inherit;
 }
 
+.mwl-calendar-week-view {
+  max-height: 600px;
+  overflow-y: auto;
+}
 
 
 

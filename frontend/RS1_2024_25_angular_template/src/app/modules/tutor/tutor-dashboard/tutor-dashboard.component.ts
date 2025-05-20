@@ -65,7 +65,7 @@ export class TutorDashboardComponent implements OnInit {
 
           return {
             title: `${lesson.studentName} - ${lesson.subjectName}<br>
-        ${lesson.lessonMode}<br>
+        ${lesson.lessonMode} -
         ${format(new Date(lesson.start), 'HH:mm')} :
         ${format(new Date(lesson.end), 'HH:mm')}`,
             start: new Date(lesson.start),
