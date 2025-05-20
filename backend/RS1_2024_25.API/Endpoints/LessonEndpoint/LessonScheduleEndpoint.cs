@@ -11,9 +11,10 @@ public class LessonEndpoint(ApplicationDbContext db) : ControllerBase
     public IActionResult GetScheduleForTutor(int tutorId)
     {
         var today = DateTime.Today;
-        var diff = (7 + (int)today.DayOfWeek - (int)DayOfWeek.Monday) % 7;
-        var startOfWeek = today.AddDays(-1 * diff).Date;
+        var diff = (int)today.DayOfWeek;
+        var startOfWeek = today.AddDays(-diff).Date; // start from Sunday
         var endOfWeek = startOfWeek.AddDays(7);
+
 
         var lessons = db.Lessons
             .Include(l => l.Student)
