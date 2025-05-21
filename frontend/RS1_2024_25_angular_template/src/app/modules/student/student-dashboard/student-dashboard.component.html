@@ -45,25 +45,45 @@
 
     <nav class="nav-links">
       <a
-        routerLink="/dashboard"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }"
+        href="#"
+        (click)="setActiveTab('home'); $event.preventDefault()"
+        [class.active]="activeTab === 'home'"
       >
         <span class="material-icons">home</span> Početna stranica
       </a>
-      <a routerLink="/classes" routerLinkActive="active">
+      <a
+        href="#"
+        (click)="setActiveTab('classes'); $event.preventDefault()"
+        [class.active]="activeTab === 'classes'"
+      >
         <span class="material-icons">menu_book</span> Predavanja
       </a>
-      <a routerLink="tutor-search" routerLinkActive="active">
+      <a
+        href="#"
+        (click)="setActiveTab('instruktori'); $event.preventDefault()"
+        [class.active]="activeTab === 'instruktori'"
+      >
         <span class="material-icons">school</span> Instruktori
       </a>
-      <a routerLink="/reservations" routerLinkActive="active">
+      <a
+        href="#"
+        (click)="setActiveTab('reservations'); $event.preventDefault()"
+        [class.active]="activeTab === 'reservations'"
+      >
         <span class="material-icons">event</span> Termini
       </a>
-      <a routerLink="/payments" routerLinkActive="active">
+      <a
+        href="#"
+        (click)="setActiveTab('payments'); $event.preventDefault()"
+        [class.active]="activeTab === 'payments'"
+      >
         <span class="material-icons">credit_card</span> Transakcije
       </a>
-      <a routerLink="/account" routerLinkActive="active">
+      <a
+        href="#"
+        (click)="setActiveTab('account'); $event.preventDefault()"
+        [class.active]="activeTab === 'account'"
+      >
         <span class="material-icons">account_circle</span> Moj profil
       </a>
     </nav>
@@ -71,10 +91,15 @@
 
   <!-- Main content -->
   <div class="main-content">
-    <h1>
-      Dobrodošli nazad!
-      <!--{{ student?.myAppUser?.firstName }}-->
-    </h1>
-    <p>Učimo i napredujemo, zajedno!</p>
+    <div *ngIf="activeTab === 'home'">
+      <h1>
+        Dobrodošli nazad!
+        <!--{{ student?.myAppUser?.firstName }}-->
+      </h1>
+      <p>Učimo i napredujemo, zajedno!</p>
+    </div>
+    <div>
+      <app-tutor-search *ngIf="activeTab === 'instruktori'"></app-tutor-search>
+    </div>
   </div>
 </div>

@@ -8,10 +8,15 @@ import { Router } from '@angular/router';
 })
 export class LandingPageComponent {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
   openForm() {
     this.router.navigate(['/register']);
   }
 
+  activeTab: string = 'pocetna';
+
+  onNavbarTabChange(tabName: string) {
+    this.activeTab = tabName;
+  }
 }

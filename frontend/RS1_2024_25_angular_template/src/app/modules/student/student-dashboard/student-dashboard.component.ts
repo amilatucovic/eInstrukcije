@@ -8,6 +8,11 @@ import { Component, OnInit } from '@angular/core';
 export class StudentDashboardComponent implements OnInit {
   profileImageUrl: string | ArrayBuffer | null = null;
   hovering = false;
+  activeTab: string = 'home'; //početni aktivni tab
+
+  setActiveTab(tabName: string) {
+    this.activeTab = tabName;
+  }
 
   constructor() { }
 
