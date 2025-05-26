@@ -67,14 +67,16 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
+	DatabaseSeeder.Initialize(context).GetAwaiter().GetResult();
 
-    // await DatabaseSeeder.SeedAsync(context);
 }
-using (var scope = app.Services.CreateScope())
-{
-    var cleanupService = scope.ServiceProvider.GetRequiredService<RedundancyChecker>();
-    await cleanupService.RemoveDuplicatesAsync();
-}
+
+//using (var scope = app.Services.CreateScope())
+//{
+//    var cleanupService = scope.ServiceProvider.GetRequiredService<RedundancyChecker>();
+//    await cleanupService.RemoveDuplicatesAsync();
+//}
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();

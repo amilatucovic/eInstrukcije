@@ -79,6 +79,16 @@ namespace RS1_2024_25.API.Endpoints.StudentEndpoints
 		[HttpPost]
 		public async Task<IActionResult> Post([FromBody] StudentInsertRequest request, CancellationToken cancellationToken)
 		{
+			var u =db.MyAppUsers.FirstOrDefault(u=>u.Username == request.Username);
+			if (u!=null)
+			{
+				return BadRequest(new
+				{
+					success = false,
+					message = "Korisničko ime je već zauzeto."
+				});
+			}
+			
 			MyAppUser newUser = mapper.Map<MyAppUser>(request);
 			newUser.UserType = UserType.Student;
 			Student newStudent = mapper.Map<Student>(request);
