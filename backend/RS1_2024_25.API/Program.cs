@@ -6,19 +6,14 @@ using RS1_2024_2025.API.Endpoints.LoginEndpoint.Classes;
 using RS1_2024_2025.API.Endpoints.LoginEndpoint.Interfaces;
 using RS1_2024_2025.API.Helper.Auth;
 using RS1_2024_2025.Database;
-using RS1_2024_2025.Database.DatabaseSeeder;
 using RS1_2024_2025.Services;
-using RS1_2024_2025.Services.Services;
 using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
 using RS1_2024_25.API.Endpoints.TutorSearch;
-using System.IO;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
 var config = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json", false)
-    .Build();
+	.AddJsonFile("appsettings.json", false)
+	.Build();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,27 +21,26 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configure DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(config.GetConnectionString("db1")));
+	options.UseSqlServer(config.GetConnectionString("db1")));
 
-builder.Services.AddTransient<RedundancyChecker>();
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 // Add JWT Authentication
 var jwtSettings = config.GetSection("Jwt");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = jwtSettings["Issuer"],
-            ValidAudience = jwtSettings["Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
-        };
-    });
+	.AddJwtBearer(options =>
+	{
+		options.TokenValidationParameters = new TokenValidationParameters
+		{
+			ValidateIssuer = true,
+			ValidateAudience = true,
+			ValidateLifetime = true,
+			ValidateIssuerSigningKey = true,
+			ValidIssuer = jwtSettings["Issuer"],
+			ValidAudience = jwtSettings["Audience"],
+			IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
+		};
+	});
 
 // Add application services
 builder.Services.AddTransient<MyAuthService>();
@@ -63,44 +57,36 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    context.Database.Migrate();
-	DatabaseSeeder.Initialize(context).GetAwaiter().GetResult();
-
-}
-
-//using (var scope = app.Services.CreateScope())
-//{
-//    var cleanupService = scope.ServiceProvider.GetRequiredService<RedundancyChecker>();
-//    await cleanupService.RemoveDuplicatesAsync();
-//}
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseCors(
-    options => options
-        .SetIsOriginAllowed(x => _ = true)
-        .AllowAnyMethod()
-        .AllowAnyHeader()
-        .AllowCredentials()
+	options => options
+		.SetIsOriginAllowed(x => _ = true)
+		.AllowAnyMethod()
+		.AllowAnyHeader()
+		.AllowCredentials()
 );
 
 // **Dodano: Omogućeno serviranje statičkih fajlova iz foldera Uploads**
 var uploadsPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads");
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(uploadsPath),
-    RequestPath = "/Uploads"
+	FileProvider = new PhysicalFileProvider(uploadsPath),
+	RequestPath = "/Uploads"
 });
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+	var dataContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+	dataContext.Database.Migrate();
+}
 
 app.Run();

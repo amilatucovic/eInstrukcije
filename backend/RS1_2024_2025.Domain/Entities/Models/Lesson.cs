@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RS1_2024_2025.Domain.Entities
 {
