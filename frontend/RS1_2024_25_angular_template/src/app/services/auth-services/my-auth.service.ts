@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MyAppUser } from '../../models/myAppUser.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,10 @@ export class MyAuthService {
     } else {
       localStorage.removeItem('loggedInUser');
     }
+  }
+  getLoggedInUser(): MyAppUser | null {
+    const stored = localStorage.getItem('loggedInUser');
+    return stored ? JSON.parse(stored) : null;
   }
 
   getLoginToken(): { token: string } | null {

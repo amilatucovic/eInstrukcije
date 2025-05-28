@@ -46,12 +46,18 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
                     tutorId = tutor.ID;
             }
 
-            var loginResponseDto = new LoginResponseDto()
+			
+            var myappuser=_context.MyAppUsers.FirstOrDefault(u=>u.ID==user.ID);
+			var loginResponseDto = new LoginResponseDto()
             {
                 Token = token,
                 RefreshToken = refreshToken,
                 Role = role,
-                TutorId = tutorId 
+                TutorId = tutorId,
+                Username=myappuser?.Username,
+                FirstName=myappuser?.FirstName,
+                LastName=myappuser.LastName,
+                Email=myappuser.Email
             };
             return Ok(loginResponseDto);
         }

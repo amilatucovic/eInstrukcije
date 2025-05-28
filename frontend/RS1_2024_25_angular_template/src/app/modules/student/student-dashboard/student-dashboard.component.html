@@ -35,12 +35,9 @@
         />
       </div>
       <h3>
-        <p>John Doe</p>
-        <p>john.doeATgmail.com</p>
-        <!-- {{ student?.myAppUser?.firstName }} {{ student?.myAppUser?.lastName }} -->
+        <p>{{ user?.firstName }} {{ user?.lastName }}</p>
+        <p>{{ user?.email }}</p>
       </h3>
-
-      <!-- <p>{{ student?.myAppUser?.email }}</p> -->
     </div>
 
     <nav class="nav-links">
@@ -93,8 +90,8 @@
   <div class="main-content">
     <div *ngIf="activeTab === 'home'">
       <h1>
-        Dobrodošli nazad!
-        <!--{{ student?.myAppUser?.firstName }}-->
+        Dobrodošli nazad,
+        {{ user?.firstName }}!
       </h1>
       <p>Učimo i napredujemo, zajedno!</p>
     </div>

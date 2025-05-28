@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MyAuthService } from '../../../services/auth-services/my-auth.service';
+import { MyAppUser } from '../../../models/myAppUser.model';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -9,18 +11,21 @@ export class StudentDashboardComponent implements OnInit {
   profileImageUrl: string | ArrayBuffer | null = null;
   hovering = false;
   activeTab: string = 'home'; //početni aktivni tab
+  user: MyAppUser | null = null;
 
   setActiveTab(tabName: string) {
     this.activeTab = tabName;
   }
 
-  constructor() { }
+  constructor(private myAuth: MyAuthService) { }
 
   ngOnInit(): void {
     const savedImage = localStorage.getItem('studentProfileImage');
     if (savedImage) {
       this.profileImageUrl = savedImage;
     }
+
+    this.user = this.myAuth.getLoggedInUser();
   }
 
   onFileSelected(event: Event): void {

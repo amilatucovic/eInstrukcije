@@ -8,10 +8,8 @@ export class MyAppUser {
         public cityId: number,
         public firstName: string,
         public lastName: string,
-        public email: string
+        public email: string,
+        public username: string
     ) { }
 
-    fullDescription(): string {
-        return `${this.firstName} ${this.lastName}`;
-    }
 }
