@@ -47,7 +47,8 @@
     "pattern": "Der Telefonnummernformat ist nicht gültig!",
     "young": "Der jüngste Student kann 6 Jahre alt sein!",
     "old": "Der älteste Student kann 20 Jahre alt sein!",
-    "onlyletters": "Dieses Feld darf nur Buchstaben enthalten!"
+    "onlyletters": "Dieses Feld darf nur Buchstaben enthalten!",
+    "username": "Benutzername ist bereits vergeben!"
   },
   "genderOptions": {
     "male": "Männlich",

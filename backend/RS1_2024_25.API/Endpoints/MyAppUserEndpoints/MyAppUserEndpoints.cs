@@ -1,8 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RS1_2024_2025.Domain.Entities.Models;
-using RS1_2024_2025.Domain;
-using RS1_2024_2025.API.Endpoints.SubjectEndpoint;
-using RS1_2024_2025.Domain.Entities.Models.Auth;
 using RS1_2024_2025.Database;
 using RS1_2024_2025.Domain.Entities;
 using Microsoft.EntityFrameworkCore;

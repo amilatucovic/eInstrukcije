@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
@@ -7,7 +7,10 @@ import { CitiesService } from '../services/auth-services/services/cities.service
 import { City } from '../models/city.model';
 import { TranslateService } from '@ngx-translate/core';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { MyAppUserService } from '../services/auth-services/services/myappuser.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
+import { Subscription } from 'rxjs'; // Dodano za upravljanje pretplatama
 declare var window: any; //za pristup globalnim objektima jer koristimo bootstrap
 
 @Component({
@@ -17,7 +20,7 @@ declare var window: any; //za pristup globalnim objektima jer koristimo bootstra
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule, TranslateModule]
 })
-export class RegistrationComponent implements OnInit {
+export class RegistrationComponent implements OnInit, OnDestroy {
 
   UserForm: FormGroup;
   passwordStrength: string = '';
@@ -26,9 +29,14 @@ export class RegistrationComponent implements OnInit {
   passwordMatchClass: string = '';
   cities: City[] = [];
   gradeOptions: { label: string, value: string }[] = [];
+  username: string = '';
+  usernameTaken: boolean = false;
+  usernameErrorMessage: string = '';
 
+  private langChangeSubscription: Subscription | undefined;
+  private usernameCheckSubscription: Subscription | undefined;
 
-  constructor(private http: HttpClient, private router: Router, private citiesService: CitiesService, private translate: TranslateService) {
+  constructor(private http: HttpClient, private router: Router, private citiesService: CitiesService, private translate: TranslateService, private myAppUserService: MyAppUserService) {
     this.UserForm = new FormGroup({
       firstName: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]+$')]),
       lastName: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]+$')]),
@@ -58,7 +66,6 @@ export class RegistrationComponent implements OnInit {
     this.citiesService.getCities().subscribe(
       (data) => {
         this.cities = data.map(cityData => new City(cityData.id, cityData.name, cityData.postalCode));
-        console.log(this.cities);
       },
       (error) => {
         console.error('Greška pri učitavanju gradova', error);
@@ -103,8 +110,48 @@ export class RegistrationComponent implements OnInit {
     });
 
     this.UserForm.get('grade')?.disable();
+
+    this.UserForm.get('username')?.valueChanges.pipe(
+      debounceTime(500),
+      distinctUntilChanged(),
+      filter(username => {
+        const usernameControl = this.UserForm.get('username');
+        return username && username.length >= 5 && usernameControl?.valid;
+      })
+    ).subscribe(username => {
+      this.usernameTaken = false;
+      this.usernameErrorMessage = '';
+
+      this.myAppUserService.checkUsernameAvailability(username).subscribe({
+        next: (res) => {
+          this.usernameTaken = !res.available;
+          if (this.usernameTaken) {
+            this.usernameErrorMessage = this.translate.instant("errors.username");
+          }
+        },
+        error: (err: HttpErrorResponse) => {
+          console.error('Greška pri provjeri korisničkog imena (backend je vratio grešku):', err);
+          this.usernameTaken = true;
+          this.usernameErrorMessage = this.translate.instant("errors.username");
+        }
+      });
+    });
+
+    this.langChangeSubscription = this.translate.onLangChange.subscribe(() => {
+      if (this.usernameTaken) {
+        this.usernameErrorMessage = this.translate.instant("errors.username");
+      }
+    });
   }
 
+  ngOnDestroy(): void {
+    if (this.langChangeSubscription) {
+      this.langChangeSubscription.unsubscribe();
+    }
+    if (this.usernameCheckSubscription) {
+      this.usernameCheckSubscription.unsubscribe();
+    }
+  }
   checkPasswordMatch(): boolean {
     const matches = this.UserForm.get("password")?.value === this.UserForm.get("passwordConfirmation")?.value;
     if (matches) {
@@ -153,6 +200,9 @@ export class RegistrationComponent implements OnInit {
       this.passwordMatchClass = 'text-danger';
       return;
     }
+    if (this.usernameTaken) {
+      return;
+    }
     if (this.UserForm.valid) {
       const formValues = this.UserForm.value;
       this.http.post('http://localhost:7000/api/StudentEndpoints', formValues).subscribe({
@@ -160,7 +210,7 @@ export class RegistrationComponent implements OnInit {
           this.router.navigate(['/student-dashboard']);
         },
         error: (error) => {
-          console.log(error.error)
+          console.log(error);
         }
       });
     }

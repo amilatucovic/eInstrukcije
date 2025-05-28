@@ -111,6 +111,9 @@
             "errors.minLength5" | translate
           }}</span>
         </div>
+        <div *ngIf="usernameTaken" class="text-danger">
+          {{ usernameErrorMessage }}
+        </div>
       </div>
     </div>
 
