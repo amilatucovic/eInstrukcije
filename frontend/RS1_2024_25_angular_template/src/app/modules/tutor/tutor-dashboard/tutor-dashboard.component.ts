@@ -89,6 +89,6 @@ export class TutorDashboardComponent implements OnInit {
   get profileImageUrl(): string {
     return this.tutorProfile?.profileImageUrl
       ? `http://localhost:7000${this.tutorProfile.profileImageUrl}`
-      : 'assets/profile-picture.jpg';
+      : '/assets/user.webp';
   }
 }
