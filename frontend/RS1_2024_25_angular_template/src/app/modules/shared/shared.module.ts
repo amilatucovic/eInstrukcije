@@ -6,13 +6,15 @@ import { RouterLink } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { TutorSearchComponent } from '../student/tutor-search/tutor-search.component';
+import { StudentHomeTabComponent } from '../student/student-home-tab/student-home-tab.component';
 
 @NgModule({
   declarations: [
     UnauthorizedComponent,
     NavbarComponent,
     FooterComponent, // Dodajemo UnauthorizedComponent u deklaracije,
-    TutorSearchComponent
+    TutorSearchComponent,
+    StudentHomeTabComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +29,8 @@ import { TutorSearchComponent } from '../student/tutor-search/tutor-search.compo
     ReactiveFormsModule,
     NavbarComponent,
     FooterComponent,
-    TutorSearchComponent
+    TutorSearchComponent,
+    StudentHomeTabComponent
   ]
 })
 export class SharedModule {

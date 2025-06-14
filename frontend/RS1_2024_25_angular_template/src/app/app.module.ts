@@ -1,4 +1,4 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,11 +14,12 @@ import { PretragaStudenataComponent } from './pretraga-studenata/pretraga-studen
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient } from '@angular/common/http';
-import {  LOCALE_ID } from '@angular/core';
+import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeBs from '@angular/common/locales/bs';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
-import {adapterFactory} from 'angular-calendar/date-adapters/date-fns';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { StudentHomeTabComponent } from './modules/student/student-home-tab/student-home-tab.component';
 
 
 registerLocaleData(localeBs);
