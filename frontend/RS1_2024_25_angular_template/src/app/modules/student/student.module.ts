@@ -7,15 +7,13 @@ import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
-    StudentDashboardComponent,
+    StudentDashboardComponent
   ],
   imports: [
     CommonModule,
     StudentRoutingModule,
     ReactiveFormsModule,
-    SharedModule,
-    ReactiveFormsModule,
-
+    SharedModule
   ]
 })
 export class StudentModule { }

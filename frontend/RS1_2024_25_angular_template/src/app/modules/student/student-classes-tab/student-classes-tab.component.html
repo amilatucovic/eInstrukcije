@@ -1,0 +1,21 @@
+<div class="main-content">
+  <p>
+    Vaši časovi na jednom mestu – pregledajte raspored i detalje za svaki čas.
+  </p>
+</div>
+<div class="card mt-4">
+  <div class="card-body">
+    <h4 class="mb-3">
+      <i class="fas fa-calendar-week me-2"></i>Raspored za ovu sedmicu
+    </h4>
+    <mwl-calendar-week-view
+      [viewDate]="viewDate"
+      [events]="events"
+      [hourSegments]="2"
+      [hourSegmentHeight]="42"
+      [dayStartHour]="8"
+      [dayEndHour]="20"
+    >
+    </mwl-calendar-week-view>
+  </div>
+</div>

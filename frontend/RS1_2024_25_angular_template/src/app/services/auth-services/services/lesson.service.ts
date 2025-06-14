@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 export interface LessonToday {
   lessonID: number;
@@ -18,8 +19,8 @@ export interface LessonSchedule {
   end: string;   // ISO string
   lessonMode: string;
   status: string;
+  tutorName: string
 }
-
 
 
 @Injectable({
@@ -28,6 +29,7 @@ export interface LessonSchedule {
 export class LessonService {
   private todayUrl = 'http://localhost:7000/api/LessonGetTodayByTutorIdEndpoint';
   private weeklyUrl = 'http://localhost:7000/api/LessonEndpoint/schedule';
+  private baseUrl = 'http://localhost:7000/api/LessonEndpoint/lessons';
 
   constructor(private http: HttpClient) { }
 
@@ -38,4 +40,7 @@ export class LessonService {
     return this.http.get<LessonSchedule[]>(`${this.weeklyUrl}/${tutorId}`);
   }
 
+  getLessonsForStudent(studentId: number): Observable<LessonSchedule[]> {
+    return this.http.get<LessonSchedule[]>(`${this.baseUrl}/${studentId}`);
+  }
 }

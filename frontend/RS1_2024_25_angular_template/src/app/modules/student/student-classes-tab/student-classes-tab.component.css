@@ -1,0 +1,13 @@
+.main-content p {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.card-body h4 {
+  text-align: center;
+  font-size: large;
+}
+.fc-event-title br {
+  margin-bottom: 10px;
+}

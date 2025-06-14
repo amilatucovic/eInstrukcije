@@ -37,4 +37,28 @@ public class LessonEndpoint(ApplicationDbContext db) : ControllerBase
 
         return Ok(lessons);
     }
+
+	[HttpGet("lessons/{studentId}")]
+	public IActionResult GetScheduleForStudent(int studentId)
+	{
+		var lessons = db.Lessons
+			.Include(l => l.Tutor)
+				.ThenInclude(t => t.MyAppUser)
+			.Include(l => l.Subject)
+			.Where(l => l.StudentID == studentId && l.Status == LessonStatus.Scheduled)
+			.Select(l => new LessonScheduleDTO
+			{
+				LessonID = l.ID,
+                StudentName=l.Student.MyAppUser.FirstName + " " + l.Student.MyAppUser.LastName,
+				SubjectName = l.Subject.Name,
+				Start = l.StartTime,
+				End = l.EndTime,
+				LessonMode = l.Mode.ToString(),
+				Status = l.Status.ToString(),
+				TutorName = l.Tutor.MyAppUser.FirstName + " " + l.Tutor.MyAppUser.LastName
+			})
+			.ToList();
+
+		return Ok(lessons);
+	}
 }

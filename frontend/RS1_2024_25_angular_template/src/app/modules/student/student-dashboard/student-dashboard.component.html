@@ -94,5 +94,10 @@
     <div>
       <app-tutor-search *ngIf="activeTab === 'instruktori'"></app-tutor-search>
     </div>
+    <div>
+      <app-student-classes-tab
+        *ngIf="activeTab === 'classes'"
+      ></app-student-classes-tab>
+    </div>
   </div>
 </div>

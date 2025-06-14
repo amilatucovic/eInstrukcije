@@ -61,6 +61,10 @@ export class LoginComponent {
             localStorage.setItem('tutorId', response.tutorId.toString());
           }
 
+          if (response.role === 'Student' && response.studentId) {
+            localStorage.setItem('studentId', response.studentId.toString());
+          }
+
           // Navigacija na odgovarajući dashboard
           if (response.role === 'Admin') {
             this.router.navigate(['/admin']);

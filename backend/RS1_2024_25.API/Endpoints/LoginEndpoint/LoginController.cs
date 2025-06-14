@@ -46,8 +46,15 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
                     tutorId = tutor.ID;
             }
 
-			
-            var myappuser=_context.MyAppUsers.FirstOrDefault(u=>u.ID==user.ID);
+			int? studentId = null;
+			if (role == "Student")
+			{
+				var student = _context.Students.FirstOrDefault(s => s.MyAppUserID == user.ID);
+				if (student != null)
+					studentId = student.ID;
+			}
+
+			var myappuser=_context.MyAppUsers.FirstOrDefault(u=>u.ID==user.ID);
 			var loginResponseDto = new LoginResponseDto()
             {
                 Token = token,
@@ -57,7 +64,8 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
                 Username=myappuser?.Username,
                 FirstName=myappuser?.FirstName,
                 LastName=myappuser.LastName,
-                Email=myappuser.Email
+                Email=myappuser.Email,
+                StudentId=studentId
             };
             return Ok(loginResponseDto);
         }
