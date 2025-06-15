@@ -9,7 +9,11 @@ export class MyAppUser {
         public firstName: string,
         public lastName: string,
         public email: string,
-        public username: string
+        public username: string,
+        public phoneNumber: string,
+        public educationLevel: number,
+        public preferredMode: string,
+        public grade: string
     ) { }
 
 }

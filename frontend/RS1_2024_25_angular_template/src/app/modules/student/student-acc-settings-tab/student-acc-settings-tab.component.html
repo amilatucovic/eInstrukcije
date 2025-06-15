@@ -1,0 +1,125 @@
+<body>
+  <div class="profile-container">
+    <div
+      class="profile-picture-wrapper"
+      (mouseenter)="hovering = true"
+      (mouseleave)="hovering = false"
+    >
+      <img
+        [src]="profileImageUrl"
+        *ngIf="profileImageUrl"
+        class="profile-image"
+      />
+      <i class="fas fa-camera" *ngIf="!profileImageUrl"></i>
+      <div
+        class="remove-overlay"
+        *ngIf="profileImageUrl && hovering"
+        (click)="removeProfileImage($event)"
+      >
+        <i class="material-icons">delete</i>
+        <span>Ukloni</span>
+      </div>
+      <input type="file" hidden #fileInput (change)="onFileSelected($event)" />
+    </div>
+    <div class="profile-action-link" (click)="fileInput.click()">
+      <span *ngIf="profileImageUrl">Promijeni sliku</span>
+      <span *ngIf="!profileImageUrl">Dodaj sliku</span>
+    </div>
+    <form *ngIf="user">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="firstName">Ime</label>
+          <input type="text" id="firstName" [value]="user.firstName" disabled />
+        </div>
+        <div class="form-group">
+          <label for="lastName">Prezime</label>
+          <input type="text" id="lastName" [value]="user.lastName" disabled />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="username">Korisničko ime</label>
+          <input
+            type="text"
+            id="username"
+            [(ngModel)]="user.username"
+            name="username"
+          />
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input
+            type="email"
+            id="email"
+            [(ngModel)]="user.email"
+            name="email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="phone">Broj mobitela</label>
+          <input
+            type="tel"
+            id="phone"
+            [(ngModel)]="user.phoneNumber"
+            name="phoneNumber"
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="schoolType">Stepen obrazovanja</label>
+          <select
+            id="schoolType"
+            [(ngModel)]="user.educationLevel"
+            name="schoolType"
+          >
+            <option [value]="0">Osnovna</option>
+            <option [value]="1">Srednja</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="grade">Razred</label>
+          <select id="grade" [(ngModel)]="user.grade" name="grade">
+            <option value="Prvi">Prvi</option>
+            <option value="Drugi">Drugi</option>
+            <option value="Treći">Treći</option>
+            <option value="Četvrti">Četvrti</option>
+            <option value="Peti">Peti</option>
+            <option value="Šesti">Šesti</option>
+            <option value="Sedmi">Sedmi</option>
+            <option value="Osmi">Osmi</option>
+            <option value="Deveti">Deveti</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="city">Grad</label>
+          <select id="city" [(ngModel)]="user.city.id" name="city">
+            <option *ngFor="let city of cities" [value]="city.id">
+              {{ city?.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="preferredMode">Način održavanja nastave</label>
+          <select
+            id="preferredMode"
+            [(ngModel)]="user.preferredMode"
+            name="preferredMode"
+          >
+            <option value="Online">Online</option>
+            <option value="InClass">InClass</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit">Save Changes</button>
+    </form>
+  </div>
+</body>

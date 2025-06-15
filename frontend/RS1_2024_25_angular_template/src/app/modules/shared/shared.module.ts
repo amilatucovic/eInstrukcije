@@ -8,9 +8,9 @@ import { FooterComponent } from './footer/footer.component';
 import { TutorSearchComponent } from '../student/tutor-search/tutor-search.component';
 import { StudentHomeTabComponent } from '../student/student-home-tab/student-home-tab.component';
 import { StudentClassesTabComponent } from '../student/student-classes-tab/student-classes-tab.component';
-
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { StudentAccSettingsTabComponent } from '../student/student-acc-settings-tab/student-acc-settings-tab.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +19,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     FooterComponent, // Dodajemo UnauthorizedComponent u deklaracije,
     TutorSearchComponent,
     StudentHomeTabComponent,
-    StudentClassesTabComponent
+    StudentClassesTabComponent,
+    StudentAccSettingsTabComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +41,8 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
     FooterComponent,
     TutorSearchComponent,
     StudentHomeTabComponent,
-    StudentClassesTabComponent
+    StudentClassesTabComponent,
+    StudentAccSettingsTabComponent
   ]
 })
 export class SharedModule {

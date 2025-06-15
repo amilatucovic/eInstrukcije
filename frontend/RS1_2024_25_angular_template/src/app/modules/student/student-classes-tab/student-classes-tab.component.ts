@@ -20,7 +20,7 @@ export class StudentClassesTabComponent implements OnInit {
       this.events = lessons.map(lesson => ({
         start: new Date(lesson.start),
         end: new Date(lesson.end),
-        title: `Subject: ${lesson.subjectName} (${lesson.lessonMode})<br> Prof: ${lesson.tutorName}
+        title: `${lesson.subjectName} (${lesson.lessonMode})<br> Prof: ${lesson.tutorName}
         <br> Duration: ${format(new Date(lesson.start), 'HH:mm')} - ${format(new Date(lesson.end), 'HH:mm')} `,
         meta: lesson
       }));

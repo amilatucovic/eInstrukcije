@@ -19,7 +19,6 @@ import { registerLocaleData } from '@angular/common';
 import localeBs from '@angular/common/locales/bs';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
-import { StudentHomeTabComponent } from './modules/student/student-home-tab/student-home-tab.component';
 
 
 registerLocaleData(localeBs);

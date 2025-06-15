@@ -28,4 +28,9 @@ export class StudentService {
         const apiUrl = `http://localhost:7000/api/StudentEndpoints/${studentId}`;
         return this.http.put<Student>(apiUrl, podaci);
     }
+
+    getById(studentId: number) {
+        var apiUrl = `http://localhost:7000/api/StudentEndpoints?${studentId}`;
+        return this.http.get<Student>(apiUrl);
+    }
 }

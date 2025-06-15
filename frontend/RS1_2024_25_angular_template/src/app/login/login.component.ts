@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MyAuthService } from '../services/auth-services/my-auth.service';
 import { MyAppUser } from '../models/myAppUser.model';
+import { Student } from '../models/student.model';
 
 @Component({
   selector: 'app-login',
@@ -52,7 +53,11 @@ export class LoginComponent {
             firstName: response.firstName,
             lastName: response.lastName,
             username: response.username,
-            email: response.email
+            email: response.email,
+            phoneNumber: response.phoneNumber,
+            educationLevel: response.educationLevel,
+            preferredMode: response.preferredMode,
+            grade: response.grade
           });
 
           this.myAuth.setLoggedInUser(user);

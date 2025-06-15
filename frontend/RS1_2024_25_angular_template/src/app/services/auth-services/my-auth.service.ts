@@ -37,7 +37,7 @@ export class MyAuthService {
   }
   getLoggedInUser(): MyAppUser | null {
     const stored = localStorage.getItem('loggedInUser');
-    return stored ? JSON.parse(stored) : null;
+    return stored ? JSON.parse(stored) as MyAppUser : null;
   }
 
   getLoginToken(): { token: string } | null {

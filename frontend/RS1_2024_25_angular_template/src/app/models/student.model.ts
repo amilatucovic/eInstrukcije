@@ -1,4 +1,3 @@
-import { City } from "./city.model";
 import { MyAppUser } from "./myAppUser.model";
 
 export class Student {
