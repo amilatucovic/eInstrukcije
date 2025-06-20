@@ -108,16 +108,22 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTutor(int id)
         {
-            var tutor = db.Tutors.Include(t => t.MyAppUser).FirstOrDefault(t => t.ID == id);
+            var tutor = await db.Tutors
+                .Include(t => t.MyAppUser)
+                .FirstOrDefaultAsync(t => t.ID == id);
+
             if (tutor == null)
                 return NotFound();
 
-            db.MyAppUsers.Remove(tutor.MyAppUser);
-            db.Tutors.Remove(tutor);
+            db.Tutors.Remove(tutor); 
+            db.MyAppUsers.Remove(tutor.MyAppUser); 
+
             await db.SaveChangesAsync();
 
-            return Ok("Tutor deleted successfully");
+            return Ok(new { message = "Tutor deleted successfully" });
+
         }
+
     }
 }
 

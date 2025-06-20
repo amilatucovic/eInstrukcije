@@ -109,21 +109,22 @@ namespace RS1_2024_2025.Database
 											 .HasKey(a => new { a.LessonID, a.StudentID });
 
 
-			modelBuilder.Entity<Attendance>()
-				.HasOne(a => a.Lesson)
-				.WithMany(l => l.Attendances)
-				.HasForeignKey(a => a.LessonID)
-				.OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Attendance>()
+    .HasOne(a => a.Lesson)
+    .WithMany(l => l.Attendances)
+    .HasForeignKey(a => a.LessonID)
+    .OnDelete(DeleteBehavior.Restrict); 
 
-			modelBuilder.Entity<Attendance>()
-				.HasOne(a => a.Student)
-				.WithMany(s => s.Attendances)
-				.HasForeignKey(a => a.StudentID)
-				.OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Attendance>()
+                .HasOne(a => a.Student)
+                .WithMany(s => s.Attendances)
+                .HasForeignKey(a => a.StudentID)
+                .OnDelete(DeleteBehavior.Cascade); 
 
 
 
-			modelBuilder.Entity<Message>()
+
+            modelBuilder.Entity<Message>()
 								 .HasOne(m => m.Sender)
 								 .WithMany(m => m.SentMessages)
 								 .HasForeignKey(m => m.SenderID)
@@ -175,12 +176,13 @@ namespace RS1_2024_2025.Database
 					  .IsRequired();
 			});
 
-			foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-			{
-				relationship.DeleteBehavior = DeleteBehavior.NoAction;
-			}
+            modelBuilder.Entity<Tutor>()
+                        .HasOne(t => t.MyAppUser)
+                        .WithOne()
+                        .HasForeignKey<Tutor>(t => t.MyAppUserID)
+                        .OnDelete(DeleteBehavior.Restrict);
 
-			modelBuilder.Entity<City>().SeedData();
+            modelBuilder.Entity<City>().SeedData();
 			modelBuilder.Entity<MyAppUser>().SeedData();
 			modelBuilder.Entity<Student>().SeedData();
 			modelBuilder.Entity<Tutor>().SeedData();

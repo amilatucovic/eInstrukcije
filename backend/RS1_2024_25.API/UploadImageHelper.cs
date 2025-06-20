@@ -1,16 +1,30 @@
-﻿namespace RS1_2024_2025.API
+﻿using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+
+public static class UploadImageHelper
 {
-    public static class UploadImageHelper
+    public static async Task<string> UploadFile(byte[] base64Image)
     {
-        public static async Task<string> UploadFile(byte[] base64Image)
+        var fileName = Guid.NewGuid().ToString() + ".jpg";
+        var folderPath = Path.Combine("Uploads", "Images");
+        var filePath = Path.Combine(folderPath, fileName);
+
+        if (!Directory.Exists(folderPath))
+            Directory.CreateDirectory(folderPath);
+
+        // Resize slika na max 300x300
+        using (var image = Image.Load(base64Image))
         {
-            var fileName = Guid.NewGuid().ToString() + ".jpg";
-            var filePath = Path.Combine("Uploads/Images", fileName);
+            image.Mutate(x => x.Resize(new ResizeOptions
+            {
+                Size = new Size(350, 350), 
+                Mode = ResizeMode.Max
+            }));
 
-            File.WriteAllBytes(filePath, base64Image);
-
-            string imageUrl = string.Format("/{0}/{1}", "Uploads/Images", fileName);
-            return imageUrl;
+            await image.SaveAsJpegAsync(filePath);
         }
+
+        string imageUrl = $"/Uploads/Images/{fileName}";
+        return imageUrl;
     }
 }

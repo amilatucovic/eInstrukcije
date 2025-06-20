@@ -4,6 +4,7 @@ import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators'
 import { TutorAdmin, TutorAdminService } from '../../../services/auth-services/services/tutor-admin.service';
 import { CitiesService } from '../../../services/auth-services/services/cities.service';
 import {City} from '../../../models/city.model';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
@@ -16,10 +17,12 @@ export class TutorManagementComponent implements OnInit {
   tutors: TutorAdmin[] = [];
   filteredTutors: TutorAdmin[] = [];
   cities: City[] = [];
+  tutorToDeleteId: number | null = null;
 
   constructor(
     private fb: FormBuilder,
     private tutorService: TutorAdminService,
+    private modalService: NgbModal,
     private cityService: CitiesService
   ) {
     this.filterForm = this.fb.group({
@@ -77,14 +80,26 @@ export class TutorManagementComponent implements OnInit {
     });
   }
 
-  deleteTutor(id: number): void {
-    if (confirm('Da li ste sigurni da želite obrisati ovog tutora?')) {
-      this.tutorService.deleteTutor(id).subscribe({
-        next: () => this.fetchTutors(),
-        error: err => console.error('Delete failed', err)
+  openDeleteModal(tutorId: number, content: any): void {
+    this.tutorToDeleteId = tutorId;
+    this.modalService.open(content, { centered: true });
+  }
+
+  confirmDelete(modalRef: NgbModalRef): void {
+    if (this.tutorToDeleteId !== null) {
+      this.tutorService.deleteTutor(this.tutorToDeleteId).subscribe({
+        next: () => {
+          this.fetchTutors();
+          modalRef.close();
+        },
+        error: err => {
+          console.error('Delete failed', err);
+          modalRef.dismiss();
+        }
       });
     }
   }
+
 
   openEditModal(tutor: TutorAdmin): void {
     console.log('Otvoren modal za uređivanje:', tutor);

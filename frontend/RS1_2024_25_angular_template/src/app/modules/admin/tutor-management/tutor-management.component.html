@@ -62,7 +62,7 @@
       <td>{{ tutor.isLiveAvailable ? 'Da' : 'Ne' }}</td>
       <td>
         <button class="btn btn-sm btn-warning me-2" (click)="openEditModal(tutor)">Uredi</button>
-        <button class="btn btn-sm btn-danger" (click)="deleteTutor(tutor.id)">Obriši</button>
+        <button class="btn btn-sm btn-danger" (click)="openDeleteModal(tutor.id, deleteModal)">Obriši</button>
       </td>
     </tr>
     </tbody>
@@ -79,3 +79,18 @@
   <p *ngIf="filteredTutors.length > 0" class="text-center mt-3">Pronađeno rezultata: {{ filteredTutors.length }}</p>
 </div>
 </div>
+
+
+<ng-template #deleteModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Potvrda brisanja</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')"></button>
+  </div>
+  <div class="modal-body">
+    <p>Da li ste sigurni da želite obrisati ovog tutora?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-secondary" (click)="modal.dismiss('cancel')">Otkaži</button>
+    <button class="btn btn-danger" (click)="confirmDelete(modal)">Obriši</button>
+  </div>
+</ng-template>
