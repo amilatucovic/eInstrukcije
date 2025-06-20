@@ -1,0 +1,28 @@
+table th,
+table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
+.tutor-container {
+  background-color: #f5fafa;
+  border: 1px solid #d0e3f0;
+  padding: 2rem;
+  border-radius: 0.5rem;
+  width: 95%;
+  max-width: 1400px;
+  margin: 50px auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tutor-page {
+  background-color: #eaf4fc;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+
+

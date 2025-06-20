@@ -1,0 +1,81 @@
+<div class="tutor-page">
+<div class="tutor-container">
+<h2 class="mb-4 text-center">Pretražite tutore</h2>
+
+  <form [formGroup]="filterForm">
+    <div class="row g-2 mb-3">
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Ime ili prezime"
+               formControlName="searchName" />
+      </div>
+
+      <div class="col-md-3">
+        <input type="text" class="form-control" placeholder="Email"
+               formControlName="searchEmail" />
+      </div>
+
+      <div class="col-md-2">
+        <select class="form-select" formControlName="cityId">
+          <option value="">Odaberite grad</option>
+          <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <select class="form-select" formControlName="isLiveAvailable">
+          <option value="">Dostupan uživo</option>
+          <option [ngValue]="true">Da</option>
+          <option [ngValue]="false">Ne</option>
+        </select>
+      </div>
+
+      <div class="col-md-2">
+        <input type="number" class="form-control" placeholder="Max cijena (KM)"
+               formControlName="maxHourlyRate" />
+      </div>
+    </div>
+  </form>
+
+  <table class="table table-bordered table-hover">
+    <thead>
+    <tr class="custom-header">
+      <th>#</th>
+      <th>Ime</th>
+      <th>Prezime</th>
+      <th>Email</th>
+      <th>Broj telefona</th>
+      <th>Grad</th>
+      <th>Cijena po času</th>
+      <th>Dostupan uživo</th>
+      <th>Akcije</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let tutor of filteredTutors; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>{{ tutor.firstName }}</td>
+      <td>{{ tutor.lastName }}</td>
+      <td>{{ tutor.email }}</td>
+      <td>{{ tutor.phoneNumber }}</td>
+      <td>{{ tutor.cityName }}</td>
+      <td>{{ tutor.hourlyRate }}</td>
+      <td>{{ tutor.isLiveAvailable ? 'Da' : 'Ne' }}</td>
+      <td>
+        <button class="btn btn-sm btn-warning me-2" (click)="openEditModal(tutor)">Uredi</button>
+        <button class="btn btn-sm btn-danger" (click)="deleteTutor(tutor.id)">Obriši</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-center mt-3">
+    <button class="btn btn-outline-secondary px-4" (click)="resetFilters()">
+      🔄 Resetuj filtere
+    </button>
+  </div>
+
+
+
+  <p *ngIf="filteredTutors.length === 0" class="text-center mt-3">Nema rezultata.</p>
+  <p *ngIf="filteredTutors.length > 0" class="text-center mt-3">Pronađeno rezultata: {{ filteredTutors.length }}</p>
+</div>
+</div>

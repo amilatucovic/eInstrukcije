@@ -5,12 +5,14 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {AdminLayoutComponent} from './admin-layout/admin-layout.component';
 import {FormsModule} from '@angular/forms';
 import {SharedModule} from '../shared/shared.module';
+import { TutorManagementComponent } from './tutor-management/tutor-management.component';
 
 
 @NgModule({
   declarations: [
     DashboardComponent,
     AdminLayoutComponent,
+    TutorManagementComponent,
   ],
   imports: [
     CommonModule,
