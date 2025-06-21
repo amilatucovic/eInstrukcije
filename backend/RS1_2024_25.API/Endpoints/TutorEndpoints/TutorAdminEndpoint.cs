@@ -70,27 +70,45 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
         }
 
 
-
-
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTutor(int id, [FromBody] TutorUpdateRequest request)
         {
             var tutor = db.Tutors.Include(t => t.MyAppUser).FirstOrDefault(t => t.ID == id);
-            if (tutor == null) return NotFound();
+            if (tutor == null)
+                return NotFound();
 
-            
-            tutor.Qualifications = request.Qualifications;
-            tutor.YearsOfExperience = request.YearsOfExperience;
-            tutor.Availability = request.Availability;
-            tutor.Policy = request.Policy;
-            tutor.HourlyRate = request.HourlyRate;
-            tutor.IsLiveAvailable = request.IsLiveAvailable;
+          
+            if (request.Qualifications != null)
+                tutor.Qualifications = request.Qualifications;
 
-            
-            tutor.MyAppUser.FirstName = request.FirstName;
-            tutor.MyAppUser.LastName = request.LastName;
-            tutor.MyAppUser.Email = request.Email;
-            tutor.MyAppUser.PhoneNumber = request.PhoneNumber;
+            if (request.YearsOfExperience.HasValue)
+                tutor.YearsOfExperience = request.YearsOfExperience.Value;
+
+            if (request.Availability != null)
+                tutor.Availability = request.Availability;
+
+            if (request.Policy != null)
+                tutor.Policy = request.Policy;
+
+            if (request.HourlyRate != null)
+                tutor.HourlyRate = request.HourlyRate;
+
+            if (request.IsLiveAvailable.HasValue)
+                tutor.IsLiveAvailable = request.IsLiveAvailable.Value;
+
+           
+            if (request.FirstName != null)
+                tutor.MyAppUser.FirstName = request.FirstName;
+
+            if (request.LastName != null)
+                tutor.MyAppUser.LastName = request.LastName;
+
+            if (request.Email != null)
+                tutor.MyAppUser.Email = request.Email;
+
+            if (request.PhoneNumber != null)
+                tutor.MyAppUser.PhoneNumber = request.PhoneNumber;
+
             if (request.CityId.HasValue)
             {
                 var cityExists = db.Cities.Any(c => c.ID == request.CityId.Value);
@@ -100,10 +118,12 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
                 tutor.MyAppUser.CityId = request.CityId.Value;
             }
 
-
             await db.SaveChangesAsync();
             return Ok();
         }
+
+
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTutor(int id)

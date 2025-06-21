@@ -73,12 +73,90 @@
     </button>
   </div>
 
-
-
   <p *ngIf="filteredTutors.length === 0" class="text-center mt-3">Nema rezultata.</p>
   <p *ngIf="filteredTutors.length > 0" class="text-center mt-3">Pronađeno rezultata: {{ filteredTutors.length }}</p>
 </div>
 </div>
+
+<ng-template #editModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">Uredi tutora</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+
+  <form [formGroup]="editForm" (ngSubmit)="submitEdit(modal)">
+    <div class="modal-body">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="firstName">Ime</label>
+            <input type="text" id="firstName" class="form-control" formControlName="firstName" />
+          </div>
+
+          <div class="mb-3">
+            <label for="lastName">Prezime</label>
+            <input type="text" id="lastName" class="form-control" formControlName="lastName" />
+          </div>
+
+          <div class="mb-3">
+            <label for="phoneNumber">Telefon</label>
+            <input type="text" id="phoneNumber" class="form-control" formControlName="phoneNumber" />
+          </div>
+
+          <div class="mb-3">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control" formControlName="email" />
+          </div>
+
+          <div class="mb-3">
+            <label for="cityId">Grad</label>
+            <select id="cityId" class="form-select" formControlName="cityId">
+              <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+            </select>
+          </div>
+        </div>
+
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="qualifications">Kvalifikacije</label>
+            <input type="text" id="qualifications" class="form-control" formControlName="qualifications" />
+          </div>
+
+          <div class="mb-3">
+            <label for="yearsOfExperience">Godine iskustva</label>
+            <input type="number" id="yearsOfExperience" class="form-control" formControlName="yearsOfExperience" />
+          </div>
+
+          <div class="mb-3">
+            <label for="availability">Dostupnost</label>
+            <input type="text" id="availability" class="form-control" formControlName="availability" />
+          </div>
+
+          <div class="mb-3">
+            <label for="policy">Politika otkazivanja</label>
+            <input type="text" id="policy" class="form-control" formControlName="policy" />
+          </div>
+
+
+          <div class="mb-3">
+            <label for="isLiveAvailable">Dostupan za live časove</label>
+            <select id="isLiveAvailable" class="form-select" formControlName="isLiveAvailable">
+              <option [ngValue]="true">Da</option>
+              <option [ngValue]="false">Ne</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" type="button" (click)="modal.dismiss()">Otkaži</button>
+      <button class="btn btn-success" type="submit" [disabled]="editForm.invalid">Sačuvaj izmjene</button>
+    </div>
+  </form>
+</ng-template>
+
 
 
 <ng-template #deleteModal let-modal>

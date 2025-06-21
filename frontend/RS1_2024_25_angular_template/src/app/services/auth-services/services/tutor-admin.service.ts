@@ -18,16 +18,16 @@ export interface TutorAdmin {
 }
 
 export interface TutorUpdateRequest {
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  email: string;
+  firstName?: string;
+  lastName?: string;
+  phoneNumber?: string;
+  email?: string;
   cityId?: number;
-  qualifications: string;
-  yearsOfExperience: number;
-  availability: string;
-  policy: string;
-  hourlyRate: string;
+  qualifications?: string;
+  yearsOfExperience?: number;
+  availability?: string;
+  policy?: string;
+  hourlyRate?: string;
   isLiveAvailable?: boolean;
 }
 
