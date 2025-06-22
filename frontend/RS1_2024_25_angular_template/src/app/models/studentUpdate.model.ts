@@ -1,7 +1,6 @@
 export interface StudentUpdateDTO {
     id: number;
-    firstName: string;
-    lastName: string;
+    searchTerm: string,
     email: string;
     cityId: number;
     grade: string;

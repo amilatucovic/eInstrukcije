@@ -17,13 +17,9 @@ namespace RS1_2024_25.API.Endpoints.StudentEndpoints
 		public IActionResult GetAll([FromQuery] StudentSearchObject? search)
 		{
 			var query = db.Set<Student>().AsQueryable();
-			if (search?.FirstName.IsNullOrEmpty() == false)
+			if (!string.IsNullOrEmpty(search?.SearchTerm))
 			{
-				query = query.Where(s => s.MyAppUser.FirstName.StartsWith(search.FirstName));
-			}
-			if (search?.LastName.IsNullOrEmpty() == false)
-			{
-				query = query.Where(s => s.MyAppUser.LastName.StartsWith(search.LastName));
+				query = query.Where(s =>s.MyAppUser.FirstName.StartsWith(search.SearchTerm) || 	s.MyAppUser.LastName.StartsWith(search.SearchTerm));
 			}
 			if (search?.Grade.IsNullOrEmpty() == false)
 			{

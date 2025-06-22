@@ -14,37 +14,38 @@ h2 {
 
 .search-form {
   display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
   align-items: center;
   margin-bottom: 20px;
-  justify-content: space-between;
+  justify-content: center; /* centriraj samo filter polja */
 }
 
-.search-input {
-  flex: 1;
-  padding: 8px 15px;
+.search-input-group select,
+.search-input-group input {
+  padding: 10px 15px;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 5px;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.search-btn {
-  background-color: #20c1bd;
-  color: white;
-  padding: 8px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.search-input-group input {
+  width: 300px;
 }
 
-.search-btn i {
-  font-size: 1.2rem;
+.search-input-group select {
+  width: 210px;
 }
 
-.search-btn:hover {
-  background-color: #17a3a0;
+.search-input-group input:focus,
+.search-input-group select:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
 }
 
-/* Stil za tabelu rezultata */
+/* Stil za rezultate tabele */
 .results-container {
   margin-top: 20px;
 }
@@ -69,28 +70,22 @@ tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
+/* Dugmad u tabeli i akcije */
 button {
   margin: 5px;
-}
-
-/* Stil za dugmadi sačuvaj, obriši, edituj */
-.action-buttons {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.action-buttons button {
-  margin: 0 10px;
-  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 15px;
   font-size: 1rem;
+  transition: opacity 0.3s;
 }
 
-.no-results {
-  text-align: center;
-  color: #888;
+button:hover {
+  opacity: 0.8;
 }
 
-/* Stil za dugmadi sačuvaj, obriši, edituj */
+/* Dugmad sa specifičnim bojama */
 .btn-warning {
   background-color: #f0ad4e;
   color: white;
@@ -106,11 +101,34 @@ button {
   color: white;
 }
 
-button:hover {
-  opacity: 0.8;
+/* Dugme Reset filters u plavoj boji */
+.btn-reset,
+.action-buttons .btn-danger {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  padding: 9px 37px;
 }
 
-/* Raspored svih podataka studenta u jedan red */
+.action-buttons {
+  text-align: center; /* centriraj dugme Reset */
+}
+.btn-reset:hover,
+.action-buttons .btn-danger:hover {
+  background-color: #357ac8;
+}
+
+.btn-reset:focus,
+.action-buttons .btn-danger:focus {
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.4);
+}
+
+/* Poravnavanje reda studenta */
 .student-row {
   display: flex;
   align-items: center;
@@ -138,18 +156,18 @@ button:hover {
   color: #555;
 }
 
-/* Forma za editovanje */
+/* Edit forma - overlay */
 .edit-form-container {
-  position: fixed; /* Da bude u fokusu */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Zatamnjenje pozadine */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Da bude iznad svih ostalih elemenata */
+  z-index: 1000;
 }
 
 .edit-form {
@@ -183,6 +201,14 @@ h3 {
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #4a90e2;
+  outline: none;
+  box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
 }
 
 .form-group button {
@@ -192,6 +218,8 @@ h3 {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 1rem;
+  transition: opacity 0.3s;
 }
 
 .form-group button.btn-success {
@@ -206,4 +234,9 @@ h3 {
 
 .form-group button:hover {
   opacity: 0.8;
+}
+
+.no-results {
+  text-align: center;
+  color: #888;
 }

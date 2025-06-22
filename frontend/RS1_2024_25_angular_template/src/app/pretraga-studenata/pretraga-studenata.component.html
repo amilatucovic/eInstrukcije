@@ -1,32 +1,18 @@
 <div class="search-container">
-  <h2>Pretražite Studente</h2>
+  <h2>Pretražite studente</h2>
 
   <!-- Forma sa filterima -->
   <div class="search-form">
     <div class="search-input-group">
       <input
         type="text"
-        class="search-input"
-        placeholder="Ime"
-        [(ngModel)]="firstName"
-        (input)="filterStudents()"
+        placeholder="Ime ili Prezime"
+        [(ngModel)]="searchValue"
+        (input)="searchTerm.next($any($event.target).value)"
       />
     </div>
     <div class="search-input-group">
-      <input
-        type="text"
-        class="search-input"
-        placeholder="Prezime"
-        [(ngModel)]="lastName"
-        (input)="filterStudents()"
-      />
-    </div>
-    <div class="search-input-group">
-      <select
-        class="search-input"
-        (change)="filterStudents()"
-        [(ngModel)]="selectedCity"
-      >
+      <select (change)="filterStudents()" [(ngModel)]="selectedCity">
         <option value="" disabled selected hidden>Izaberite grad</option>
         <option *ngFor="let city of cities" [value]="city.id">
           {{ city.name }}
@@ -35,11 +21,7 @@
     </div>
 
     <div class="search-input-group">
-      <select
-        class="search-input"
-        (change)="filterStudents()"
-        [(ngModel)]="selectedGrade"
-      >
+      <select (change)="filterStudents()" [(ngModel)]="selectedGrade">
         <option value="" disabled selected hidden>Izaberite razred</option>
         <option *ngFor="let grade of grades" [value]="grade">
           {{ grade }}
@@ -48,11 +30,7 @@
     </div>
 
     <div class="search-input-group">
-      <select
-        class="search-input"
-        (change)="filterStudents()"
-        [(ngModel)]="selectedSchoolType"
-      >
+      <select (change)="filterStudents()" [(ngModel)]="selectedSchoolType">
         <option value="" disabled selected hidden>Izaberite tip škole</option>
         <option *ngFor="let school of schoolTypes" [value]="school.value">
           {{ school.name }}
@@ -62,7 +40,7 @@
   </div>
 
   <!-- Tabela sa rezultatima -->
-  <div *ngIf="this.students.length > 0" class="results-container">
+  <div *ngIf="students.length > 0" class="results-container">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -77,7 +55,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let student of this.students">
+        <tr *ngFor="let student of students">
           <td>{{ student.id }}</td>
           <td>{{ student.myAppUser.firstName }}</td>
           <td>{{ student.myAppUser.lastName }}</td>
@@ -98,7 +76,7 @@
     </table>
   </div>
 
-  <div *ngIf="this.students.length === 0" class="no-results">
+  <div *ngIf="students.length === 0" class="no-results">
     Nema studenata koji odgovaraju pretrazi.
   </div>
 
@@ -164,8 +142,6 @@
   </div>
 
   <div class="action-buttons">
-    <button class="btn btn-danger" (click)="clearSearch()">
-      Reset filters
-    </button>
+    <button class="btn btn-reset" (click)="clearSearch()">Reset filters</button>
   </div>
 </div>

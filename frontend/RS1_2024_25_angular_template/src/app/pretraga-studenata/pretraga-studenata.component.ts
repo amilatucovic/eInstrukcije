@@ -4,6 +4,8 @@ import { City } from '../models/city.model';
 import { Student } from '../models/student.model';
 import { StudentService } from '../services/auth-services/services/students.service';
 import { StudentUpdateDTO } from '../models/studentUpdate.model';
+import { Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-pretraga-studenata',
@@ -22,12 +24,25 @@ export class PretragaStudenataComponent implements OnInit {
   editingStudent: Student | null = null;
   isEditing: boolean = false;
 
+  searchTerm: Subject<string> = new Subject<string>();
+  searchValue: string = '';
+
   constructor(private citiesService: CitiesService, private studentService: StudentService) { }
 
   grades: string[] = ['Prvi', 'Drugi', 'Treći', 'Četvrti', 'Peti', 'Šesti', 'Sedmi', 'Osmi', 'Deveti'];
   schoolTypes: { name: string, value: number }[] = [{ name: 'Osnovna škola', value: 0 }, { name: 'Srednja škola', value: 1 }];
 
   ngOnInit(): void {
+
+    this.searchTerm.pipe(
+      debounceTime(300),
+      map(term => term.trim().toLowerCase()), // mapiranje unosa na trimovani i lowercase string
+      filter(term => term.length >= 3 || term.length === 0),         // filtriranje praznih stringova
+      distinctUntilChanged()
+    ).subscribe(term => {
+      this.searchValue = term;
+      this.filterStudents();
+    });
     this.citiesService.getCities().subscribe(
       (data) => {
         this.cities = data.map(cityData => new City(cityData.id, cityData.name, cityData.postalCode));
@@ -47,11 +62,10 @@ export class PretragaStudenataComponent implements OnInit {
 
   // Filtriranje studenata prema pretrazi
   filterStudents() {
-    if (this.firstName.length < 3 && this.lastName.length < 3 && this.selectedCity?.id == 0 && this.selectedGrade == "" && this.schoolTypes == null) return
+    if (!this.searchValue && this.selectedCity?.id == 0 && this.selectedGrade == "" && this.selectedSchoolType == null) return;
     var filterObject = {
       IsUserIncluded: true,
-      FirstName: this.firstName,
-      LastName: this.lastName,
+      searchTerm: this.searchValue,
       CityId: this.selectedCity,
       Grade: this.selectedGrade,
       EducationLevel: this.selectedSchoolType,
@@ -87,8 +101,7 @@ export class PretragaStudenataComponent implements OnInit {
     if (this.editingStudent) {
       const podaci: StudentUpdateDTO = {
         id: this.editingStudent.id,
-        firstName: this.editingStudent.myAppUser.firstName,
-        lastName: this.editingStudent.myAppUser.lastName,
+        searchTerm: this.editingStudent.myAppUser.firstName,
         email: this.editingStudent.myAppUser.email,
         cityId: this.editingStudent.myAppUser.city.id,
         grade: this.editingStudent.grade,
@@ -105,8 +118,8 @@ export class PretragaStudenataComponent implements OnInit {
 
   // Resetovanje filtera
   clearSearch() {
-    this.firstName = '';
-    this.lastName = '';
+    this.searchValue = '';
+    this.searchTerm.next('');
     this.selectedCity = undefined;
     this.selectedGrade = '';
     this.selectedSchoolType = '';
