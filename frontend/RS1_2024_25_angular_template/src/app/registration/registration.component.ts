@@ -38,8 +38,8 @@ export class RegistrationComponent implements OnInit, OnDestroy {
 
   constructor(private http: HttpClient, private router: Router, private citiesService: CitiesService, private translate: TranslateService, private myAppUserService: MyAppUserService) {
     this.UserForm = new FormGroup({
-      firstName: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]+$')]),
-      lastName: new FormControl('', [Validators.required, Validators.pattern('^[A-Za-z]+$')]),
+      firstName: new FormControl('', [Validators.required, Validators.pattern(/^\p{L}(?:['\-]?\p{L})*$/u)]),
+      lastName: new FormControl('', [Validators.required, Validators.pattern(/^\p{L}(?:['\-]?\p{L})*$/u)]),
       email: new FormControl('', [Validators.required, Validators.email]),
       username: new FormControl('', [Validators.required, Validators.minLength(5)]),
       password: new FormControl('', [Validators.required, Validators.minLength(8)]),

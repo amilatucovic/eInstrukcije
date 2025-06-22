@@ -46,7 +46,8 @@
     "pattern": "The phone number format is not valid!",
     "young": "The youngest student can be 6!",
     "old": "The oldest student can be 20!",
-    "onlyletters": "This field must contain only letters!",
+    "fName": "First name is not in a valid format!",
+    "lName": "Last name is not in a valid format!",
     "username": "This username already exists!"
   },
   "genderOptions": {

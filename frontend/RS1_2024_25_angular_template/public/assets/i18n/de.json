@@ -47,7 +47,8 @@
     "pattern": "Der Telefonnummernformat ist nicht gültig!",
     "young": "Der jüngste Student kann 6 Jahre alt sein!",
     "old": "Der älteste Student kann 20 Jahre alt sein!",
-    "onlyletters": "Dieses Feld darf nur Buchstaben enthalten!",
+    "fName": "Der Vorname hat ein ungültiges Format!",
+    "lName": "Der NachName hat ein ungültiges Format!",
     "username": "Benutzername ist bereits vergeben!"
   },
   "genderOptions": {

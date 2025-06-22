@@ -46,7 +46,8 @@
     "pattern": "Format broja telefona nije validan!",
     "young": "Najmlađi učenik može imati 6 godina!",
     "old": "Najstariji učenik može imati 20 godina!",
-    "onlyletters": "Ovo polje mora sadržavati samo slova!",
+    "fName": "Ime nije u ispravnom formatu!",
+    "lName": "Prezime nije u ispravnom formatu!",
     "username": "Ovo korisničko ime već postoji!"
   },
   "genderOptions": {
