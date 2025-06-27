@@ -1,0 +1,38 @@
+<div class="chat-container">
+  <!-- Left panel: conversation list -->
+  <div class="conversation-list">
+    <div class="header">
+      <h3>Chat</h3>
+      <button>+ Compose</button>
+    </div>
+    <input type="text" placeholder="Search" class="search-bar" />
+    <div *ngFor="let convo of conversations" class="conversation-item" [class.active]="convo.id === selectedConversation?.id">
+      <div class="name">{{ convo.name }}</div>
+      <div class="preview">{{ convo.lastMessage }}</div>
+      <div class="time">{{ convo.time }}</div>
+    </div>
+  </div>
+
+  <!-- Right panel: active chat -->
+  <div class="chat-window">
+    <div class="chat-header">
+      <div class="name">{{ selectedConversation?.name }}</div>
+    </div>
+
+    <div class="messages-container">
+      <div *ngFor="let msg of messages">
+        <div class="date-separator" *ngIf="msg.isNewDay">{{ msg.dayLabel }}</div>
+        <div [class]="msg.isMine ? 'message mine' : 'message'">
+          <div class="content">{{ msg.text }}</div>
+          <div class="time">{{ msg.time }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-input">
+      <input type="text" [(ngModel)]="newMessage" placeholder="Type your message" />
+      <button (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
