@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
@@ -48,6 +49,8 @@ builder.Services.AddTransient<MyTokenGenerator>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
+builder.Services.AddSignalR();
+builder.Services.AddSingleton<IUserIdProvider, RS1_2024_25.API.SignalR.NameUserIdProvider>();
 builder.Services.AddControllers();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -82,6 +85,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<RS1_2024_25.API.SignalR.ChatHub>("/chatHub"); 
+
 
 using (var scope = app.Services.CreateScope())
 {
