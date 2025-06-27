@@ -11,16 +11,18 @@ import { StudentClassesTabComponent } from '../student/student-classes-tab/stude
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { StudentAccSettingsTabComponent } from '../student/student-acc-settings-tab/student-acc-settings-tab.component';
+import { ChatComponent } from './chat/chat.component';
 
 @NgModule({
   declarations: [
     UnauthorizedComponent,
     NavbarComponent,
-    FooterComponent, // Dodajemo UnauthorizedComponent u deklaracije,
+    FooterComponent,
     TutorSearchComponent,
     StudentHomeTabComponent,
     StudentClassesTabComponent,
-    StudentAccSettingsTabComponent
+    StudentAccSettingsTabComponent,
+    ChatComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +35,7 @@ import { StudentAccSettingsTabComponent } from '../student/student-acc-settings-
     })
   ],
   exports: [
-    UnauthorizedComponent, // Omogućavamo ponovno korištenje UnauthorizedComponent
+    UnauthorizedComponent,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -42,7 +44,8 @@ import { StudentAccSettingsTabComponent } from '../student/student-acc-settings-
     TutorSearchComponent,
     StudentHomeTabComponent,
     StudentClassesTabComponent,
-    StudentAccSettingsTabComponent
+    StudentAccSettingsTabComponent,
+    ChatComponent
   ]
 })
 export class SharedModule {

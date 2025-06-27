@@ -63,6 +63,12 @@
         <span class="material-icons">school</span> Instruktori
       </a>
       <a
+        routerLink="/student-dashboard/chat"
+        routerLinkActive="active"
+      >
+        <span class="material-icons">chat</span> Razgovori
+      </a>
+      <a
         href="#"
         (click)="setActiveTab('payments'); $event.preventDefault()"
         [class.active]="activeTab === 'payments'"

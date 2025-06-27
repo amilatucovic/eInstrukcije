@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { MyAuthService } from '../services/auth-services/my-auth.service';
 import { MyAppUser } from '../models/myAppUser.model';
 import { Student } from '../models/student.model';
+import {ChatService} from '../services/auth-services/services/chat.service';
+
 
 @Component({
   selector: 'app-login',
@@ -19,7 +21,8 @@ export class LoginComponent {
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    private myAuth: MyAuthService
+    private myAuth: MyAuthService,
+    private chatService: ChatService
   ) {
     // Initialize the login form with validation
     this.loginForm = this.fb.group({
@@ -44,6 +47,7 @@ export class LoginComponent {
         next: (response: any) => {
           // Čuvanje tokena i tutorId-a u localStorage
           localStorage.setItem('accessToken', response.token);
+          this.chatService.startConnection(response.token);
           localStorage.setItem('refreshToken', response.refreshToken);
 
           const user: MyAppUser = ({
