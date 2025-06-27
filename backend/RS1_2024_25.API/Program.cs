@@ -10,6 +10,8 @@ using RS1_2024_2025.Database;
 using RS1_2024_2025.Services;
 using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
 using RS1_2024_25.API.Endpoints.TutorSearch;
+using RS1_2024_25.API.SignalR.Interfaces;
+using RS1_2024_25.API.SignalR.Services;
 using System.Text;
 
 var config = new ConfigurationBuilder()
@@ -49,6 +51,7 @@ builder.Services.AddTransient<MyTokenGenerator>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ISearchService, SearchService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IUserIdProvider, RS1_2024_25.API.SignalR.NameUserIdProvider>();
 builder.Services.AddControllers();
