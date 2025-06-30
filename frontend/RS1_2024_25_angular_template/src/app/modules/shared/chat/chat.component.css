@@ -151,3 +151,11 @@
 .chat-input button:hover {
   background-color: #088cbe;
 }
+.sender-name {
+  font-weight: bold;
+  margin-right: 5px;
+}
+.time{
+  font-weight: bold;
+  margin-right: 5px;
+}

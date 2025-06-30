@@ -44,4 +44,13 @@ export class MyAuthService {
     const token = localStorage.getItem('accessToken');
     return token ? { token } : null;
   }
+
+  getUserId(): number | null {
+    const user = this.getLoggedInUser();
+    return user ? user.id : null;
+  }
+
+
+
+
 }

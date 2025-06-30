@@ -61,6 +61,7 @@ namespace RS1_2024_25.API.SignalR.Services
                 Id = savedMessage.ID,
                 SenderId = savedMessage.SenderID,
                 SenderUsername = savedMessage.Sender.Username,
+                SenderFullName = savedMessage.Sender.FirstName + " " + savedMessage.Sender.LastName,
                 ReceiverId = savedMessage.ReceiverID,
                 Content = savedMessage.Content,
                 SentAt = savedMessage.SentAt,
@@ -98,6 +99,7 @@ namespace RS1_2024_25.API.SignalR.Services
                 return new ConversationPreviewDto
                 {
                     UserId = otherUser.ID,
+                    FullName=otherUser.FirstName + " " + otherUser.LastName,
                     Username = otherUser.Username,
                     LastMessage = message.Content,
                     LastMessageTime = message.SentAt

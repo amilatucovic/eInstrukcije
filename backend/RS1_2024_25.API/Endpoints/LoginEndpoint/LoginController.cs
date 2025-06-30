@@ -63,6 +63,7 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
 			var s = _context.Students.FirstOrDefault(s => s.MyAppUserID == user.ID);
 			var loginResponseDto = new LoginResponseDto()
             {
+               Id=myappuser.ID,
                 Token = token,
                 RefreshToken = refreshToken,
                 Role = role,
