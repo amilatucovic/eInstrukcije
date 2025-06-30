@@ -63,6 +63,6 @@ Use the following credentials to log in and explore the application:
 ### 🌐 Frontend (Angular)
 
 ```bash
-cd Frontend
+cd frontend
 npm install
 ng serve
