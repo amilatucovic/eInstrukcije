@@ -3,8 +3,10 @@
   <div class="conversation-list">
     <div class="header">
       <h3>Chat</h3>
-      <button>+ Compose</button>
+      <button (click)="openUserModal()">+ Novi razgovor</button>
     </div>
+
+
     <input type="text" placeholder="Search" class="search-bar" />
     <div *ngFor="let convo of conversations"
          class="conversation-item"
@@ -14,9 +16,13 @@
       <div class="preview">{{ convo.lastMessage }}</div>
       <div class="time">{{ convo.lastMessageTime | date: 'dd. MM. yyyy. HH:mm' }}</div>
     </div>
+    <div *ngIf="conversations.length === 0" class="no-conversations">
+      Nemate razgovora za prikaz. <br>
+      Započnite novi razgovor klikom na dugmić Novi razgovor!
+    </div>
   </div>
 
-  <!-- Right panel: active chat -->
+  <!-- Right panel... -->
   <div class="chat-window">
     <div class="chat-header">
       <div class="name">{{ selectedConversation?.fullName }}</div>
@@ -39,6 +45,22 @@
     <div class="chat-input">
       <input type="text" [(ngModel)]="newMessage" placeholder="Type your message" />
       <button (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showAvailableUsers" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Odaberi korisnika</h3>
+      <button class="close-btn" (click)="closeUserModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div *ngFor="let user of availableUsers"
+           class="available-user"
+           (click)="startConversationWith(user)">
+        {{ user.fullName }} ({{ user.username }})
+      </div>
     </div>
   </div>
 </div>

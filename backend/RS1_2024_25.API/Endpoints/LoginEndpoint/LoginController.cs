@@ -31,7 +31,7 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint
                 return Unauthorized("Invalid credentials.");
 
             var role = user.UserType.ToString();
-            var token = _tokenService.GenerateToken(user.Username, role);
+            var token = _tokenService.GenerateToken(user.ID, user.Username, role);
             var refreshToken = _tokenService.GenerateRefreshToken();
 
             user.RefreshToken = refreshToken;

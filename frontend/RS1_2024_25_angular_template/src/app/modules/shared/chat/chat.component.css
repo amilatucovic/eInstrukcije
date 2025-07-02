@@ -159,3 +159,64 @@
   font-weight: bold;
   margin-right: 5px;
 }
+
+.no-conversations {
+  text-align: center;
+  margin-top: 150px;
+  color: #888;
+  font-style: italic;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999; /* jako veliki z-index */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 400px;
+  max-height: 80%;
+  overflow-y: auto;
+  z-index: 10000;
+  box-shadow: 0px 5px 15px rgba(0,0,0,0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+}
+
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.available-user {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+}
+
+.available-user:hover {
+  background-color: #f0f0f0;
+}
+
+

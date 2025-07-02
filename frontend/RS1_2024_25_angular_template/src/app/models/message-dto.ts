@@ -5,6 +5,6 @@ export interface MessageDto {
   senderFullName: string;
   receiverId: number;
   content: string;
-  sentAt: string;
+  sentAt: Date;
   isRead: boolean;
 }

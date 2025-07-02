@@ -44,7 +44,7 @@ namespace RS1_2024_25.API.SignalR.Services
                 SenderID = senderId,
                 ReceiverID = receiverId,
                 Content = content,
-                SentAt = DateTime.UtcNow,
+                SentAt = DateTime.Now,
                 IsRead = false
             };
 
@@ -110,6 +110,28 @@ namespace RS1_2024_25.API.SignalR.Services
 
             return previews;
         }
+
+        public async Task<List<AvailableUsersDto>> GetAvailableUsersAsync(int currentUserId)
+        {
+            var messagedUserIds = await _context.Messages
+                .Where(m => m.SenderID == currentUserId || m.ReceiverID == currentUserId)
+                .Select(m => m.SenderID == currentUserId ? m.ReceiverID : m.SenderID)
+                .Distinct()
+                .ToListAsync();
+
+            var users = await _context.MyAppUsers
+                .Where(u => u.ID != currentUserId && !messagedUserIds.Contains(u.ID))
+                .Select(u => new AvailableUsersDto
+                {
+                    Id = u.ID,
+                    FullName = u.FirstName + " " + u.LastName,
+                    Username = u.Username
+                })
+                .ToListAsync();
+
+            return users;
+        }
+
 
 
 

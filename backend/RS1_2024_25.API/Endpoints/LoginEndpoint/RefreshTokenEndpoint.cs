@@ -29,7 +29,7 @@ namespace RS1_2024_25.API.Endpoints.LoginEndpoint
                 return Unauthorized("Invalid or expired refresh token.");
 
             var role = user.UserType.ToString();
-            var newToken = _tokenService.GenerateToken(user.Username, role);
+            var newToken = _tokenService.GenerateToken(user.ID, user.Username, role);
             var newRefreshToken = _tokenService.GenerateRefreshToken();
 
             user.RefreshToken = newRefreshToken;

@@ -3,5 +3,5 @@ export interface ConversationDto {
   username: string;
   fullName: string;
   lastMessage: string;
-  lastMessageTime: string;
+  lastMessageTime: Date;
 }
