@@ -3,28 +3,41 @@
   <div class="conversation-list">
     <div class="header">
       <h3>Chat</h3>
-      <button>+ Compose</button>
+      <button (click)="openUserModal()">+ Novi razgovor</button>
     </div>
+
+
     <input type="text" placeholder="Search" class="search-bar" />
-    <div *ngFor="let convo of conversations" class="conversation-item" [class.active]="convo.id === selectedConversation?.id">
-      <div class="name">{{ convo.name }}</div>
+    <div *ngFor="let convo of conversations"
+         class="conversation-item"
+         [class.active]="convo.userId === selectedConversation?.userId"
+         (click)="selectConversation(convo)">
+      <div class="name">{{ convo.fullName }}</div>
       <div class="preview">{{ convo.lastMessage }}</div>
-      <div class="time">{{ convo.time }}</div>
+      <div class="time">{{ convo.lastMessageTime | date: 'dd. MM. yyyy. HH:mm' }}</div>
+    </div>
+    <div *ngIf="conversations.length === 0" class="no-conversations">
+      Nemate razgovora za prikaz. <br>
+      Započnite novi razgovor klikom na dugmić Novi razgovor!
     </div>
   </div>
 
-  <!-- Right panel: active chat -->
+  <!-- Right panel... -->
   <div class="chat-window">
     <div class="chat-header">
-      <div class="name">{{ selectedConversation?.name }}</div>
+      <div class="name">{{ selectedConversation?.fullName }}</div>
     </div>
 
     <div class="messages-container">
       <div *ngFor="let msg of messages">
-        <div class="date-separator" *ngIf="msg.isNewDay">{{ msg.dayLabel }}</div>
-        <div [class]="msg.isMine ? 'message mine' : 'message'">
-          <div class="content">{{ msg.text }}</div>
-          <div class="time">{{ msg.time }}</div>
+        <div class="message"
+             [ngClass]="{ 'mine': msg.senderId === currentUserId }">
+          <div class="content">
+                 <span *ngIf="msg.senderId !== currentUserId" class="sender-name">
+                    {{ msg.senderFullName }}</span>
+            {{ msg.content }}
+          </div>
+          <div class="time">{{ msg.sentAt | date: 'dd. MM. yyyy. HH:mm' }}</div>
         </div>
       </div>
     </div>
@@ -36,3 +49,18 @@
   </div>
 </div>
 
+<div *ngIf="showAvailableUsers" class="modal-backdrop">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Odaberi korisnika</h3>
+      <button class="close-btn" (click)="closeUserModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div *ngFor="let user of availableUsers"
+           class="available-user"
+           (click)="startConversationWith(user)">
+        {{ user.fullName }} ({{ user.username }})
+      </div>
+    </div>
+  </div>
+</div>

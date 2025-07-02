@@ -38,6 +38,14 @@ namespace RS1_2024_25.API.SignalR
             var result = await _messageService.SendMessageAsync(request.SenderId, request.ReceiverId, request.Content);
             return Ok(result);
         }
+
+        [HttpGet("available-users/{userId}")]
+        public async Task<IActionResult> GetAvailableUsers(int userId)
+        {
+            var users = await _messageService.GetAvailableUsersAsync(userId);
+            return Ok(users);
+        }
+
     }
 
     public class SendMessageRequest

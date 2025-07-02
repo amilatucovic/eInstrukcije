@@ -50,22 +50,24 @@ export class LoginComponent {
           this.chatService.startConnection(response.token);
           localStorage.setItem('refreshToken', response.refreshToken);
 
-          const user: MyAppUser = ({
-            id: response.id,
-            city: response.city,
-            cityId: response.cityId,
-            firstName: response.firstName,
-            lastName: response.lastName,
-            username: response.username,
-            email: response.email,
-            phoneNumber: response.phoneNumber,
-            educationLevel: response.educationLevel,
-            preferredMode: response.preferredMode,
-            grade: response.grade
-          });
+          const user = new MyAppUser(
+            response.id,
+            response.city,
+            response.cityId,
+            response.firstName,
+            response.lastName,
+            response.email,
+            response.username,
+            response.phoneNumber,
+            response.educationLevel,
+            response.preferredMode,
+            response.grade,
+            response.role
+          );
 
           this.myAuth.setLoggedInUser(user);
-
+          console.log('Logged in user:', user);
+          console.log('From authService:', this.myAuth.getLoggedInUser());
           if (response.role === 'Tutor' && response.tutorId) {
             localStorage.setItem('tutorId', response.tutorId.toString());
           }

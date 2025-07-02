@@ -5,10 +5,10 @@ namespace RS1_2024_25.API.SignalR
 {
     public class NameUserIdProvider : IUserIdProvider
     {
-        public string? GetUserId(HubConnectionContext connection)
+        public string GetUserId(HubConnectionContext connection)
         {
-           
-            return connection.User?.FindFirst(ClaimTypes.Name)?.Value;
+            return connection.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
         }
     }
+
 }
