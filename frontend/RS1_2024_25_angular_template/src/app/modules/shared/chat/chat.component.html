@@ -40,10 +40,13 @@
           <div class="time">{{ msg.sentAt | date: 'dd. MM. yyyy. HH:mm' }}</div>
         </div>
       </div>
+      <div *ngIf="typingUserId === selectedConversation?.userId" class="typing-indicator">
+        {{ selectedConversation?.fullName }} piše...
+      </div>
     </div>
 
     <div class="chat-input">
-      <input type="text" [(ngModel)]="newMessage" placeholder="Type your message" />
+      <<input type="text" [(ngModel)]="newMessage" (keydown)="onTyping()" placeholder="Type your message" />
       <button (click)="sendMessage()">Send</button>
     </div>
   </div>

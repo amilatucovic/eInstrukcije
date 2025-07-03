@@ -11,6 +11,16 @@ namespace RS1_2024_25.API.SignalR
 
         private readonly IMessageService _messageService;
 
+        private int GetCurrentUserId()
+        {
+            var userIdClaim = Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim))
+                throw new Exception("User ID claim not found in context.");
+
+            return int.Parse(userIdClaim);
+        }
+
+
         public ChatHub(IMessageService messageService)
         {
             _messageService = messageService;
@@ -38,6 +48,12 @@ namespace RS1_2024_25.API.SignalR
         {
             Console.WriteLine($"User disconnected: {Context.UserIdentifier}");
             return base.OnDisconnectedAsync(exception);
+        }
+
+        public async Task Typing(int receiverId)
+        {
+            var senderId = GetCurrentUserId(); 
+            await Clients.User(receiverId.ToString()).SendAsync("UserTyping", senderId);
         }
     }
 }

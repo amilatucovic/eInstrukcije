@@ -13,8 +13,7 @@ import {MyAuthService} from '../my-auth.service';
   providedIn: 'root'
 })
 export class ChatService {
-  private hubConnection!: signalR.HubConnection;
-
+  public hubConnection!: signalR.HubConnection;
   private messageReceivedSubject = new BehaviorSubject<{ sender: string, message: string } | null>(null);
   public messageReceived$ = this.messageReceivedSubject.asObservable();
 
@@ -70,6 +69,9 @@ export class ChatService {
     return this.http.get<AvailableUsersDto[]>(`http://localhost:7000/api/Message/available-users/${currentUserId}`);
   }
 
+  public sendTypingEvent(receiverId: number) {
+    this.hubConnection.invoke("Typing", receiverId).catch(err => console.error("Typing error", err));
+  }
 
 
 }
