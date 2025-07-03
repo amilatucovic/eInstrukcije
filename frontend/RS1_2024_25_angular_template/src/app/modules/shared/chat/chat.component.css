@@ -219,4 +219,11 @@
   background-color: #f0f0f0;
 }
 
+.typing-indicator {
+  font-style: italic;
+  color: gray;
+  padding: 0.5rem 1rem;
+}
+
+
 

@@ -18,11 +18,15 @@ export class ChatComponent implements OnInit {
   currentUserId!: number;
   availableUsers: AvailableUsersDto[] = [];
   showAvailableUsers: boolean = false;
+  typingUserId: number | null = null;
+  typingTimeoutHandle: any;
+
 
   constructor(
     private chatService: ChatService,
     private authService: MyAuthService
-  ) {}
+
+) {}
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
@@ -56,6 +60,18 @@ export class ChatComponent implements OnInit {
       }
     });
 
+
+    this.chatService.hubConnection.on("UserTyping", (senderId: string) => {
+      const numericSenderId = +senderId;
+      if (this.selectedConversation?.userId === numericSenderId) {
+        this.typingUserId = numericSenderId;
+
+        clearTimeout(this.typingTimeoutHandle);
+        this.typingTimeoutHandle = setTimeout(() => {
+          this.typingUserId = null;
+        }, 4000);
+      }
+    });
 
 
 
@@ -117,6 +133,15 @@ export class ChatComponent implements OnInit {
         this.selectConversation(newConvo);
       }
     });
+  }
+
+  onTyping() {
+    if (this.selectedConversation) {
+      this.chatService.sendTypingEvent(this.selectedConversation.userId);
+    }
+
+    clearTimeout(this.typingTimeoutHandle);
+    this.typingTimeoutHandle = setTimeout(() => {}, 3000); // debounce
   }
 
 
