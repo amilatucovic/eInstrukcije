@@ -20,6 +20,7 @@ import localeBs from '@angular/common/locales/bs';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StudentPaymentsTabComponent } from './modules/student/student-payments-tab/student-payments-tab.component';
 
 
 registerLocaleData(localeBs);
@@ -33,7 +34,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     LoginComponent,
     PretragaStudenataComponent,
-    LoginComponent
+    LoginComponent,
+    StudentPaymentsTabComponent
   ],
   imports: [
     BrowserModule,

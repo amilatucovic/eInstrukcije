@@ -10,12 +10,8 @@ import { MyAppUser } from '../../../models/myAppUser.model';
 export class StudentDashboardComponent implements OnInit {
   profileImageUrl: string | ArrayBuffer | null = null;
   hovering = false;
-  activeTab: string = 'home'; //početni aktivni tab
   user: MyAppUser | null = null;
 
-  setActiveTab(tabName: string) {
-    this.activeTab = tabName;
-  }
 
   constructor(private myAuth: MyAuthService) { }
 

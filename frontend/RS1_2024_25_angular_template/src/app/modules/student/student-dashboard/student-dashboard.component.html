@@ -1,8 +1,8 @@
-<!-- index.html -->
 <link
   href="https://fonts.googleapis.com/icon?family=Material+Icons"
   rel="stylesheet"
 />
+
 <div class="dashboard-container">
   <!-- Sidebar -->
   <div class="sidebar">
@@ -41,45 +41,22 @@
     </div>
 
     <nav class="nav-links">
-      <a
-        href="#"
-        (click)="setActiveTab('home'); $event.preventDefault()"
-        [class.active]="activeTab === 'home'"
-      >
+      <a routerLink="home" routerLinkActive="active">
         <span class="material-icons">home</span> Početna stranica
       </a>
-      <a
-        href="#"
-        (click)="setActiveTab('classes'); $event.preventDefault()"
-        [class.active]="activeTab === 'classes'"
-      >
+      <a routerLink="classes" routerLinkActive="active">
         <span class="material-icons">event</span> Termini predavanja
       </a>
-      <a
-        href="#"
-        (click)="setActiveTab('instruktori'); $event.preventDefault()"
-        [class.active]="activeTab === 'instruktori'"
-      >
+      <a routerLink="tutors" routerLinkActive="active">
         <span class="material-icons">school</span> Instruktori
       </a>
-      <a
-        routerLink="/student-dashboard/chat"
-        routerLinkActive="active"
-      >
+      <a routerLink="chat" routerLinkActive="active">
         <span class="material-icons">chat</span> Razgovori
       </a>
-      <a
-        href="#"
-        (click)="setActiveTab('payments'); $event.preventDefault()"
-        [class.active]="activeTab === 'payments'"
-      >
+      <a routerLink="payments" routerLinkActive="active">
         <span class="material-icons">credit_card</span> Transakcije
       </a>
-      <a
-        href="#"
-        (click)="setActiveTab('account'); $event.preventDefault()"
-        [class.active]="activeTab === 'account'"
-      >
+      <a routerLink="account" routerLinkActive="active">
         <span class="material-icons">account_circle</span> Moj profil
       </a>
     </nav>
@@ -87,28 +64,6 @@
 
   <!-- Main content -->
   <div class="main-content">
-    <div *ngIf="activeTab === 'home'">
-      <h1>
-        Dobrodošli nazad,
-        {{ user?.firstName }}!
-      </h1>
-      <p>Učimo i napredujemo, zajedno!</p>
-    </div>
-    <div>
-      <app-student-home-tab *ngIf="activeTab === 'home'"></app-student-home-tab>
-    </div>
-    <div>
-      <app-tutor-search *ngIf="activeTab === 'instruktori'"></app-tutor-search>
-    </div>
-    <div>
-      <app-student-classes-tab
-        *ngIf="activeTab === 'classes'"
-      ></app-student-classes-tab>
-    </div>
-    <div>
-      <app-student-acc-settings-tab
-        *ngIf="activeTab === 'account'"
-      ></app-student-acc-settings-tab>
-    </div>
+    <router-outlet></router-outlet>
   </div>
 </div>
