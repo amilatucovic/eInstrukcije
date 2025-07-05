@@ -99,11 +99,13 @@ namespace RS1_2024_25.API.SignalR.Services
                 return new ConversationPreviewDto
                 {
                     UserId = otherUser.ID,
-                    FullName=otherUser.FirstName + " " + otherUser.LastName,
+                    FullName = otherUser.FirstName + " " + otherUser.LastName,
                     Username = otherUser.Username,
                     LastMessage = message.Content,
-                    LastMessageTime = message.SentAt
+                    LastMessageTime = message.SentAt,
+                    LastMessageSenderId = message.SenderID
                 };
+
             })
             .OrderByDescending(p => p.LastMessageTime)
             .ToList();

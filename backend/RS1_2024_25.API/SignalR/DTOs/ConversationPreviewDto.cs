@@ -7,5 +7,6 @@
         public string FullName { get; set; }
         public string LastMessage { get; set; }
         public DateTime? LastMessageTime { get; set; }
+        public int LastMessageSenderId { get; set; }
     }
 }
