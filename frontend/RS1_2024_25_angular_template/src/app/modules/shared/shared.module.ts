@@ -12,6 +12,7 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { StudentAccSettingsTabComponent } from '../student/student-acc-settings-tab/student-acc-settings-tab.component';
 import { ChatComponent } from './chat/chat.component';
+import {LinebreaksPipe} from './pipes';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ChatComponent } from './chat/chat.component';
     StudentHomeTabComponent,
     StudentClassesTabComponent,
     StudentAccSettingsTabComponent,
-    ChatComponent
+    ChatComponent,
+    LinebreaksPipe
   ],
   imports: [
     CommonModule,
@@ -45,7 +47,8 @@ import { ChatComponent } from './chat/chat.component';
     StudentHomeTabComponent,
     StudentClassesTabComponent,
     StudentAccSettingsTabComponent,
-    ChatComponent
+    ChatComponent,
+    LinebreaksPipe
   ]
 })
 export class SharedModule {

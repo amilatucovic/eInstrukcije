@@ -4,4 +4,6 @@ export interface ConversationDto {
   fullName: string;
   lastMessage: string;
   lastMessageTime: Date;
+  lastMessageSenderId: number;
 }
+

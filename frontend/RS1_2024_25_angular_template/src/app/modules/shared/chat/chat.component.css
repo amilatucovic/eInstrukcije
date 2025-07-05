@@ -225,5 +225,20 @@
   padding: 0.5rem 1rem;
 }
 
+.chat-input textarea {
+  width: 100%;
+  resize: none;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.date-divider {
+  text-align: center;
+  margin: 20px 0 10px 0;
+  font-weight: bold;
+  color: #888;
+}
+
 
 
