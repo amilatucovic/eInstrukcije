@@ -1,0 +1,51 @@
+<div class="layout-wrapper d-flex">
+<nav class="d-flex flex-column align-items-center p-3 text-white sidebar">
+  <img
+    [src]="profileImageUrl"
+    alt="Profilna slika"
+    class="profile-img mb-3"
+  />
+
+  <h4>{{ tutorProfile?.firstName }} {{ tutorProfile?.lastName }}</h4>
+  <p class="role-text">Tutor</p>
+  <ul class="nav flex-column w-100 mt-4">
+    <li class="nav-item mb-3">
+      <a routerLink="/tutor-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" class="nav-link text-white fw-bold">
+        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+      </a>
+
+    </li>
+    <li class="nav-item mb-3">
+      <a routerLink="tutor-lessons" routerLinkActive="active" class="nav-link text-white">
+        <i class="fas fa-book-open me-2"></i> Lekcije
+      </a>
+    </li>
+    <li class="nav-item mb-3">
+      <a routerLink="tutor-profile" routerLinkActive="active" class="nav-link text-white">
+        <i class="fas fa-user me-2"></i> Profil
+      </a>
+    </li>
+    <li class="nav-item mb-3">
+      <a routerLink="tutor-messages" routerLinkActive="active" class="nav-link text-white">
+        <i class="fas fa-comments me-2"></i> Razgovori
+      </a>
+    </li>
+    <li class="nav-item mb-3">
+      <a routerLink="tutor-reservations" routerLinkActive="active" class="nav-link text-white">
+        <i class="fas fa-calendar-check me-2"></i> Rezervacije
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-danger" style="cursor:pointer;" (click)="logout()">
+        <i class="fas fa-sign-out-alt me-2"></i> Odjava
+      </a>
+    </li>
+  </ul>
+
+
+</nav>
+
+  <main class="flex-grow-1 p-4 main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

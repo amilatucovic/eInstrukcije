@@ -113,8 +113,11 @@ export class ChatComponent implements OnInit {
 
   sendMessage() {
     if (!this.newMessage.trim() || !this.selectedConversation) return;
+
     const currentTime = new Date();
-    this.messages.push({
+
+    // Dodajemo novu poruku lokalno
+    const messageToAdd = {
       id: 0,
       senderId: this.currentUserId,
       receiverId: this.selectedConversation.userId,
@@ -123,9 +126,32 @@ export class ChatComponent implements OnInit {
       isRead: false,
       senderUsername: this.authService.getLoggedInUser()?.username || 'Ja',
       senderFullName: `${this.authService.getLoggedInUser()?.firstName} ${this.authService.getLoggedInUser()?.lastName}`
-    });
+    };
+    this.messages.push(messageToAdd);
+    this.groupedMessages = this.groupMessagesByDate(this.messages);
+
+    // Šaljemo poruku putem SignalR-a
     this.chatService.sendMessage(this.selectedConversation.userId.toString(), this.newMessage);
+
+    // Resetiramo input
+    const justSent = this.newMessage;
     this.newMessage = '';
+
+    // 💡 Ako konverzacija ne postoji u listi, dodaj je lokalno da se UI odmah ažurira
+    const existing = this.conversations.find(c => c.userId === this.selectedConversation?.userId);
+    if (!existing) {
+      const newConvo = {
+        userId: this.selectedConversation.userId,
+        fullName: this.selectedConversation.fullName,
+        username: this.selectedConversation.username,
+        lastMessage: justSent,
+        lastMessageTime: currentTime,
+        lastMessageSenderId: this.currentUserId
+      };
+      this.conversations.unshift(newConvo);
+    }
+
+    // Nakon slanja, opet povuci ažuriranu listu konverzacija sa servera
     this.chatService.getConversations(this.currentUserId).subscribe(data => {
       this.conversations = data;
       const newConvo = data.find(c => c.userId === this.selectedConversation?.userId);
@@ -134,6 +160,7 @@ export class ChatComponent implements OnInit {
       }
     });
   }
+
 
   onTyping() {
     if (this.selectedConversation) {
@@ -253,5 +280,5 @@ export class ChatComponent implements OnInit {
       ? `You: ${convo.lastMessage}`
       : `${convo.fullName.split(' ')[0]}: ${convo.lastMessage}`;
   }
-  
+
 }

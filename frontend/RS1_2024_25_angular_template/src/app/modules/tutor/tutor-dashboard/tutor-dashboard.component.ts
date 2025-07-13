@@ -6,7 +6,6 @@ import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { Subject } from 'rxjs';
 import { format } from 'date-fns';
 
-
 @Component({
   selector: 'app-tutor-dashboard',
   templateUrl: './tutor-dashboard.component.html',
@@ -86,9 +85,4 @@ export class TutorDashboardComponent implements OnInit {
     });
   }
 
-  get profileImageUrl(): string {
-    return this.tutorProfile?.profileImageUrl
-      ? `http://localhost:7000${this.tutorProfile.profileImageUrl}`
-      : '/assets/user.webp';
-  }
 }

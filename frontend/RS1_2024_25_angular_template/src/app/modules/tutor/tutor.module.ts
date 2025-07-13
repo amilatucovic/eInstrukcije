@@ -7,13 +7,16 @@ import { TutorDashboardComponent } from './tutor-dashboard/tutor-dashboard.compo
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeBs from '@angular/common/locales/bs';
+import { TutorSidebarComponent } from './tutor-sidebar/tutor-sidebar.component';
 
 registerLocaleData(localeBs);
 
 @NgModule({
   declarations: [
-    TutorDashboardComponent
+    TutorDashboardComponent,
+    TutorSidebarComponent
   ],
+  exports : [TutorSidebarComponent],
     imports: [
         CommonModule,
         TutorRoutingModule,
