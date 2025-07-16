@@ -8,11 +8,11 @@ namespace RS1_2024_2025.API.Endpoints.SubjectEndpoint
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubjectGetEndpoint : ControllerBase
+    public class SubjectEndpoint : ControllerBase
     {
         private readonly ApplicationDbContext db;
 
-        public SubjectGetEndpoint(ApplicationDbContext db)
+        public SubjectEndpoint(ApplicationDbContext db)
         {
             this.db = db;
         }

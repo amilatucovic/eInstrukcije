@@ -2,7 +2,7 @@
   <!-- Left panel: conversation list -->
   <div class="conversation-list">
     <div class="header">
-      <h3>Chat</h3>
+      <h3>Razgovori</h3>
       <button (click)="openUserModal()">+ Novi razgovor</button>
     </div>
 
@@ -53,7 +53,7 @@
     <div class="chat-input">
       <textarea
         [(ngModel)]="newMessage"
-        placeholder="Type your message"
+        placeholder="Napiši poruku..."
         rows="2"
         (keydown)="handleKeyDown($event)"
         (input)="onTyping()"

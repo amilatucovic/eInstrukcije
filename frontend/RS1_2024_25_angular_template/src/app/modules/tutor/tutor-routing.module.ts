@@ -3,6 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { TutorDashboardComponent } from './tutor-dashboard/tutor-dashboard.component';
 import { ChatComponent } from '../shared/chat/chat.component';
 import { TutorSidebarComponent } from './tutor-sidebar/tutor-sidebar.component';
+import {TutorReservationsComponent} from './tutor-reservations/tutor-reservations.component';
+import {TutorSubjectsComponent} from './tutor-subjects/tutor-subjects.component';
+
 
 const routes: Routes = [
   {
@@ -10,7 +13,9 @@ const routes: Routes = [
     component: TutorSidebarComponent,
     children: [
       { path: '', component: TutorDashboardComponent },
-      { path: 'tutor-messages', component: ChatComponent }
+      { path: 'tutor-messages', component: ChatComponent },
+      { path: 'reservations', component: TutorReservationsComponent },
+      { path: 'tutor-lessons', component: TutorSubjectsComponent },
 
     ]
   }

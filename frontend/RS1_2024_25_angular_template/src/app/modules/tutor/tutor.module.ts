@@ -8,23 +8,42 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeBs from '@angular/common/locales/bs';
 import { TutorSidebarComponent } from './tutor-sidebar/tutor-sidebar.component';
-
+import { TutorReservationsComponent } from './tutor-reservations/tutor-reservations.component';
+import { FormsModule } from '@angular/forms';
+import { TutorSubjectsComponent } from './tutor-subjects/tutor-subjects.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import {getBosnianPaginatorIntl} from './bosnian-paginator-intl';
 registerLocaleData(localeBs);
 
 @NgModule({
   declarations: [
     TutorDashboardComponent,
-    TutorSidebarComponent
+    TutorSidebarComponent,
+    TutorReservationsComponent,
+    TutorSubjectsComponent
   ],
   exports : [TutorSidebarComponent],
     imports: [
         CommonModule,
+      MatFormFieldModule,
+      MatSelectModule,
+      MatPaginatorModule,
+      FormsModule,
         TutorRoutingModule,
       CalendarModule.forRoot({
         provide: DateAdapter,
         useFactory: adapterFactory
       }),
     ],
+  providers: [
+    {
+      provide: MatPaginatorIntl,
+      useFactory: getBosnianPaginatorIntl
+    }
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TutorModule { }
