@@ -1,0 +1,77 @@
+<div class="container mt-4">
+  <h3 class="mb-3">📋 Rezervacije časova</h3>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <label>Status</label>
+      <select [(ngModel)]="selectedStatus" (change)="onFilterChange()" class="form-select">
+        <option value="">Svi statusi</option>
+        <option *ngFor="let status of [0,1,2,3]" [value]="status">
+          {{ getStatusLabel(status) }}
+        </option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label>Datum</label>
+      <input [(ngModel)]="selectedDate" type="date" (change)="onFilterChange()" class="form-control" />
+    </div>
+    <div class="col-md-3">
+      <label>Učenik/ca</label>
+      <input [(ngModel)]="searchTerm" type="text" placeholder="Search..." class="form-control" (input)="onFilterChange()" />
+    </div>
+  </div>
+
+  <div *ngIf="reservations.length > 0; else noData">
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered align-middle">
+        <thead class="table-light">
+        <tr>
+          <th>#</th>
+          <th>Student</th>
+          <th>Čas</th>
+          <th>Datum i vrijeme rezervacije</th>
+          <th>Status</th>
+          <th class="text-center">Akcije</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let res of reservations; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ res.studentFullName }}</td>
+          <td>{{ res.lessonName }}</td>
+          <td>{{ res.reservationDate | date: 'dd.MM.yyyy. HH:mm' }}</td>
+          <td>
+              <span class="badge bg-secondary" [ngClass]="{
+                'bg-warning text-dark': res.status === ReservationStatus.Pending,
+                'bg-success': res.status === ReservationStatus.Approved,
+                'bg-info text-dark': res.status === ReservationStatus.Paid,
+                'bg-danger': res.status === ReservationStatus.Rejected
+              }">
+                {{ getStatusLabel(res.status) }}
+              </span>
+          </td>
+          <td class="text-center">
+            <button class="btn btn-outline-success btn-sm me-2"
+                    (click)="approve(res.id)"
+                    [disabled]="res.status !== ReservationStatus.Pending">
+              Odobri
+            </button>
+            <button class="btn btn-outline-danger btn-sm"
+                    (click)="reject(res.id)"
+                    [disabled]="res.status !== ReservationStatus.Pending">
+              Odbij
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <div class="alert alert-info text-center mt-4">
+      Trenutno nemate rezervacija za časove uživo!
+    </div>
+  </ng-template>
+</div>
+

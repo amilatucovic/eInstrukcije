@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RS1_2024_2025.Database;
 
@@ -11,9 +12,11 @@ using RS1_2024_2025.Database;
 namespace RS1_2024_2025.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250716203751_UpdateSubjectCategorySeed")]
+    partial class UpdateSubjectCategorySeed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -546,30 +549,20 @@ namespace RS1_2024_2025.Database.Migrations
 
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Models.TutorSubjectCategory", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int?>("CategoryID")
+                    b.Property<int>("TutorID")
                         .HasColumnType("int");
 
                     b.Property<int>("SubjectID")
                         .HasColumnType("int");
 
-                    b.Property<int>("TutorID")
+                    b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("TutorID", "SubjectID", "CategoryID");
 
                     b.HasIndex("CategoryID");
 
                     b.HasIndex("SubjectID");
-
-                    b.HasIndex("TutorID", "SubjectID", "CategoryID")
-                        .IsUnique()
-                        .HasFilter("[CategoryID] IS NOT NULL");
 
                     b.ToTable("TutorSubjectCategories");
                 });
@@ -1852,7 +1845,8 @@ namespace RS1_2024_2025.Database.Migrations
                     b.HasOne("RS1_2024_2025.Domain.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RS1_2024_2025.Domain.Entities.Subject", "Subject")
                         .WithMany()

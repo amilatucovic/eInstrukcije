@@ -36,4 +36,6 @@ export class TutorSidebarComponent implements OnInit {
     localStorage.clear();
     this.router.navigate(['/auth/login']);
   }
+
+
 }

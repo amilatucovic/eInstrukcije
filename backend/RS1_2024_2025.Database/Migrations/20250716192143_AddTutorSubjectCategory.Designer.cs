@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RS1_2024_2025.Database;
 
@@ -11,9 +12,11 @@ using RS1_2024_2025.Database;
 namespace RS1_2024_2025.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250716192143_AddTutorSubjectCategory")]
+    partial class AddTutorSubjectCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,137 +101,52 @@ namespace RS1_2024_2025.Database.Migrations
                         new
                         {
                             ID = 1,
-                            Name = "Algebra"
+                            Name = "Matematika"
                         },
                         new
                         {
                             ID = 2,
-                            Name = "Geometrija"
+                            Name = "Bosanski jezik"
                         },
                         new
                         {
                             ID = 3,
-                            Name = "Gramatika"
+                            Name = "Priroda i društvo"
                         },
                         new
                         {
                             ID = 4,
-                            Name = "Pravopis"
+                            Name = "Engleski jezik"
                         },
                         new
                         {
                             ID = 5,
-                            Name = "Optika"
+                            Name = "Hemija"
                         },
                         new
                         {
                             ID = 6,
-                            Name = "Kinematika"
+                            Name = "Fizika"
                         },
                         new
                         {
                             ID = 7,
-                            Name = "Termodinamika"
+                            Name = "Historija"
                         },
                         new
                         {
                             ID = 8,
-                            Name = "Programiranje"
+                            Name = "Geografija"
                         },
                         new
                         {
                             ID = 9,
-                            Name = "Baze podataka"
+                            Name = "Biologija"
                         },
                         new
                         {
                             ID = 10,
-                            Name = "Web razvoj i dizajn"
-                        },
-                        new
-                        {
-                            ID = 11,
-                            Name = "OOP"
-                        },
-                        new
-                        {
-                            ID = 12,
-                            Name = "Neuroanatomija"
-                        },
-                        new
-                        {
-                            ID = 13,
-                            Name = "Kosti"
-                        },
-                        new
-                        {
-                            ID = 14,
-                            Name = "Kotiranje"
-                        },
-                        new
-                        {
-                            ID = 15,
-                            Name = "Tehničko pismo"
-                        },
-                        new
-                        {
-                            ID = 16,
-                            Name = "Nacrtna geometrija"
-                        },
-                        new
-                        {
-                            ID = 17,
-                            Name = "Trigonometrija"
-                        },
-                        new
-                        {
-                            ID = 18,
-                            Name = "Genetika"
-                        },
-                        new
-                        {
-                            ID = 19,
-                            Name = "Deklinacije i komparacije pridjeva"
-                        },
-                        new
-                        {
-                            ID = 20,
-                            Name = "Latinske poslovice"
-                        },
-                        new
-                        {
-                            ID = 21,
-                            Name = "Ohmov zakon i Kirhofova pravila"
-                        },
-                        new
-                        {
-                            ID = 22,
-                            Name = "Strujni krugovi"
-                        },
-                        new
-                        {
-                            ID = 23,
-                            Name = "Hemijske jednačine"
-                        },
-                        new
-                        {
-                            ID = 24,
-                            Name = "Hemijske veze"
-                        },
-                        new
-                        {
-                            ID = 25,
-                            Name = "Organska hemija"
-                        },
-                        new
-                        {
-                            ID = 26,
-                            Name = "Brojni sistemi"
-                        },
-                        new
-                        {
-                            ID = 27,
-                            Name = "Konverzacija"
+                            Name = "Informatika"
                         });
                 });
 
@@ -546,30 +464,20 @@ namespace RS1_2024_2025.Database.Migrations
 
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Models.TutorSubjectCategory", b =>
                 {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int?>("CategoryID")
+                    b.Property<int>("TutorID")
                         .HasColumnType("int");
 
                     b.Property<int>("SubjectID")
                         .HasColumnType("int");
 
-                    b.Property<int>("TutorID")
+                    b.Property<int>("CategoryID")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.HasKey("TutorID", "SubjectID", "CategoryID");
 
                     b.HasIndex("CategoryID");
 
                     b.HasIndex("SubjectID");
-
-                    b.HasIndex("TutorID", "SubjectID", "CategoryID")
-                        .IsUnique()
-                        .HasFilter("[CategoryID] IS NOT NULL");
 
                     b.ToTable("TutorSubjectCategories");
                 });
@@ -1204,44 +1112,51 @@ namespace RS1_2024_2025.Database.Migrations
                         new
                         {
                             ID = 12,
+                            Description = "Fizička aktivnost i usvajanje zdravih životnih navika",
+                            DifficultyLevel = "osnovna skola",
+                            Name = "Tjelesni i zdravstveni odgoj"
+                        },
+                        new
+                        {
+                            ID = 13,
+                            Description = "Upoznavanje sa osnovnim religijskim pojmovima i vrijednostima",
+                            DifficultyLevel = "osnovna skola",
+                            Name = "Vjeronauka"
+                        },
+                        new
+                        {
+                            ID = 14,
                             Description = "Osnove njemačkog jezika: govor, čitanje i pisanje",
                             DifficultyLevel = "osnovna skola",
                             Name = "Njemački jezik"
                         },
                         new
                         {
-                            ID = 13,
-                            Description = "Osnove turskog jezika: govor, čitanje i pisanje",
-                            DifficultyLevel = "osnovna skola",
-                            Name = "Turski jezik"
-                        },
-                        new
-                        {
-                            ID = 14,
-                            Description = "Napredna fizika, strujni krugovi, sheme",
-                            DifficultyLevel = "srednja skola",
-                            Name = "Osnove elektrotehnike"
-                        },
-                        new
-                        {
                             ID = 15,
-                            Description = "Osnove ljudske građe tijela, kosti, mišići, anatomija nervnog sistema",
+                            Description = "Proučavanje društva, normi, vrijednosti i socijalnih grupa",
                             DifficultyLevel = "srednja skola",
-                            Name = "Anatomija"
+                            Name = "Sociologija"
+                        },
+                        new
+                        {
+                            ID = 16,
+                            Description = "Osnove ljudskog ponašanja i mentalnih procesa",
+                            DifficultyLevel = "srednja skola",
+                            Name = "Psihologija"
                         },
                         new
                         {
                             ID = 17,
-                            Description = "Tehničko pismo, kotiranje, tlocrt, nacrt, bokocrt",
+                            Description = "Uvod u logičko razmišljanje, etiku i epistemologiju",
                             DifficultyLevel = "srednja skola",
-                            Name = "Tehničko crtanje"
+                            Name = "Filozofija"
                         },
                         new
                         {
                             ID = 18,
-                            Description = "Osnovni pojmovi u mikrobiologiji, imenovanje preparata, prepoznavanje mikrobioloskih organizama",
+                            Description = "Formalno razmišljanje, argumentacija i zaključivanje",
                             DifficultyLevel = "srednja skola",
-                            Name = "Mikrobiologija"
+                            Name = "Logika"
                         },
                         new
                         {
@@ -1266,8 +1181,15 @@ namespace RS1_2024_2025.Database.Migrations
                         },
                         new
                         {
+                            ID = 22,
+                            Description = "Unapređenje fizičke spremnosti i zdravih stilova života",
+                            DifficultyLevel = "srednja skola",
+                            Name = "Tjelesni i zdravstveni odgoj"
+                        },
+                        new
+                        {
                             ID = 23,
-                            Description = "Osnovni koncepti bioloških nauka, ekologija, anatomija i evolucija",
+                            Description = "Osnovni koncepti bioloških nauka, ekologija i evolucija",
                             DifficultyLevel = "srednja skola",
                             Name = "Biologija"
                         },
@@ -1295,7 +1217,7 @@ namespace RS1_2024_2025.Database.Migrations
                         new
                         {
                             ID = 27,
-                            Description = "Napredne tehnike i metode u matematici (trigonometrija, analitička geometrija)",
+                            Description = "Napredne tehnike i metode u matematici",
                             DifficultyLevel = "srednja skola",
                             Name = "Matematika"
                         });
@@ -1319,32 +1241,12 @@ namespace RS1_2024_2025.Database.Migrations
                         new
                         {
                             SubjectID = 1,
-                            CategoryID = 3
-                        },
-                        new
-                        {
-                            SubjectID = 1,
-                            CategoryID = 4
-                        },
-                        new
-                        {
-                            SubjectID = 2,
-                            CategoryID = 3
+                            CategoryID = 2
                         },
                         new
                         {
                             SubjectID = 2,
                             CategoryID = 4
-                        },
-                        new
-                        {
-                            SubjectID = 2,
-                            CategoryID = 27
-                        },
-                        new
-                        {
-                            SubjectID = 3,
-                            CategoryID = 5
                         },
                         new
                         {
@@ -1353,28 +1255,18 @@ namespace RS1_2024_2025.Database.Migrations
                         },
                         new
                         {
-                            SubjectID = 3,
+                            SubjectID = 4,
+                            CategoryID = 8
+                        },
+                        new
+                        {
+                            SubjectID = 5,
+                            CategoryID = 5
+                        },
+                        new
+                        {
+                            SubjectID = 6,
                             CategoryID = 7
-                        },
-                        new
-                        {
-                            SubjectID = 3,
-                            CategoryID = 22
-                        },
-                        new
-                        {
-                            SubjectID = 5,
-                            CategoryID = 23
-                        },
-                        new
-                        {
-                            SubjectID = 5,
-                            CategoryID = 24
-                        },
-                        new
-                        {
-                            SubjectID = 5,
-                            CategoryID = 25
                         },
                         new
                         {
@@ -1383,108 +1275,68 @@ namespace RS1_2024_2025.Database.Migrations
                         },
                         new
                         {
-                            SubjectID = 7,
+                            SubjectID = 8,
+                            CategoryID = 3
+                        },
+                        new
+                        {
+                            SubjectID = 9,
+                            CategoryID = 3
+                        },
+                        new
+                        {
+                            SubjectID = 10,
+                            CategoryID = 3
+                        },
+                        new
+                        {
+                            SubjectID = 11,
+                            CategoryID = 3
+                        },
+                        new
+                        {
+                            SubjectID = 12,
+                            CategoryID = 3
+                        },
+                        new
+                        {
+                            SubjectID = 13,
+                            CategoryID = 3
+                        },
+                        new
+                        {
+                            SubjectID = 14,
+                            CategoryID = 4
+                        },
+                        new
+                        {
+                            SubjectID = 15,
+                            CategoryID = 3
+                        },
+                        new
+                        {
+                            SubjectID = 16,
+                            CategoryID = 3
+                        },
+                        new
+                        {
+                            SubjectID = 17,
+                            CategoryID = 3
+                        },
+                        new
+                        {
+                            SubjectID = 18,
+                            CategoryID = 3
+                        },
+                        new
+                        {
+                            SubjectID = 19,
                             CategoryID = 2
                         },
                         new
                         {
-                            SubjectID = 12,
-                            CategoryID = 3
-                        },
-                        new
-                        {
-                            SubjectID = 12,
-                            CategoryID = 4
-                        },
-                        new
-                        {
-                            SubjectID = 12,
-                            CategoryID = 27
-                        },
-                        new
-                        {
-                            SubjectID = 13,
-                            CategoryID = 3
-                        },
-                        new
-                        {
-                            SubjectID = 13,
-                            CategoryID = 4
-                        },
-                        new
-                        {
-                            SubjectID = 13,
-                            CategoryID = 27
-                        },
-                        new
-                        {
-                            SubjectID = 14,
-                            CategoryID = 21
-                        },
-                        new
-                        {
-                            SubjectID = 14,
-                            CategoryID = 22
-                        },
-                        new
-                        {
-                            SubjectID = 15,
-                            CategoryID = 12
-                        },
-                        new
-                        {
-                            SubjectID = 15,
-                            CategoryID = 13
-                        },
-                        new
-                        {
-                            SubjectID = 17,
-                            CategoryID = 14
-                        },
-                        new
-                        {
-                            SubjectID = 17,
-                            CategoryID = 15
-                        },
-                        new
-                        {
-                            SubjectID = 17,
-                            CategoryID = 16
-                        },
-                        new
-                        {
-                            SubjectID = 19,
-                            CategoryID = 3
-                        },
-                        new
-                        {
-                            SubjectID = 19,
-                            CategoryID = 19
-                        },
-                        new
-                        {
-                            SubjectID = 19,
-                            CategoryID = 20
-                        },
-                        new
-                        {
-                            SubjectID = 20,
-                            CategoryID = 3
-                        },
-                        new
-                        {
                             SubjectID = 20,
                             CategoryID = 4
-                        },
-                        new
-                        {
-                            SubjectID = 20,
-                            CategoryID = 27
-                        },
-                        new
-                        {
-                            SubjectID = 21,
-                            CategoryID = 3
                         },
                         new
                         {
@@ -1493,13 +1345,13 @@ namespace RS1_2024_2025.Database.Migrations
                         },
                         new
                         {
-                            SubjectID = 21,
-                            CategoryID = 27
+                            SubjectID = 22,
+                            CategoryID = 3
                         },
                         new
                         {
-                            SubjectID = 24,
-                            CategoryID = 5
+                            SubjectID = 23,
+                            CategoryID = 9
                         },
                         new
                         {
@@ -1508,43 +1360,8 @@ namespace RS1_2024_2025.Database.Migrations
                         },
                         new
                         {
-                            SubjectID = 24,
-                            CategoryID = 7
-                        },
-                        new
-                        {
-                            SubjectID = 24,
-                            CategoryID = 21
-                        },
-                        new
-                        {
-                            SubjectID = 24,
-                            CategoryID = 22
-                        },
-                        new
-                        {
                             SubjectID = 25,
-                            CategoryID = 23
-                        },
-                        new
-                        {
-                            SubjectID = 25,
-                            CategoryID = 24
-                        },
-                        new
-                        {
-                            SubjectID = 25,
-                            CategoryID = 25
-                        },
-                        new
-                        {
-                            SubjectID = 26,
-                            CategoryID = 8
-                        },
-                        new
-                        {
-                            SubjectID = 26,
-                            CategoryID = 9
+                            CategoryID = 5
                         },
                         new
                         {
@@ -1553,28 +1370,8 @@ namespace RS1_2024_2025.Database.Migrations
                         },
                         new
                         {
-                            SubjectID = 26,
-                            CategoryID = 11
-                        },
-                        new
-                        {
-                            SubjectID = 26,
-                            CategoryID = 26
-                        },
-                        new
-                        {
                             SubjectID = 27,
                             CategoryID = 1
-                        },
-                        new
-                        {
-                            SubjectID = 27,
-                            CategoryID = 2
-                        },
-                        new
-                        {
-                            SubjectID = 27,
-                            CategoryID = 17
                         });
                 });
 
@@ -1852,7 +1649,8 @@ namespace RS1_2024_2025.Database.Migrations
                     b.HasOne("RS1_2024_2025.Domain.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("RS1_2024_2025.Domain.Entities.Subject", "Subject")
                         .WithMany()

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Internal;
 using RS1_2024_2025.Database.Seed;
 using RS1_2024_2025.Domain.Entities;
+using RS1_2024_2025.Domain.Entities.Models;
 using RS1_2024_2025.Domain.Entities.Models.Auth;
 
 namespace RS1_2024_2025.Database
@@ -27,8 +28,9 @@ namespace RS1_2024_2025.Database
 		public DbSet<Reservation> Reservations { get; set; }
 		public DbSet<SubjectCategory> SubjectsCategories { get; set; }
 		public DbSet<ReservationPayment> ReservationsPayments { get; set; }
+        public DbSet<TutorSubjectCategory> TutorSubjectCategories { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
@@ -58,7 +60,33 @@ namespace RS1_2024_2025.Database
 				.HasForeignKey(r => r.TutorID)
 				.OnDelete(DeleteBehavior.NoAction);
 
-			modelBuilder.Entity<TutorSubject>()
+            modelBuilder.Entity<TutorSubjectCategory>()
+    .HasKey(tsc => tsc.ID); 
+
+            modelBuilder.Entity<TutorSubjectCategory>()
+                .HasIndex(tsc => new { tsc.TutorID, tsc.SubjectID, tsc.CategoryID }) // Sprečava duplikate
+                .IsUnique();
+
+            modelBuilder.Entity<TutorSubjectCategory>()
+                .HasOne(tsc => tsc.Tutor)
+                .WithMany()
+                .HasForeignKey(tsc => tsc.TutorID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TutorSubjectCategory>()
+                .HasOne(tsc => tsc.Subject)
+                .WithMany()
+                .HasForeignKey(tsc => tsc.SubjectID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<TutorSubjectCategory>()
+                .HasOne(tsc => tsc.Category)
+                .WithMany()
+                .HasForeignKey(tsc => tsc.CategoryID)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<TutorSubject>()
 										.HasKey(ts => new { ts.TutorID, ts.SubjectID });
 
 			modelBuilder.Entity<TutorSubject>()

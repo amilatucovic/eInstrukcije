@@ -21,6 +21,10 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StudentPaymentsTabComponent } from './modules/student/student-payments-tab/student-payments-tab.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
 
 registerLocaleData(localeBs);
@@ -39,6 +43,10 @@ export function HttpLoaderFactory(http: HttpClient) {
   ],
   imports: [
     BrowserModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    BrowserAnimationsModule,
     NgbModule,
     AppRoutingModule,
     HttpClientModule,
