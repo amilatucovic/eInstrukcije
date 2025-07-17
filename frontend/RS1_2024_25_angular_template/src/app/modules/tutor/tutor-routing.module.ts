@@ -5,7 +5,7 @@ import { ChatComponent } from '../shared/chat/chat.component';
 import { TutorSidebarComponent } from './tutor-sidebar/tutor-sidebar.component';
 import {TutorReservationsComponent} from './tutor-reservations/tutor-reservations.component';
 import {TutorSubjectsComponent} from './tutor-subjects/tutor-subjects.component';
-
+import {TutorProfileComponent} from './tutor-profile/tutor-profile.component';
 
 const routes: Routes = [
   {
@@ -16,6 +16,7 @@ const routes: Routes = [
       { path: 'tutor-messages', component: ChatComponent },
       { path: 'reservations', component: TutorReservationsComponent },
       { path: 'tutor-lessons', component: TutorSubjectsComponent },
+      { path: 'tutor-profile', component: TutorProfileComponent },
 
     ]
   }

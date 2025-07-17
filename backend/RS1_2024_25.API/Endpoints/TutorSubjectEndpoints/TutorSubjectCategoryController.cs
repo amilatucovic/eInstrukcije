@@ -87,13 +87,15 @@ namespace RS1_2024_25.API.Endpoints.TutorSubjectEndpoints
 
         [HttpDelete]
         public async Task<IActionResult> Delete(
-            [FromQuery] int tutorId,
-            [FromQuery] int subjectId,
-            [FromQuery] int categoryId,
-            CancellationToken cancellationToken = default)
+     [FromQuery] int tutorId,
+     [FromQuery] int subjectId,
+     [FromQuery] int? categoryId,
+     CancellationToken cancellationToken = default)
         {
             var entity = await db.TutorSubjectCategories.FirstOrDefaultAsync(
-                x => x.TutorID == tutorId && x.SubjectID == subjectId && x.CategoryID == categoryId,
+                x => x.TutorID == tutorId &&
+                     x.SubjectID == subjectId &&
+                     ((x.CategoryID == null && categoryId == 0) || x.CategoryID == categoryId),
                 cancellationToken);
 
             if (entity == null)
@@ -104,6 +106,8 @@ namespace RS1_2024_25.API.Endpoints.TutorSubjectEndpoints
 
             return Ok(new { Message = "Subject category removed from tutor." });
         }
+
+
     }
 }
 

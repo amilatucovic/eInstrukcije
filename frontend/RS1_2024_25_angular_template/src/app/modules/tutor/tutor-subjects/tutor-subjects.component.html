@@ -53,7 +53,11 @@
           </div>
           <button class="btn btn-sm btn-outline-danger" (click)="removeSelection(entry)">Ukloni</button>
         </li>
+        <li *ngIf="currentSelections.length === 0" class="list-group-item text-center" style="background-color: #e6f0ff; color: #004080;">
+          Još uvijek niste dodali nijedan predmet i kategoriju.
+        </li>
       </ul>
+
     </div>
 
     <div class="d-flex justify-content-center mt-3">

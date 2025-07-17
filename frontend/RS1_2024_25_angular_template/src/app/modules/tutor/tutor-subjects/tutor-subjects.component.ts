@@ -47,7 +47,7 @@ export class TutorSubjectsComponent implements OnInit {
       }, {} as { [key: string]: Subject[] });
       this.loadCurrentSelections();
     });
-    
+
   }
 
   onSubjectChange(): void {
@@ -67,11 +67,12 @@ export class TutorSubjectsComponent implements OnInit {
           }
         }
 
-        if (Object.keys(this.categorySelection).length === 0) {
+        if (data.length > 0 && Object.keys(this.categorySelection).length === 0) {
           alert("Sve kategorije za ovaj predmet su već dodane.");
           this.selectedSubjectId = null;
           this.categories = [];
         }
+
       },
       error: () => this.categories = []
     });
@@ -126,11 +127,11 @@ export class TutorSubjectsComponent implements OnInit {
 
 
   removeSelection(entry: any): void {
-    this.tutorService.delete(entry.tutorID, entry.subjectID, entry.categoryID).subscribe(() => {
-      this.loadCurrentSelections();
+    const categoryId = entry.categoryID === null ? 0 : entry.categoryID;
+    this.tutorService.delete(entry.tutorID, entry.subjectID, categoryId).subscribe(() => {
+        this.loadCurrentSelections();
     });
   }
-
   getDifficultyLevels(): string[] {
     return Object.keys(this.subjectsByDifficulty);
   }
@@ -149,9 +150,7 @@ export class TutorSubjectsComponent implements OnInit {
     const subject = this.subjects.find(s => s.id === subjectId);
     return subject ? this.getDifficultyLabel(subject.difficultyLevel) : '';
   }
-  totalPages(): number {
-    return Math.ceil(this.totalCount / this.pageSize);
-  }
+
 
   onPageChange(event: PageEvent): void {
     this.pageSize = event.pageSize;
@@ -159,14 +158,7 @@ export class TutorSubjectsComponent implements OnInit {
     this.loadCurrentSelections();
   }
 
-  isSubjectFullySelected(subjectId: number): boolean {
-    const subject = this.subjects.find(s => s.id === subjectId);
-    const allSelections = this.currentSelections;
 
-
-    const hasCategories = this.subjectService.getCategoriesForSubject(subjectId);
-    return false;
-  }
 
 
 
