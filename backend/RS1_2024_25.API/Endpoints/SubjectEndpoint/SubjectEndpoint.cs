@@ -129,13 +129,14 @@ namespace RS1_2024_2025.API.Endpoints.SubjectEndpoint
                 })
                 .FirstOrDefault();
 
-            if (subject == null || subject.Categories.Length == 0)
+            if (subject == null)
             {
-                return NotFound("No categories found for the given subject.");
+                return NotFound();
             }
 
-            return Ok(subject.Categories);
+            return Ok(subject.Categories); 
         }
+
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

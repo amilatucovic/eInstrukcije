@@ -95,7 +95,7 @@ export class ChatComponent implements OnInit {
   }
   selectConversation(convo: ConversationDto): void {
     this.selectedConversation = convo;
-    this.messages = []; // clear previous messages
+    this.messages = [];
 
     this.chatService.getMessageHistory(this.currentUserId, convo.userId).subscribe({
       next: (data) => {
@@ -130,14 +130,14 @@ export class ChatComponent implements OnInit {
     this.messages.push(messageToAdd);
     this.groupedMessages = this.groupMessagesByDate(this.messages);
 
-    // Šaljemo poruku putem SignalR-a
+
     this.chatService.sendMessage(this.selectedConversation.userId.toString(), this.newMessage);
 
-    // Resetiramo input
+
     const justSent = this.newMessage;
     this.newMessage = '';
 
-    // 💡 Ako konverzacija ne postoji u listi, dodaj je lokalno da se UI odmah ažurira
+
     const existing = this.conversations.find(c => c.userId === this.selectedConversation?.userId);
     if (!existing) {
       const newConvo = {
@@ -151,7 +151,7 @@ export class ChatComponent implements OnInit {
       this.conversations.unshift(newConvo);
     }
 
-    // Nakon slanja, opet povuci ažuriranu listu konverzacija sa servera
+
     this.chatService.getConversations(this.currentUserId).subscribe(data => {
       this.conversations = data;
       const newConvo = data.find(c => c.userId === this.selectedConversation?.userId);
@@ -277,7 +277,7 @@ export class ChatComponent implements OnInit {
 
   getLastMessagePreview(convo: ConversationDto): string {
     return convo.lastMessageSenderId === this.currentUserId
-      ? `You: ${convo.lastMessage}`
+      ? `Ti: ${convo.lastMessage}`
       : `${convo.fullName.split(' ')[0]}: ${convo.lastMessage}`;
   }
 

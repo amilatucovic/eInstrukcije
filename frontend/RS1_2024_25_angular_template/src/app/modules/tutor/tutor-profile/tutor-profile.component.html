@@ -1,0 +1,101 @@
+<div class="profile-container">
+  <form [formGroup]="profileForm" (ngSubmit)="save()">
+    <div class="profile-image-container">
+      <label for="imageUpload">
+        <img
+          [src]="profileImageUrl || '/assets/user.webp'"
+          alt="Profilna slika"
+          class="profile-image"
+        />
+        <div class="change-photo-text">Promijeni profilnu sliku</div>
+      </label>
+      <input
+        type="file"
+        id="imageUpload"
+        (change)="onImageSelected($event)"
+        style="display: none;"
+      />
+    </div>
+
+
+
+    <div class="row">
+      <div class="col">
+        <label>Ime:</label>
+        <input formControlName="firstName" class="form-control" />
+      </div>
+      <div class="col">
+        <label>Prezime:</label>
+        <input formControlName="lastName" class="form-control" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>Korisničko ime:</label>
+        <input formControlName="username" class="form-control" />
+      </div>
+      <div class="col">
+        <label>Email:</label>
+        <input formControlName="email" class="form-control" />
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>Broj mobitela:</label>
+        <input formControlName="phoneNumber" class="form-control" />
+      </div>
+      <div class="col">
+        <label>Grad:</label>
+        <select formControlName="cityId" class="form-control">
+          <option [ngValue]="null">Odaberi grad</option>
+          <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <label>Spol:</label>
+        <select formControlName="gender" class="form-control">
+          <option value="">Odaberi</option>
+          <option value="Muško">Muško</option>
+          <option value="Žensko">Žensko</option>
+        </select>
+      </div>
+      <div class="col">
+        <label>Godine iskustva:</label>
+        <input type="number" formControlName="yearsOfExperience" class="form-control" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Kvalifikacije:</label>
+      <textarea formControlName="qualifications" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Politika:</label>
+      <textarea formControlName="policy" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Dostupnost:</label>
+      <textarea formControlName="availability" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Cijena po satu:</label>
+      <input formControlName="hourlyRate" class="form-control" />
+    </div>
+
+    <div class="form-check mb-3">
+      <input type="checkbox" class="form-check-input" formControlName="isLiveAvailable" />
+      <label class="form-check-label">Dostupan za live nastavu</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sačuvaj</button>
+  </form>
+</div>
+

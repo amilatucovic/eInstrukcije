@@ -16,6 +16,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import {getBosnianPaginatorIntl} from './bosnian-paginator-intl';
+import { TutorProfileComponent } from './tutor-profile/tutor-profile.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 registerLocaleData(localeBs);
 
 @NgModule({
@@ -23,11 +26,13 @@ registerLocaleData(localeBs);
     TutorDashboardComponent,
     TutorSidebarComponent,
     TutorReservationsComponent,
-    TutorSubjectsComponent
+    TutorSubjectsComponent,
+    TutorProfileComponent
   ],
   exports : [TutorSidebarComponent],
     imports: [
         CommonModule,
+      ReactiveFormsModule,
       MatFormFieldModule,
       MatSelectModule,
       MatPaginatorModule,

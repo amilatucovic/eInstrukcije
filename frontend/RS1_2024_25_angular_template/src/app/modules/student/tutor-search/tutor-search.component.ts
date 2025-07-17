@@ -41,7 +41,7 @@ export class TutorSearchComponent implements OnInit {
 
   fetchSubjects(): void {
     this.isLoading = true;
-    this.http.get<any[]>('http://localhost:7000/api/SubjectGetEndpoint').subscribe(
+    this.http.get<any[]>('http://localhost:7000/api/SubjectEndpoint').subscribe(
       (data) => {
         this.subjects = data;  // Populate subjects dropdown
         this.isLoading = false;
@@ -76,7 +76,7 @@ export class TutorSearchComponent implements OnInit {
 
     if (selectedSubjectId) {
       this.isLoading = true;
-      this.http.get<any[]>(`http://localhost:7000/api/SubjectGetEndpoint/categories/${selectedSubjectId}`).subscribe(
+      this.http.get<any[]>(`http://localhost:7000/api/SubjectEndpoint/categories/${selectedSubjectId}`).subscribe(
         (data) => {
           console.log('Fetched categories:', data); // Debugging
           this.categories = data; // Populate categories dropdown with the new data
