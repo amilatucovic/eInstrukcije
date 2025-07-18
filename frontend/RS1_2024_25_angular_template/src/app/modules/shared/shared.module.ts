@@ -16,7 +16,7 @@ import {LinebreaksPipe} from './pipes';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatButtonModule} from '@angular/material/button';
-
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,8 @@ import {MatButtonModule} from '@angular/material/button';
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
-    })
+    }),
+    FullCalendarModule
   ],
   exports: [
     UnauthorizedComponent,
