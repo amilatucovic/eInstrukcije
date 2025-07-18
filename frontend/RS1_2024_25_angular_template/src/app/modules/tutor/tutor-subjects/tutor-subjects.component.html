@@ -68,8 +68,19 @@
         (page)="onPageChange($event)">
       </mat-paginator>
     </div>
+
+    <app-confirm-dialog
+      [show]="showConfirmModal"
+      [message]="confirmMessage"
+      [title]="confirmTitle"
+      [iconClass]="confirmIcon"
+      [iconColorClass]="confirmColorClass"
+      (confirm)="handleConfirmDelete()"
+      (cancel)="handleCancelDelete()">
+    </app-confirm-dialog>
+
+
+
   </div>
-
-
 
 </div>

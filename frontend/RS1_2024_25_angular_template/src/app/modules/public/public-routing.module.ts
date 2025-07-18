@@ -12,7 +12,7 @@ const routes: Routes = [
 
     ]
   },
-  { path: 'tutor-registration', component: TutorRegistrationComponent }, // Posebna ruta
+  { path: 'tutor-registration', component: TutorRegistrationComponent },
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

@@ -78,6 +78,19 @@ public class TutorEndpoint(ApplicationDbContext db) : ControllerBase
         return Ok(dto);
     }
 
+    [HttpGet("check-username")]
+    public async Task<IActionResult> CheckUsername(string username, int excludeTutorId)
+    {
+        var isTaken = await db.MyAppUsers
+            .Where(u => u.Username.ToLower() == username.ToLower())
+            .Where(u => !db.Tutors.Any(t => t.ID == excludeTutorId && t.ID == u.ID))
+            .AnyAsync();
+
+        return Ok(new { isTaken });
+    }
+
+
+
     [HttpPost("{id}/upload-profile-image")]
     public async Task<IActionResult> UploadProfileImage(int id, [FromBody] UploadImageDto dto, CancellationToken cancellationToken)
     {

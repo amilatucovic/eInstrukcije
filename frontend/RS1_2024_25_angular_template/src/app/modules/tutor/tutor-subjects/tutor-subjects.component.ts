@@ -4,6 +4,8 @@ import { TutorSubjectCategoryService} from '../../../services/auth-services/serv
 import { forkJoin } from 'rxjs';
 import {TutorSubjectCategoryEntry} from '../../../services/auth-services/services/tutor-subject-category.service';
 import { PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
 
 
 @Component({
@@ -22,9 +24,16 @@ export class TutorSubjectsComponent implements OnInit {
   currentSelections: any[] = [];
   categorySelection: { [key: number]: boolean } = {};
   subjectsByDifficulty: { [key: string]: Subject[] } = {};
+  showConfirmModal: boolean = false;
+  confirmMessage: string = '';
+  pendingDeleteEntry: any = null;
+  confirmTitle: string = '';
+  confirmIcon: string = 'bi-trash-fill';
+  confirmColorClass: string = 'bg-danger-light';
 
 
-  constructor(private subjectService: SubjectService, private tutorService: TutorSubjectCategoryService) {}
+
+  constructor(private subjectService: SubjectService, private tutorService: TutorSubjectCategoryService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     const storedId = localStorage.getItem('tutorId');
@@ -127,11 +136,32 @@ export class TutorSubjectsComponent implements OnInit {
 
 
   removeSelection(entry: any): void {
-    const categoryId = entry.categoryID === null ? 0 : entry.categoryID;
-    this.tutorService.delete(entry.tutorID, entry.subjectID, categoryId).subscribe(() => {
-        this.loadCurrentSelections();
-    });
+    this.confirmMessage = `Da li ste sigurni da želite ukloniti predmet ${entry.subjectName}${entry.categoryName ? ' - ' + entry.categoryName : ''}?`;
+    this.confirmTitle = 'Potvrda uklanjanja';
+    this.confirmIcon = 'bi-trash-fill';
+    this.confirmColorClass = 'bg-danger-light';
+    this.pendingDeleteEntry = entry;
+    this.showConfirmModal = true;
   }
+
+
+  handleCancelDelete(): void {
+    this.showConfirmModal = false;
+    this.pendingDeleteEntry = null;
+  }
+
+  handleConfirmDelete(): void {
+    if (this.pendingDeleteEntry) {
+      const categoryId = this.pendingDeleteEntry.categoryID === null ? 0 : this.pendingDeleteEntry.categoryID;
+      this.tutorService.delete(this.pendingDeleteEntry.tutorID, this.pendingDeleteEntry.subjectID, categoryId).subscribe(() => {
+        this.loadCurrentSelections();
+        this.showConfirmModal = false;
+        this.pendingDeleteEntry = null;
+      });
+    }
+  }
+
+
   getDifficultyLevels(): string[] {
     return Object.keys(this.subjectsByDifficulty);
   }
@@ -157,9 +187,6 @@ export class TutorSubjectsComponent implements OnInit {
     this.page = event.pageIndex + 1; // Angular paginator koristi 0-based index
     this.loadCurrentSelections();
   }
-
-
-
 
 
 

@@ -25,6 +25,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 
 registerLocaleData(localeBs);
@@ -39,10 +41,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     PretragaStudenataComponent,
     LoginComponent,
-    StudentPaymentsTabComponent
+    StudentPaymentsTabComponent,
   ],
   imports: [
     BrowserModule,
+    MatDialogModule,
+    MatButtonModule,
     MatPaginatorModule,
     MatFormFieldModule,
     MatSelectModule,

@@ -1,0 +1,26 @@
+<div class="modal-backdrop-custom" *ngIf="show">
+  <div class="modal-custom">
+    <div class="modal-header-custom">
+      <div class="modal-icon-circle" [ngClass]="iconColorClass">
+        <i class="bi" [ngClass]="iconClass"></i>
+      </div>
+      <h5 class="modal-title">{{ title }}</h5>
+      <button type="button" class="btn-close" (click)="onCancel()"></button>
+    </div>
+    <div class="modal-body">
+      <p>{{ message }}</p>
+    </div>
+    <div class="modal-footer-custom">
+      <button class="btn btn-outline-secondary" (click)="onCancel()">Odustani</button>
+      <button class="btn"
+              [ngClass]="{
+    'btn-success': iconColorClass === 'bg-success-light',
+    'btn-danger': iconColorClass === 'bg-danger-light',
+    'btn-warning': iconColorClass === 'bg-warning-light'
+  }"
+              (click)="onConfirm()">Potvrdi</button>
+
+    </div>
+  </div>
+</div>
+

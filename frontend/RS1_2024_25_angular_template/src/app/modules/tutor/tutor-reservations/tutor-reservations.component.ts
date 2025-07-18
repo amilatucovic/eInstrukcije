@@ -13,6 +13,16 @@ export class TutorReservationsComponent implements OnInit {
   selectedDate: string = '';
   searchTerm: string = '';
   tutorId: number = 0;
+  showModal: boolean = false;
+  modalMessage: string = '';
+  pendingAction: 'approve' | 'reject' | null = null;
+  pendingReservationId: number | null = null;
+  modalTitle = '';
+  modalIcon = 'bi-trash-fill';
+  modalColor = 'bg-danger';
+
+  selectedReservationId: number = 0;
+  actionType: 'approve' | 'reject' | 'delete' = 'delete';
 
   ReservationStatus = ReservationStatus;
 
@@ -38,13 +48,6 @@ export class TutorReservationsComponent implements OnInit {
       });
   }
 
-  approve(id: number): void {
-    this.reservationService.approveReservation(id).subscribe(() => this.loadReservations());
-  }
-
-  reject(id: number): void {
-    this.reservationService.rejectReservation(id).subscribe(() => this.loadReservations());
-  }
 
   onFilterChange(): void {
     this.loadReservations();
@@ -64,6 +67,58 @@ export class TutorReservationsComponent implements OnInit {
         return 'Nepoznat';
     }
   }
+
+  openConfirmation(id: number, action: 'approve' | 'reject'): void {
+    this.pendingReservationId = id;
+    this.pendingAction = action;
+
+    if (action === 'approve') {
+      this.modalTitle = 'Potvrda odobravanja';
+      this.modalMessage = 'Da li ste sigurni da želite ODOBRITI ovu rezervaciju?';
+      this.modalIcon = 'bi-check-circle';
+      this.modalColor = 'bg-success-light';
+    } else {
+      this.modalTitle = 'Potvrda odbijanja';
+      this.modalMessage = 'Da li ste sigurni da želite ODBITI ovu rezervaciju?';
+      this.modalIcon = 'bi-exclamation-circle';
+      this.modalColor = 'bg-warning-light';
+    }
+
+    this.showModal = true;
+  }
+
+
+  onModalConfirm(): void {
+    if (!this.pendingReservationId || !this.pendingAction) return;
+
+    const action = this.pendingAction;
+    const id = this.pendingReservationId;
+
+    const call$ = action === 'approve'
+      ? this.reservationService.approveReservation(id)
+      : this.reservationService.rejectReservation(id);
+
+    call$.subscribe(() => {
+      this.loadReservations();
+      this.resetModal();
+    });
+  }
+
+  onModalCancel(): void {
+    this.resetModal();
+  }
+
+  resetModal(): void {
+    this.showModal = false;
+    this.pendingAction = null;
+    this.pendingReservationId = null;
+    this.modalMessage = '';
+    this.modalTitle = '';
+    this.modalIcon = 'bi-trash-fill';
+    this.modalColor = 'bg-danger';
+  }
+
+
 
 
 }
