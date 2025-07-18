@@ -3,6 +3,8 @@ import {TutorService, TutorProfileDto} from '../../../services/auth-services/ser
 import {CitiesService} from '../../../services/auth-services/services/cities.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {UserImageService} from '../../../services/auth-services/services/user-image.service';
+import {usernameAsyncValidator} from '../username-async.validator';
+import {CustomValidators} from '../custom-validators';
 
 @Component({
   selector: 'app-tutor-profile',
@@ -29,20 +31,22 @@ export class TutorProfileComponent implements OnInit {
     if (storedId) this.tutorId = +storedId;
 
     this.profileForm = this.fb.group({
-      firstName: [''],
-      lastName: [''],
-      username: [''],
-      email: [''],
-      phoneNumber: [''],
+      firstName: ['', [CustomValidators.nonWhitespace]],
+      lastName: ['', [CustomValidators.nonWhitespace]],
+      username: ['', [CustomValidators.nonWhitespace], [usernameAsyncValidator(this.tutorService, this.tutorId)]],
+      email: ['', [CustomValidators.email]],
+      phoneNumber: ['', [CustomValidators.phoneNumber]],
       gender: [''],
       cityId: [null],
-      qualifications: [''],
+      qualifications: ['', [CustomValidators.nonWhitespace]],
       yearsOfExperience: [0],
-      availability: [''],
-      policy: [''],
-      hourlyRate: [''],
+      availability: ['', [CustomValidators.nonWhitespace]],
+      policy: ['', [CustomValidators.nonWhitespace]],
+      hourlyRate: ['', [CustomValidators.nonWhitespace, CustomValidators.numericValue]],
       isLiveAvailable: [false]
     });
+
+
 
     this.tutorService.getProfile(this.tutorId).subscribe((data) => {
       this.profileForm.patchValue(data);
@@ -51,8 +55,6 @@ export class TutorProfileComponent implements OnInit {
         ? `http://localhost:7000${data.profileImageUrl}`
         : '';
     });
-
-
 
 
     this.cityService.getCities().subscribe(c => this.cities = c);

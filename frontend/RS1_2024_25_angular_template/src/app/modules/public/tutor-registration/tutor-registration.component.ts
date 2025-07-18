@@ -5,6 +5,9 @@ import { ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { CitiesService } from '../../../services/auth-services/services/cities.service';
 import { City } from '../../../models/city.model';
+import { AsyncValidatorFn } from '@angular/forms';
+import { map, catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -39,7 +42,7 @@ export class TutorRegistrationComponent implements OnInit {
       cancellationPolicy: ['', Validators.required],
       liveAvailability: [false],
       rate: ['', Validators.required],
-      username: ['', Validators.required],
+      username: ['', [Validators.required], [this.usernameAvailabilityValidator()]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
@@ -47,9 +50,6 @@ export class TutorRegistrationComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCities();
-    this.registrationForm.get('username')?.valueChanges.subscribe(() => {
-      this.checkUsernameAvailability();
-    });
     this.registrationForm.get('password')?.valueChanges.subscribe(() => {
       this.checkPasswordStrengthOnBackend();
     });
@@ -59,16 +59,13 @@ export class TutorRegistrationComponent implements OnInit {
   }
 
 
-
-
   phoneNumberValidator(control: AbstractControl): ValidationErrors | null {
     const phoneNumber = control.value;
 
     if (!phoneNumber) {
-      return null;  // Ako nema vrijednosti, validacija nije potrebna
+      return null;
     }
 
-    // Provjera da broj sadrži samo cifre
     const digitsOnly = /^[0-9]+$/.test(phoneNumber.replace(/\s+/g, ''));  // Uklanja razmake i provjerava samo cifre
     if (!digitsOnly) {
       return { invalidPhoneType: 'Broj telefona može sadržavati samo cifre.' };
@@ -260,22 +257,6 @@ export class TutorRegistrationComponent implements OnInit {
   }
 
 
-  checkUsernameAvailability() {
-    const username = this.registrationForm.get('username')?.value;
-    if (!username) return;
-    this.http.get(
-      `http://localhost:7000/api/MyAppUserEndpoint/check-username-availability?username=${username}`
-    ).subscribe(
-      (response: any) => {
-        if (response && !response.available) {
-          this.registrationForm.get('username')?.setErrors({ usernameTaken: true });
-        }
-      },
-      (error) => {
-        console.error('Error checking username availability:', error);
-      }
-    );
-  }
 
 
   checkPasswordStrengthOnBackend() {
@@ -329,5 +310,22 @@ export class TutorRegistrationComponent implements OnInit {
     } else if (field === 'confirmPassword') {
       this.showConfirmPassword = !this.showConfirmPassword;
     }
+  }
+
+  usernameAvailabilityValidator(): AsyncValidatorFn {
+    return (control: AbstractControl) => {
+      if (!control.value) {
+        return of(null);
+      }
+
+      return this.http.get<{ available: boolean }>(
+        `http://localhost:7000/api/MyAppUserEndpoint/check-username-availability?username=${control.value}`
+      ).pipe(
+        map(response => {
+          return response.available ? null : { usernameTaken: true };
+        }),
+        catchError(() => of(null)) // fail silently
+      );
+    };
   }
 }

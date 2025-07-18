@@ -18,6 +18,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import {getBosnianPaginatorIntl} from './bosnian-paginator-intl';
 import { TutorProfileComponent } from './tutor-profile/tutor-profile.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import {SharedModule} from '../shared/shared.module';
 
 registerLocaleData(localeBs);
 
@@ -34,6 +35,7 @@ registerLocaleData(localeBs);
         CommonModule,
       ReactiveFormsModule,
       MatFormFieldModule,
+      SharedModule,
       MatSelectModule,
       MatPaginatorModule,
       FormsModule,

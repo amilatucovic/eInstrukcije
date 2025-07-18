@@ -38,9 +38,16 @@ export class TutorService {
 
   uploadProfileImage(tutorId: number, base64: string): Observable<{ imageUrl: string }> {
     return this.http.post<{ imageUrl: string }>(
-      `${this.baseUrl}/${tutorId}/upload-profile-image`, // ✔️ tačna ruta, odgovara backendu
+      `${this.baseUrl}/${tutorId}/upload-profile-image`,
       { base64 }
     );
   }
+
+  checkUsername(username: string, tutorId: number): Observable<{ isTaken: boolean }> {
+    const url = `${this.baseUrl}/check-username?username=${encodeURIComponent(username)}&excludeTutorId=${tutorId}`;
+    return this.http.get<{ isTaken: boolean }>(url);
+  }
+
+
 
 }

@@ -17,16 +17,20 @@
       />
     </div>
 
-
-
     <div class="row">
       <div class="col">
         <label>Ime:</label>
         <input formControlName="firstName" class="form-control" />
+        <div *ngIf="profileForm.get('firstName')?.errors?.['whitespace'] && profileForm.get('firstName')?.touched" class="text-danger">
+          Ime ne smije biti prazno ili sadržavati samo razmake.
+        </div>
       </div>
       <div class="col">
         <label>Prezime:</label>
         <input formControlName="lastName" class="form-control" />
+        <div *ngIf="profileForm.get('lastName')?.errors?.['whitespace'] && profileForm.get('firstName')?.touched" class="text-danger">
+          Prezime ne smije biti prazno ili sadržavati samo razmake.
+        </div>
       </div>
     </div>
 
@@ -34,10 +38,19 @@
       <div class="col">
         <label>Korisničko ime:</label>
         <input formControlName="username" class="form-control" />
+        <div *ngIf="profileForm.get('username')?.errors?.['usernameTaken'] && profileForm.get('username')?.touched" class="text-danger">
+          Korisničko ime je zauzeto.
+        </div>
+        <div *ngIf="profileForm.get('username')?.errors?.['whitespace'] && profileForm.get('username')?.touched" class="text-danger">
+          Korisničko ime ne smije biti prazno ili sadržavati samo razmake.
+        </div>
       </div>
       <div class="col">
         <label>Email:</label>
         <input formControlName="email" class="form-control" />
+        <div *ngIf="profileForm.get('email')?.errors?.['invalidEmail'] && profileForm.get('email')?.touched" class="text-danger">
+          Neispravna email adresa.
+        </div>
       </div>
     </div>
 
@@ -45,6 +58,9 @@
       <div class="col">
         <label>Broj mobitela:</label>
         <input formControlName="phoneNumber" class="form-control" />
+        <div *ngIf="profileForm.get('phoneNumber')?.errors?.['invalidPhone'] && profileForm.get('phoneNumber')?.touched" class="text-danger">
+          Unesite ispravan broj telefona (min. 9 cifara, bez slova).
+        </div>
       </div>
       <div class="col">
         <label>Grad:</label>
@@ -73,21 +89,38 @@
     <div class="form-group">
       <label>Kvalifikacije:</label>
       <textarea formControlName="qualifications" class="form-control"></textarea>
+      <div *ngIf="profileForm.get('qualifications')?.errors?.['whitespace'] && profileForm.get('firstName')?.touched" class="text-danger">
+        Polje ne smije biti prazno ili sadržavati samo razmake.
+      </div>
     </div>
 
     <div class="form-group">
-      <label>Politika:</label>
+      <label>Pravila otkazivanja časa:</label>
       <textarea formControlName="policy" class="form-control"></textarea>
+      <div *ngIf="profileForm.get('policy')?.errors?.['whitespace'] && profileForm.get('firstName')?.touched" class="text-danger">
+        Polje ne smije biti prazno ili sadržavati samo razmake.
+      </div>
     </div>
 
     <div class="form-group">
       <label>Dostupnost:</label>
       <textarea formControlName="availability" class="form-control"></textarea>
+      <div *ngIf="profileForm.get('availability')?.errors?.['whitespace'] && profileForm.get('firstName')?.touched" class="text-danger">
+        Polje ne smije biti prazno ili sadržavati samo razmake.
+      </div>
     </div>
 
     <div class="form-group">
       <label>Cijena po satu:</label>
-      <input formControlName="hourlyRate" class="form-control" />
+      <input formControlName="hourlyRate" class="form-control" type="number" step="0.01" min="0" />
+      <div *ngIf="profileForm.get('hourlyRate')?.invalid && profileForm.get('hourlyRate')?.touched">
+        <div *ngIf="profileForm.get('hourlyRate')?.errors?.['whitespace']" class="text-danger">
+          Polje ne smije biti prazno ili sadržavati samo razmake.
+        </div>
+        <div *ngIf="profileForm.get('hourlyRate')?.errors?.['numeric']" class="text-danger">
+          Unesite ispravan broj (npr. 25 ili 30.50).
+        </div>
+      </div>
     </div>
 
     <div class="form-check mb-3">
