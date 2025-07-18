@@ -43,4 +43,15 @@ export class LessonService {
   getLessonsForStudent(studentId: number): Observable<LessonSchedule[]> {
     return this.http.get<LessonSchedule[]>(`${this.baseUrl}/${studentId}`);
   }
+  getLessonsForTutor(tutorId: number) {
+    return this.http.get<any[]>(`${this.baseUrl}/schedule/${tutorId}`);
+  }
+
+  createLesson(data: any) {
+    return this.http.post(`${this.baseUrl}`, data);
+  }
+
+  deleteLesson(id: number) {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
 }

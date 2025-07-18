@@ -12,7 +12,8 @@ import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { StudentAccSettingsTabComponent } from '../student/student-acc-settings-tab/student-acc-settings-tab.component';
 import { ChatComponent } from './chat/chat.component';
-import {LinebreaksPipe} from './pipes';
+import { LinebreaksPipe } from './pipes';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {LinebreaksPipe} from './pipes';
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory,
-    })
+    }),
+    FullCalendarModule
   ],
   exports: [
     UnauthorizedComponent,
