@@ -135,6 +135,12 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
             if (tutor == null)
                 return NotFound();
 
+            var messages = await db.Messages
+    .Where(m => m.SenderID == tutor.MyAppUserID || m.ReceiverID == tutor.MyAppUserID)
+    .ToListAsync();
+
+            db.Messages.RemoveRange(messages);
+
             db.Tutors.Remove(tutor); 
             db.MyAppUsers.Remove(tutor.MyAppUser); 
 
