@@ -72,10 +72,11 @@ public class LessonEndpoint(ApplicationDbContext db) : ControllerBase
 			})
 			.ToList();
 
-		if (!lessons.Any())
-			return NotFound(new { message = "Nema lekcija za ovu sedmicu." });
+        if (!lessons.Any())
+            return Ok(new List<LessonScheduleDTO>());
 
-		return Ok(lessons);
+
+        return Ok(lessons);
 	}
 	
 	[HttpGet("lessons/{studentId}")]

@@ -114,12 +114,6 @@
       <label>Cijena po satu:</label>
       <input formControlName="hourlyRate" class="form-control" type="number" step="0.01" min="0" />
       <div *ngIf="profileForm.get('hourlyRate')?.invalid && profileForm.get('hourlyRate')?.touched">
-        <div *ngIf="profileForm.get('hourlyRate')?.errors?.['whitespace']" class="text-danger">
-          Polje ne smije biti prazno ili sadržavati samo razmake.
-        </div>
-        <div *ngIf="profileForm.get('hourlyRate')?.errors?.['numeric']" class="text-danger">
-          Unesite ispravan broj (npr. 25 ili 30.50).
-        </div>
       </div>
     </div>
 

@@ -116,7 +116,7 @@ export class ChatComponent implements OnInit {
 
     const currentTime = new Date();
 
-    // Dodajemo novu poruku lokalno
+
     const messageToAdd = {
       id: 0,
       senderId: this.currentUserId,
