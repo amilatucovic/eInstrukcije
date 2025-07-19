@@ -8,7 +8,7 @@ export interface LessonToday {
   subjectName: string;
   startTime: string;
   endTime: string;
-  lessonDate: string; // OVO TI TREBA za kalendar
+  lessonDate: string;
   mode: string;
 }
 export interface LessonSchedule {
