@@ -71,7 +71,7 @@ namespace RS1_2024_2025.API.Endpoints.ReservationEndpoints
 
             await db.SaveChangesAsync(cancellationToken);
 
-            return Ok(new { Message = "Reservation approved successfully." });
+            return Ok(new MessageResponse { Message = "Reservation approved successfully." });
         }
 
         [HttpPut("{id}/reject")]

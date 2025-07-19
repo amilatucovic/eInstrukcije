@@ -10,4 +10,10 @@ namespace RS1_2024_25.API.Endpoints.ReservationEndpoints
         public DateTime ReservationDate { get; set; }
         public ReservationStatus Status { get; set; }
     }
+
+    public class MessageResponse
+    {
+        public string Message { get; set; }
+    }
+
 }

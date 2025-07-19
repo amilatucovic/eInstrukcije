@@ -29,6 +29,7 @@ export class TutorProfileComponent implements OnInit {
   ngOnInit(): void {
     const storedId = localStorage.getItem("tutorId");
     if (storedId) this.tutorId = +storedId;
+    console.log(this.tutorId)
 
     this.profileForm = this.fb.group({
       firstName: ['', [CustomValidators.nonWhitespace]],
@@ -42,15 +43,19 @@ export class TutorProfileComponent implements OnInit {
       yearsOfExperience: [0],
       availability: ['', [CustomValidators.nonWhitespace]],
       policy: ['', [CustomValidators.nonWhitespace]],
-      hourlyRate: ['', [CustomValidators.nonWhitespace, CustomValidators.numericValue]],
+      hourlyRate: [''],
       isLiveAvailable: [false]
     });
 
 
 
     this.tutorService.getProfile(this.tutorId).subscribe((data) => {
-      this.profileForm.patchValue(data);
-
+      console.log("Dohvaćeni profil:", data);
+      const hourlyRate = data.hourlyRate?.replace(/[^\d.,]/g, '') || '';
+      this.profileForm.patchValue({
+        ...data,
+        hourlyRate: hourlyRate
+      });
       this.profileImageUrl = data.profileImageUrl
         ? `http://localhost:7000${data.profileImageUrl}`
         : '';
@@ -61,14 +66,27 @@ export class TutorProfileComponent implements OnInit {
   }
 
   save(): void {
-    const dto: TutorProfileDto = {
-      tutorID: this.tutorId,
-      ...this.profileForm.value
-    };
+     if (this.profileForm.invalid) {
+      this.profileForm.markAllAsTouched();
+      return;
+    }
 
-    this.tutorService.updateProfile(this.tutorId, dto).subscribe({
+    const formValue = this.profileForm.value;
+    let rawRate = formValue.hourlyRate?.toString().trim();
+
+    if (rawRate === '' || isNaN(Number(rawRate))) {
+      alert("Molimo unesite ispravnu cijenu.");
+      return;
+    }
+
+    formValue.hourlyRate = `${parseFloat(rawRate).toFixed(2)}KM/h`;
+
+    this.tutorService.updateProfile(this.tutorId, {
+      tutorID: this.tutorId,
+      ...formValue
+    }).subscribe({
       next: () => {
-        this.userImageService.setFullName(dto.firstName, dto.lastName);
+        this.userImageService.setFullName(formValue.firstName, formValue.lastName);
         if (this.selectedImageBase64) {
           this.tutorService.uploadProfileImage(this.tutorId, this.selectedImageBase64).subscribe(res => {
             this.userImageService.setImageUrl(`http://localhost:7000${res.imageUrl}`);
@@ -80,6 +98,7 @@ export class TutorProfileComponent implements OnInit {
       error: () => alert("Greška prilikom snimanja.")
     });
   }
+
 
 
   onImageSelected(event: any): void {

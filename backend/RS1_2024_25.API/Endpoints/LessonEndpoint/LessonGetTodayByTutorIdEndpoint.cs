@@ -40,6 +40,10 @@ namespace RS1_2024_25.API.Endpoints.LessonEndpoint
                     })
                      .ToList();
 
+            if (lessons == null)
+            {
+                return NotFound();
+            }
 
             return Ok(lessons);
         }
