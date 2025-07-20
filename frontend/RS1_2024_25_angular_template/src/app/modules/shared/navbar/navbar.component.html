@@ -19,25 +19,18 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#" (click)="onTabClick('pocetna', $event)"
-            >O nama</a
-          >
+          <a class="nav-link" [routerLink]="['/public/about-us']">O nama</a>
         </li>
         <li class="nav-item">
-          <a
-            class="nav-link"
-            href="#"
-            (click)="onTabClick('pronadjiInstruktora', $event)"
-            >Pronađi instruktora</a>
+          <a class="nav-link" [routerLink]="['/public/tutor-search']">Pronađi instruktora</a>
         </li>
-        <!-- Promijenjeni href u routerLink za navigaciju unutar Angular aplikacije -->
         <li class="nav-item">
           <a class="nav-link" [routerLink]="['/public/tutor-registration']"
-            >Postani instruktor</a
-          >
+            >Postani instruktor</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Kontaktirajte nas</a>
+          <a class="nav-link" [routerLink]="['/public/contact-us']"
+          >Kontaktirajte nas</a>
         </li>
       </ul>
     </div>
