@@ -1,0 +1,65 @@
+p {
+  font-family: 'Merriweather', serif;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+p strong {
+  font-weight: 700;
+}
+
+h2, h3, h4, h5 {
+  font-family: 'Work Sans', sans-serif;
+  font-weight: 800;
+  color: #20C1BD;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+  font-family: 'Merriweather', serif;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+ul li {
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 10px;
+}
+
+ul li::before {
+  content: '\f00c';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #20C1BD;
+  font-size: 1.2em;
+}
+
+img.rounded-circle {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+img.rounded-circle.mb-2 {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+img.rounded-circle.mb-2:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+img.img-fluid.rounded.shadow{
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+img.img-fluid.rounded.shadow:hover {
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}

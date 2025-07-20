@@ -1,5 +1,4 @@
-<app-navbar (tabChange)="onNavbarTabChange($event)"></app-navbar>
-<div *ngIf="activeTab === 'pocetna'">
+<app-navbar></app-navbar>
   <section class="hero text-white text-center py-5">
     <div class="hero-container">
       <div class="text-center p-5">
@@ -79,9 +78,6 @@
       </div>
     </div>
   </section>
-</div>
-<div *ngIf="activeTab === 'pronadjiInstruktora'">
-  <app-tutor-search></app-tutor-search>
-</div>
+
 <router-outlet></router-outlet>
 <app-footer></app-footer>
