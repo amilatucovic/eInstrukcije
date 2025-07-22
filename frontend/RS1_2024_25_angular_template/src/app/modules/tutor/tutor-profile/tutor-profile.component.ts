@@ -17,6 +17,8 @@ export class TutorProfileComponent implements OnInit {
   cities: any[] = [];
   profileImageUrl: string = '';
   selectedImageBase64: string | null = null;
+  originalUsername: string = '';
+
 
 
   constructor(
@@ -34,7 +36,10 @@ export class TutorProfileComponent implements OnInit {
     this.profileForm = this.fb.group({
       firstName: ['', [CustomValidators.nonWhitespace]],
       lastName: ['', [CustomValidators.nonWhitespace]],
-      username: ['', [CustomValidators.nonWhitespace], [usernameAsyncValidator(this.tutorService, this.tutorId)]],
+      username: [
+        '',
+        [CustomValidators.nonWhitespace]
+      ],
       email: ['', [CustomValidators.email]],
       phoneNumber: ['', [CustomValidators.phoneNumber]],
       gender: [''],
@@ -49,17 +54,31 @@ export class TutorProfileComponent implements OnInit {
 
 
 
+
     this.tutorService.getProfile(this.tutorId).subscribe((data) => {
       console.log("Dohvaćeni profil:", data);
+      this.originalUsername = data.username;
       const hourlyRate = data.hourlyRate?.replace(/[^\d.,]/g, '') || '';
+
       this.profileForm.patchValue({
         ...data,
         hourlyRate: hourlyRate
       });
+
+
+      const usernameControl = this.profileForm.get('username');
+      if (usernameControl) {
+        usernameControl.setAsyncValidators(
+          usernameAsyncValidator(this.tutorService, this.tutorId, this.originalUsername)
+        );
+        usernameControl.updateValueAndValidity(); // Ovo je važno!
+      }
+
       this.profileImageUrl = data.profileImageUrl
         ? `http://localhost:7000${data.profileImageUrl}`
         : '';
     });
+
 
 
     this.cityService.getCities().subscribe(c => this.cities = c);

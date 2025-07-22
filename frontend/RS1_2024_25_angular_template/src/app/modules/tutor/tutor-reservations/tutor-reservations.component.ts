@@ -43,11 +43,18 @@ export class TutorReservationsComponent implements OnInit {
     this.reservationService
       .getTutorReservations(this.tutorId, this.selectedStatus, this.selectedDate, this.searchTerm)
       .subscribe({
-        next: (data) => (this.reservations = data),
+        next: (data) => {
+          this.reservations = data.sort((a, b) => {
+            if (a.status !== b.status) {
+              return a.status - b.status;
+            }
+            return new Date(a.reservationDate).getTime() - new Date(b.reservationDate).getTime();
+          });
+        },
         error: (err) => console.error('Failed to load reservations', err)
       });
   }
-
+  
 
   onFilterChange(): void {
     this.loadReservations();
