@@ -129,7 +129,6 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
                 .Include(t => t.MyAppUser)
                 .Include(t => t.TutorSubjects)
                 .Include(t => t.Reviews)
-                .Include(t => t.ReservationsPayment)
                 .FirstOrDefaultAsync(t => t.ID == id);
 
             if (tutor == null)
@@ -137,39 +136,45 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
 
             var userId = tutor.MyAppUserID;
 
+            
             var messages = await db.Messages
                 .Where(m => m.SenderID == userId || m.ReceiverID == userId)
                 .ToListAsync();
             db.Messages.RemoveRange(messages);
 
-            var categories = await db.TutorSubjectCategories
-    .Where(c => c.TutorID == tutor.ID)
-    .ToListAsync();
-            db.TutorSubjectCategories.RemoveRange(categories);
+            
+            db.Reviews.RemoveRange(tutor.Reviews);
 
+            
+            var tutorSubjectCategories = await db.TutorSubjectCategories
+                .Where(tsc => tsc.TutorID == tutor.ID)
+                .ToListAsync();
+            db.TutorSubjectCategories.RemoveRange(tutorSubjectCategories);
 
+           
+            db.TutorsSubjects.RemoveRange(tutor.TutorSubjects);
+
+           
             var lessons = await db.Lessons
                 .Where(l => l.TutorID == tutor.ID)
-                .Include(l => l.ReservationsPayment)
+                .Include(l => l.Reservation)
+                    .ThenInclude(r => r.ReservationPayments)
                 .ToListAsync();
 
             foreach (var lesson in lessons)
-                db.ReservationsPayments.RemoveRange(lesson.ReservationsPayment);
+            {
+                
+                if (lesson.Reservation != null)
+                {
+                    db.ReservationsPayments.RemoveRange(lesson.Reservation.ReservationPayments);
+                    db.Reservations.Remove(lesson.Reservation);
+                }
+            }
 
-            var lessonIds = lessons.Select(l => l.ID).ToList();
-            var reservations = await db.Reservations
-                .Where(r => lessonIds.Contains(r.LessonID))
-                .ToListAsync();
-            db.Reservations.RemoveRange(reservations);
-
+        
             db.Lessons.RemoveRange(lessons);
 
-            
-            db.TutorsSubjects.RemoveRange(tutor.TutorSubjects);
-            db.Reviews.RemoveRange(tutor.Reviews);
-            db.ReservationsPayments.RemoveRange(tutor.ReservationsPayment);
-
-            
+           
             db.Tutors.Remove(tutor);
             db.MyAppUsers.Remove(tutor.MyAppUser);
 
@@ -187,9 +192,6 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
                 });
             }
         }
-
-
-
 
 
 
