@@ -122,33 +122,77 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
             return Ok();
         }
 
-
-
-
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTutor(int id)
         {
             var tutor = await db.Tutors
                 .Include(t => t.MyAppUser)
+                .Include(t => t.TutorSubjects)
+                .Include(t => t.Reviews)
+                .Include(t => t.ReservationsPayment)
                 .FirstOrDefaultAsync(t => t.ID == id);
 
             if (tutor == null)
                 return NotFound();
 
-            var messages = await db.Messages
-    .Where(m => m.SenderID == tutor.MyAppUserID || m.ReceiverID == tutor.MyAppUserID)
-    .ToListAsync();
+            var userId = tutor.MyAppUserID;
 
+            var messages = await db.Messages
+                .Where(m => m.SenderID == userId || m.ReceiverID == userId)
+                .ToListAsync();
             db.Messages.RemoveRange(messages);
 
-            db.Tutors.Remove(tutor); 
-            db.MyAppUsers.Remove(tutor.MyAppUser); 
+            var categories = await db.TutorSubjectCategories
+    .Where(c => c.TutorID == tutor.ID)
+    .ToListAsync();
+            db.TutorSubjectCategories.RemoveRange(categories);
 
-            await db.SaveChangesAsync();
 
-            return Ok(new { message = "Tutor deleted successfully" });
+            var lessons = await db.Lessons
+                .Where(l => l.TutorID == tutor.ID)
+                .Include(l => l.ReservationsPayment)
+                .ToListAsync();
 
+            foreach (var lesson in lessons)
+                db.ReservationsPayments.RemoveRange(lesson.ReservationsPayment);
+
+            var lessonIds = lessons.Select(l => l.ID).ToList();
+            var reservations = await db.Reservations
+                .Where(r => lessonIds.Contains(r.LessonID))
+                .ToListAsync();
+            db.Reservations.RemoveRange(reservations);
+
+            db.Lessons.RemoveRange(lessons);
+
+            
+            db.TutorsSubjects.RemoveRange(tutor.TutorSubjects);
+            db.Reviews.RemoveRange(tutor.Reviews);
+            db.ReservationsPayments.RemoveRange(tutor.ReservationsPayment);
+
+            
+            db.Tutors.Remove(tutor);
+            db.MyAppUsers.Remove(tutor.MyAppUser);
+
+            try
+            {
+                await db.SaveChangesAsync();
+                return Ok(new { message = "Tutor deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = ex.Message,
+                    inner = ex.InnerException?.Message
+                });
+            }
         }
+
+
+
+
+
+
 
     }
 }
