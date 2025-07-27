@@ -21,77 +21,135 @@
       </div>
       <input type="file" hidden #fileInput (change)="onFileSelected($event)" />
     </div>
+
     <div class="profile-action-link" (click)="fileInput.click()">
       <span *ngIf="profileImageUrl">Promijeni sliku</span>
       <span *ngIf="!profileImageUrl">Dodaj sliku</span>
     </div>
-    <form *ngIf="user">
+
+    <form [formGroup]="UserForm" (ngSubmit)="save()" *ngIf="user">
       <div class="form-row">
         <div class="form-group">
           <label for="firstName">Ime</label>
-          <input type="text" id="firstName" [value]="user.firstName" disabled />
+          <input
+            type="text"
+            id="firstName"
+            formControlName="firstName"
+            readonly
+            class="readonly-input"
+          />
         </div>
         <div class="form-group">
           <label for="lastName">Prezime</label>
-          <input type="text" id="lastName" [value]="user.lastName" disabled />
+          <input
+            type="text"
+            id="lastName"
+            formControlName="lastName"
+            readonly
+            class="readonly-input"
+          />
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
           <label for="username">Korisničko ime</label>
-          <input
-            type="text"
-            id="username"
-            [(ngModel)]="user.username"
-            name="username"
-          />
+          <input type="text" id="username" formControlName="username" />
+
+          <div
+            class="text-danger"
+            style="font-size: smaller"
+            *ngIf="
+              UserForm.controls['username'].invalid &&
+              (UserForm.controls['username'].touched ||
+                UserForm.controls['username'].dirty)
+            "
+          >
+            <span *ngIf="UserForm.controls['username'].errors?.['required']">
+              Polje je obavezno!
+            </span>
+            <span *ngIf="UserForm.controls['username'].errors?.['minlength']">
+              Korisničko ime mora sadržavati najmanje 5 karaktera!
+            </span>
+            <span
+              *ngIf="UserForm.controls['username'].errors?.['usernameTaken']"
+            >
+              Korisničko ime je već zauzeto!
+            </span>
+          </div>
+
+          <div
+            *ngIf="UserForm.controls['username'].pending"
+            style="font-size: smaller; color: rgb(74, 74, 234)"
+          >
+            Provjera korisničkog imena u toku...
+          </div>
         </div>
+
         <div class="form-group">
           <label for="email">E-mail</label>
-          <input
-            type="email"
-            id="email"
-            [(ngModel)]="user.email"
-            name="email"
-          />
+          <input type="email" id="email" formControlName="email" />
+          <div
+            class="text-danger"
+            style="font-size: smaller"
+            *ngIf="
+              UserForm.controls['email'].invalid &&
+              (UserForm.controls['email'].touched ||
+                UserForm.controls['email'].dirty)
+            "
+          >
+            <span *ngIf="UserForm.controls['email'].errors?.['required']"
+              >Polje je obavezno!</span
+            >
+            <span *ngIf="UserForm.controls['email'].errors?.['email']"
+              >Format e-maila nije validan!</span
+            >
+          </div>
         </div>
+
         <div class="form-group">
           <label for="phone">Broj mobitela</label>
-          <input
-            type="tel"
-            id="phone"
-            [(ngModel)]="user.phoneNumber"
-            name="phoneNumber"
-          />
+          <input type="tel" id="phone" formControlName="phoneNumber" />
+          <div
+            class="text-danger"
+            style="font-size: smaller"
+            *ngIf="
+              UserForm.controls['phoneNumber'].invalid &&
+              (UserForm.controls['phoneNumber'].touched ||
+                UserForm.controls['phoneNumber'].dirty)
+            "
+          >
+            <span *ngIf="UserForm.controls['phoneNumber'].errors?.['required']"
+              >Polje je obavezno!</span
+            >
+            <span
+              *ngIf="UserForm.controls['phoneNumber'].errors?.['minlength'] || UserForm.controls['phoneNumber'].errors?.['maxlength'] || UserForm.controls['phoneNumber'].errors?.['pattern']"
+              >Format broja telefona nije validan!</span
+            >
+          </div>
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group">
-          <label for="schoolType">Stepen obrazovanja</label>
+          <label for="educationLevel">Stepen obrazovanja</label>
           <select
-            id="schoolType"
-            [(ngModel)]="user.educationLevel"
-            name="schoolType"
+            id="educationLevel"
+            formControlName="educationLevel"
+            style="font-size: smaller"
+            [value]="user.educationLevel"
           >
-            <option [value]="0">Osnovna</option>
-            <option [value]="1">Srednja</option>
+            <option [ngValue]="0">Osnovna škola</option>
+            <option [ngValue]="1">Srednja škola</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="grade">Razred</label>
-          <select id="grade" [(ngModel)]="user.grade" name="grade">
-            <option value="Prvi">Prvi</option>
-            <option value="Drugi">Drugi</option>
-            <option value="Treći">Treći</option>
-            <option value="Četvrti">Četvrti</option>
-            <option value="Peti">Peti</option>
-            <option value="Šesti">Šesti</option>
-            <option value="Sedmi">Sedmi</option>
-            <option value="Osmi">Osmi</option>
-            <option value="Deveti">Deveti</option>
+          <select id="grade" formControlName="grade" [value]="user.grade">
+            <option *ngFor="let option of gradeOptions" [value]="option.value">
+              {{ option.value }}
+            </option>
           </select>
         </div>
       </div>
@@ -99,9 +157,9 @@
       <div class="form-row">
         <div class="form-group">
           <label for="city">Grad</label>
-          <select id="city" [(ngModel)]="user.city.id" name="city">
+          <select id="city" formControlName="city">
             <option *ngFor="let city of cities" [value]="city.id">
-              {{ city?.name }}
+              {{ city.name }}
             </option>
           </select>
         </div>
@@ -110,16 +168,21 @@
           <label for="preferredMode">Način održavanja nastave</label>
           <select
             id="preferredMode"
-            [(ngModel)]="user.preferredMode"
-            name="preferredMode"
+            formControlName="preferredMode"
+            [value]="user.preferredMode"
           >
             <option value="Online">Online</option>
-            <option value="InClass">InClass</option>
+            <option value="Inclass">In-class</option>
           </select>
         </div>
       </div>
 
-      <button type="submit">Save Changes</button>
+      <button type="submit" [disabled]="UserForm.pending || UserForm.invalid">
+        Sačuvaj promjene
+      </button>
     </form>
+    <div *ngIf="showSuccess" class="alert-success">
+      Vaše promjene su uspješno sačuvane!
+    </div>
   </div>
 </body>

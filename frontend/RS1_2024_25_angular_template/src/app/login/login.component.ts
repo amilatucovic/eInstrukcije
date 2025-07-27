@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { MyAuthService } from '../services/auth-services/my-auth.service';
 import { MyAppUser } from '../models/myAppUser.model';
 import { Student } from '../models/student.model';
-import {ChatService} from '../services/auth-services/services/chat.service';
+import { ChatService } from '../services/auth-services/services/chat.service';
 
 
 @Component({
@@ -59,13 +59,22 @@ export class LoginComponent {
             response.email,
             response.username,
             response.phoneNumber,
-            response.educationLevel,
-            response.preferredMode,
-            response.grade,
-            response.role
+            response.role,
           );
 
           this.myAuth.setLoggedInUser(user);
+
+          if (response.studentId) {
+            const student = new Student(
+              response.studentId,
+              response.grade,
+              response.educationLevel,
+              response.preferredMode,
+              response.myAppUser,
+            )
+            this.myAuth.setLoggedInUser(student);
+          }
+
           console.log('Logged in user:', user);
           console.log('From authService:', this.myAuth.getLoggedInUser());
           if (response.role === 'Tutor' && response.tutorId) {

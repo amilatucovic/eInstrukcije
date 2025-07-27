@@ -22,5 +22,6 @@ namespace RS1_2024_2025.API.Endpoints.LoginEndpoint.DTOs
         public string? Grade { get; set; }
 		public int? CityId { get; set; }
         public City City { get; set; }
+        public MyAppUser MyAppUser { get; set; }
 	}
 }

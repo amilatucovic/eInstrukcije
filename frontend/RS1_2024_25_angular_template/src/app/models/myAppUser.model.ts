@@ -9,9 +9,6 @@ export class MyAppUser {
     public email: string,
     public username: string,
     public phoneNumber: string,
-    public educationLevel: number,
-    public preferredMode: string,
-    public grade: string,
     public role: string
   ) { }
 }

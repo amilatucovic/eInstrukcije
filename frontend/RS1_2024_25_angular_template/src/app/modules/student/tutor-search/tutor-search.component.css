@@ -456,7 +456,7 @@
 
 .btn-outline:hover {
   background-color: #6c757d;
-  color: white; /* Dodao sam color: white za hover */
+  color: white;
   transform: translateY(-1px);
   box-shadow: 0 3px 8px rgba(108, 117, 125, 0.3);
 }

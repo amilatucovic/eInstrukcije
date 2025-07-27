@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MyAppUser } from '../../../models/myAppUser.model';
 import { MyAuthService } from '../../../services/auth-services/my-auth.service';
+import { Student } from '../../../models/student.model';
 
 @Component({
   selector: 'app-student-home-tab',
@@ -8,11 +8,11 @@ import { MyAuthService } from '../../../services/auth-services/my-auth.service';
   styleUrl: './student-home-tab.component.css'
 })
 export class StudentHomeTabComponent implements OnInit {
-  user: MyAppUser | null = null;
+  user: Student | null = null;
 
   constructor(private myAuth: MyAuthService) { }
 
   ngOnInit(): void {
-    this.user = this.myAuth.getLoggedInUser();
+    this.user = this.myAuth.getLoggedInUser() as Student;
   }
 }

@@ -5,6 +5,7 @@ export class Student {
         public id: number,
         public grade: string,
         public educationLevel: number,
+        public preferredMode: string,
         public myAppUser: MyAppUser,
     ) { }
 }

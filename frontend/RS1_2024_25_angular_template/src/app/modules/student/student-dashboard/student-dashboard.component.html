@@ -35,8 +35,8 @@
         />
       </div>
       <h3>
-        <p>{{ user?.firstName }} {{ user?.lastName }}</p>
-        <p>{{ user?.email }}</p>
+        <p>{{ user?.myAppUser?.firstName }} {{ user?.myAppUser?.lastName }}</p>
+        <p>{{ user?.myAppUser?.email }}</p>
       </h3>
     </div>
 
@@ -59,9 +59,35 @@
       <a routerLink="account" routerLinkActive="active">
         <span class="material-icons">account_circle</span> Moj profil
       </a>
+
+      <a
+        button
+        (click)="showConfirmModal = true"
+        routerLinkActive="active"
+        class="logout-link"
+      >
+        <span class="material-icons">exit_to_app</span> Odjava
+      </a>
     </nav>
   </div>
 
+  <!-- Confirmation Modal -->
+  <div
+    *ngIf="showConfirmModal"
+    class="modal-overlay"
+    (click)="onOverlayClick($event)"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Potvrda odjave</h3>
+        <p class="modal-message">Da li ste sigurni da se želite odjaviti?</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmClose()">Da, odjava</button>
+        <button class="btn-outline" (click)="cancelClose()">Ne, ostani</button>
+      </div>
+    </div>
+  </div>
   <!-- Main content -->
   <div class="main-content">
     <router-outlet></router-outlet>

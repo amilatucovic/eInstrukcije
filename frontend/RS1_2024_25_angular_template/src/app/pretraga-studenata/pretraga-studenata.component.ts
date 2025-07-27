@@ -101,11 +101,15 @@ export class PretragaStudenataComponent implements OnInit {
     if (this.editingStudent) {
       const podaci: StudentUpdateDTO = {
         id: this.editingStudent.id,
-        searchTerm: this.editingStudent.myAppUser.firstName,
         email: this.editingStudent.myAppUser.email,
         cityId: this.editingStudent.myAppUser.city.id,
         grade: this.editingStudent.grade,
-        educationLevel: this.editingStudent.educationLevel
+        educationLevel: this.editingStudent.educationLevel,
+        phoneNumber: this.editingStudent.myAppUser.phoneNumber,
+        username: this.editingStudent.myAppUser.username,
+        firstName: this.editingStudent.myAppUser.firstName,
+        lastName: this.editingStudent.myAppUser.lastName,
+        preferredMode: this.editingStudent.preferredMode,
       }
       this.studentService.update(this.editingStudent.id, podaci).subscribe(
         () => location.reload(),

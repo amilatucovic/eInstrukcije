@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MyAppUser } from '../../models/myAppUser.model';
+import { Student } from '../../models/student.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class MyAuthService {
       localStorage.removeItem('loggedInUser');
     }
   }
-  getLoggedInUser(): MyAppUser | null {
+  getLoggedInUser(): MyAppUser | Student | null {
     const stored = localStorage.getItem('loggedInUser');
     return stored ? JSON.parse(stored) as MyAppUser : null;
   }

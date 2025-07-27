@@ -11,6 +11,7 @@ import { MyAppUserService } from '../services/auth-services/services/myappuser.s
 import { HttpErrorResponse } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs'; // Dodano za upravljanje pretplatama
+
 declare var window: any; //za pristup globalnim objektima jer koristimo bootstrap
 
 @Component({
@@ -110,6 +111,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     });
 
     this.UserForm.get('grade')?.disable();
+
 
     this.UserForm.get('username')?.valueChanges.pipe(
       debounceTime(500),

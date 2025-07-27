@@ -3,7 +3,8 @@ import { MyAuthService } from '../../../services/auth-services/my-auth.service';
 import { ChatService } from '../../../services/auth-services/services/chat.service';
 import { ConversationDto } from '../../../models/conversation-dto';
 import { MessageDto } from '../../../models/message-dto';
-import {AvailableUsersDto} from '../../../models/available-users-dto';
+import { AvailableUsersDto } from '../../../models/available-users-dto';
+import { MyAppUser } from '../../../models/myAppUser.model';
 
 @Component({
   selector: 'app-chat',
@@ -29,7 +30,7 @@ export class ChatComponent implements OnInit {
     private chatService: ChatService,
     private authService: MyAuthService
 
-) {}
+  ) { }
 
   ngOnInit(): void {
     const userId = this.authService.getUserId();
@@ -115,6 +116,7 @@ export class ChatComponent implements OnInit {
     if (!this.newMessage.trim() || !this.selectedConversation) return;
 
     const currentTime = new Date();
+    const loggedInUser = this.authService.getLoggedInUser() as MyAppUser;
 
 
     const messageToAdd = {
@@ -124,8 +126,8 @@ export class ChatComponent implements OnInit {
       content: this.newMessage,
       sentAt: currentTime,
       isRead: false,
-      senderUsername: this.authService.getLoggedInUser()?.username || 'Ja',
-      senderFullName: `${this.authService.getLoggedInUser()?.firstName} ${this.authService.getLoggedInUser()?.lastName}`
+      senderUsername: (loggedInUser)?.username || 'Ja',
+      senderFullName: `${loggedInUser?.firstName} ${loggedInUser?.lastName}`
     };
     this.messages.push(messageToAdd);
     this.groupedMessages = this.groupMessagesByDate(this.messages);
@@ -168,7 +170,7 @@ export class ChatComponent implements OnInit {
     }
 
     clearTimeout(this.typingTimeoutHandle);
-    this.typingTimeoutHandle = setTimeout(() => {}, 3000); // debounce
+    this.typingTimeoutHandle = setTimeout(() => { }, 3000); // debounce
   }
 
 

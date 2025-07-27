@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MyAuthService } from '../../../services/auth-services/my-auth.service';
 import { MyAppUser } from '../../../models/myAppUser.model';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Student } from '../../../models/student.model';
 
 @Component({
   selector: 'app-student-dashboard',
@@ -10,10 +12,10 @@ import { MyAppUser } from '../../../models/myAppUser.model';
 export class StudentDashboardComponent implements OnInit {
   profileImageUrl: string | ArrayBuffer | null = null;
   hovering = false;
-  user: MyAppUser | null = null;
+  user: Student | null = null;
+  showConfirmModal = false;
 
-
-  constructor(private myAuth: MyAuthService) { }
+  constructor(private myAuth: MyAuthService, private router: Router) { }
 
   ngOnInit(): void {
     const savedImage = localStorage.getItem('studentProfileImage');
@@ -21,7 +23,7 @@ export class StudentDashboardComponent implements OnInit {
       this.profileImageUrl = savedImage;
     }
 
-    this.user = this.myAuth.getLoggedInUser();
+    this.user = this.myAuth.getLoggedInUser() as Student;
   }
 
   onFileSelected(event: Event): void {
@@ -40,5 +42,23 @@ export class StudentDashboardComponent implements OnInit {
     event.stopPropagation();
     this.profileImageUrl = null;
     localStorage.removeItem('studentProfileImage');
+  }
+
+  showCloseConfirmation() {
+    this.showConfirmModal = true;
+  }
+
+  confirmClose() {
+    this.showConfirmModal = false;
+    this.router.navigate(['/']);
+  }
+
+  cancelClose() {
+    this.showConfirmModal = false;
+  }
+  onOverlayClick(event: Event) {
+    if (event.target === event.currentTarget) {
+      this.cancelClose();
+    }
   }
 }
