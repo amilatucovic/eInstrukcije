@@ -42,7 +42,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LoginComponent,
     PretragaStudenataComponent,
     LoginComponent,
-    StudentPaymentsTabComponent,
+    StudentPaymentsTabComponent
   ],
   imports: [
     BrowserModule,

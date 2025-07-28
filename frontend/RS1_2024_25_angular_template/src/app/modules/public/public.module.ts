@@ -9,7 +9,7 @@ import { TutorRegistrationComponent } from './tutor-registration/tutor-registrat
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
-import {TutorSearchComponent} from './tutor-search/tutor-search.component';
+import { TutorSearchComponent } from './tutor-search/tutor-search.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,8 @@ import {TutorSearchComponent} from './tutor-search/tutor-search.component';
     LandingPageComponent,
     TutorRegistrationComponent,
     AboutUsComponent,
-    TutorSearchComponent
+    TutorSearchComponent,
+    ContactUsComponent
   ],
   imports: [
     CommonModule,
