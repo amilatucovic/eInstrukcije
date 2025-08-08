@@ -2,6 +2,7 @@
 {
     public class TutorSearchResultDTO
     {
+        public int ID {  get; set; }
         public string Name { get; set; }
         public string City { get; set; }
         public string HourlyRate { get; set; }

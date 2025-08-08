@@ -29,7 +29,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 
-
 registerLocaleData(localeBs);
 
 export function HttpLoaderFactory(http: HttpClient) {

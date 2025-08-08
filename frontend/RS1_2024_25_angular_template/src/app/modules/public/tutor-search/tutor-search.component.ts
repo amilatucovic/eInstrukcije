@@ -3,10 +3,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CitiesService } from '../../../services/auth-services/services/cities.service';
 import { City } from '../../../models/city.model';
-import { CalendarOptions } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
+
 
 @Component({
   selector: 'app-tutor-search',
@@ -107,89 +104,5 @@ export class TutorSearchComponent implements OnInit {
         this.isLoading = false;
       }
     );
-  }
-
-  showReservationForm = false;
-  showConfirmModal = false;
-
-  calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    initialView: 'dayGridMonth',
-    locale: 'bs',
-    headerToolbar: {
-      left: 'prev,next',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek'
-    },
-    buttonText: {
-      today: 'Danas',
-      month: 'Mjesec',
-      week: 'Sedmica',
-      day: 'Dan'
-    },
-    dayHeaderFormat: { weekday: 'long' },
-    titleFormat: { year: 'numeric', month: 'long' },
-    eventTimeFormat: { // 24-satni format
-      hour: '2-digit',
-      minute: '2-digit',
-      meridiem: false
-    },
-    slotLabelFormat: { // 24-satni format za time grid
-      hour: '2-digit',
-      minute: '2-digit',
-      meridiem: false
-    },
-    firstDay: 1, // Ponedjeljak kao prvi dan u sedmici
-    events: [
-      {
-        title: 'Zauzeto',
-        start: '2025-07-07T10:00:00',
-        end: '2025-07-07T12:00:00',
-        color: '#ff6b6b',
-        textColor: '#ffffff'
-      },
-      {
-        title: 'Slobodan termin',
-        start: '2025-07-08T14:00:00',
-        end: '2025-07-08T16:00:00',
-        color: '#51cf66',
-        textColor: '#ffffff'
-      }
-    ],
-    dateClick: this.handleDateClick.bind(this),
-    selectable: true,
-    selectMirror: true,
-    dayMaxEvents: true,
-    weekends: true,
-    editable: true,
-    height: 'auto'
-  };
-
-  showCloseConfirmation() {
-    this.showConfirmModal = true;
-  }
-
-  confirmClose() {
-    this.showConfirmModal = false;
-    this.showReservationForm = false;
-  }
-
-  cancelClose() {
-    this.showConfirmModal = false;
-  }
-
-  saveReservation() {
-    console.log('Rezervacija spremljena!');
-    this.showReservationForm = false;
-  }
-
-  onOverlayClick(event: Event) {
-    if (event.target === event.currentTarget) {
-      this.cancelClose();
-    }
-  }
-
-  handleDateClick(arg: any) {
-    alert('Kliknuli ste datum: ' + arg.dateStr);
   }
 }

@@ -103,8 +103,8 @@
             </p>
             <span class="location">📍 {{ tutor.city }}</span>
             <div>
-              <button (click)="showReservationForm = true" class="actions">
-                📅 Rezervacije
+              <button (click)="selectTutor(tutor)" class="actions">
+                Rezervacije -> 📅
               </button>
             </div>
           </div>
@@ -112,37 +112,39 @@
       </div>
     </div>
   </div>
-</div>
 
-<!-- Kalendar -->
-<div *ngIf="showReservationForm" class="edit-form-container">
-  <div class="edit-form">
-    <full-calendar [options]="calendarOptions"></full-calendar>
-    <div class="calendar-actions">
-      <button class="btn-primary" (click)="saveReservation()">Spremi</button>
-      <button class="btn-secondary" (click)="showCloseConfirmation()">
-        Zatvori
+  <!-- Kalendar -->
+  <div *ngIf="selectedTutorForSchedule" class="edit-form-container">
+    <div class="edit-form">
+      <button class="close-button" (click)="showCloseConfirmation()">
+        <i class="fas fa-times"></i>
       </button>
+      <full-calendar [options]="calendarOptions"></full-calendar>
+      <div class="calendar-actions">
+        <button class="btn-primary" (click)="saveReservation()">
+          Pošaljite rezervaciju
+        </button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Confirmation Modal -->
-<div
-  *ngIf="showConfirmModal"
-  class="modal-overlay"
-  (click)="onOverlayClick($event)"
->
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3 class="modal-title">Potvrda zatvaranja</h3>
-      <p class="modal-message">
-        Da li ste sigurni da želite zatvoriti kalendar?
-      </p>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-danger" (click)="confirmClose()">Da, zatvori</button>
-      <button class="btn-outline" (click)="cancelClose()">Ne, ostani</button>
+  <!-- Confirmation Modal -->
+  <div
+    *ngIf="showConfirmModal"
+    class="modal-overlay"
+    (click)="onOverlayClick($event)"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Potvrda zatvaranja</h3>
+        <p class="modal-message">
+          Da li ste sigurni da želite zatvoriti kalendar?
+        </p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmClose()">Da, zatvori</button>
+        <button class="btn-outline" (click)="cancelClose()">Ne, ostani</button>
+      </div>
     </div>
   </div>
 </div>

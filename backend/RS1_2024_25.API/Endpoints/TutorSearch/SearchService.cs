@@ -67,13 +67,13 @@ namespace RS1_2024_25.API.Endpoints.TutorSearch
         .OrderByDescending(t => t.Rating)
         .Select(t => new TutorSearchResultDTO
         {
+            ID=t.ID,
             Name = t.MyAppUser.FirstName + ' ' + t.MyAppUser.LastName,
             City = t.MyAppUser.City != null ? t.MyAppUser.City.Name :"unknown",
             Rating = t.Rating,
             HourlyRate = t.HourlyRate,
             ProfileImageUrl=t.MyAppUser.ProfileImageUrl
-        })
-        .ToList();
+        }).ToList();
         }
 
 

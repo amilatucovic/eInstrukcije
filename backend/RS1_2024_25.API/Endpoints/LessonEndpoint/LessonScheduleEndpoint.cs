@@ -39,46 +39,36 @@ public class LessonEndpoint(ApplicationDbContext db) : ControllerBase
 	[HttpGet("schedule/{tutorId}")]
 	public IActionResult GetScheduleForTutor(int tutorId)
 	{
-		var today = DateTime.Today;
-
-		// racunamo početak sedmice - Ponedeljak (DayOfWeek.Monday = 1)
-		int diff = (7 + (today.DayOfWeek - DayOfWeek.Monday)) % 7;
-		var startOfWeek = today.AddDays(-diff).Date;
-		var endOfWeek = startOfWeek.AddDays(7);
-
 		var lessons = db.Lessons
 			.Include(l => l.Student)
 				.ThenInclude(s => s.MyAppUser)
 			.Include(l => l.Subject)
 			.Include(l => l.Tutor)
 				.ThenInclude(t => t.MyAppUser)
-			.Where(l => l.TutorID == tutorId &&
-						l.LessonDate >= startOfWeek &&
-						l.LessonDate < endOfWeek &&
-						l.Status == LessonStatus.Scheduled)
+			.Where(l => l.TutorID == tutorId && l.Status == LessonStatus.Scheduled)
 			.Select(l => new LessonScheduleDTO
 			{
 				LessonID = l.ID,
 				SubjectName = l.Subject.Name,
 				StudentName = l.Student.MyAppUser.FirstName + " " + l.Student.MyAppUser.LastName,
-				StudentId=l.StudentID,
-				SubjectID=l.SubjectID,
+				StudentId = l.StudentID,
+				SubjectID = l.SubjectID,
 				Start = l.StartTime,
 				End = l.EndTime,
 				LessonMode = l.Mode,
 				Status = l.Status.ToString(),
 				TutorName = l.Tutor.MyAppUser.FirstName + " " + l.Tutor.MyAppUser.LastName,
-				TutorId = l.TutorID
+				TutorId = l.TutorID,
 			})
 			.ToList();
 
-        if (!lessons.Any())
-            return Ok(new List<LessonScheduleDTO>());
+		if (!lessons.Any())
+			return Ok(new List<LessonScheduleDTO>());
 
-
-        return Ok(lessons);
+		return Ok(lessons);
 	}
-	
+
+
 	[HttpGet("lessons/{studentId}")]
 	public IActionResult GetScheduleForStudent(int studentId)
 	{
@@ -142,7 +132,7 @@ public class LessonEndpoint(ApplicationDbContext db) : ControllerBase
 		if (startDateTime <= DateTime.Now)
 			return BadRequest("Lekcija se može zakazati samo u budućnosti.");
 
-		// ✔ Provjera da tutor predaje predmet
+		// Provjera da tutor predaje predmet
 		bool tutorPredajePredmet = db.TutorsSubjects.Any(ts =>
 			ts.TutorID == dto.TutorID &&
 			ts.SubjectID == dto.SubjectID);
@@ -150,7 +140,7 @@ public class LessonEndpoint(ApplicationDbContext db) : ControllerBase
 		if (!tutorPredajePredmet)
 			return BadRequest("Tutor ne predaje izabrani predmet.");
 
-		// ✔ Provjera da tutor nije zauzet
+		// Provjera da tutor nije zauzet
 		bool tutorConflict = db.Lessons.Any(l =>
 			l.TutorID == dto.TutorID &&
 			l.Status == LessonStatus.Scheduled &&
@@ -160,7 +150,7 @@ public class LessonEndpoint(ApplicationDbContext db) : ControllerBase
 		if (tutorConflict)
 			return Conflict("Tutor već ima zakazanu lekciju u tom terminu.");
 
-		// ✔ Provjera da student nije zauzet
+		// Provjera da student nije zauzet
 		bool studentConflict = db.Lessons.Any(l =>
 			l.StudentID == dto.StudentID &&
 			l.Status == LessonStatus.Scheduled &&
@@ -170,7 +160,6 @@ public class LessonEndpoint(ApplicationDbContext db) : ControllerBase
 		if (studentConflict)
 			return Conflict("Student već ima zakazanu lekciju u tom terminu.");
 
-		// ✔ Kreiramo lekciju
 		var lesson = new Lesson
 		{
 			StudentID = dto.StudentID,
@@ -186,7 +175,6 @@ public class LessonEndpoint(ApplicationDbContext db) : ControllerBase
 		db.Lessons.Add(lesson);
 		db.SaveChanges();
 
-		// ✔ Dohvatimo detalje za response
 		var student = db.Students
 			.Include(s => s.MyAppUser)
 			.FirstOrDefault(s => s.ID == dto.StudentID);

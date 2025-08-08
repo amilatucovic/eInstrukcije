@@ -2,6 +2,7 @@
 {
     public class TutorSearchDTO
     {
+        public int? ID { get; set; }
         public int? SubjectId { get; set; }
         public int? CategoryId { get; set; }
         public double? MinPrice { get; set; }

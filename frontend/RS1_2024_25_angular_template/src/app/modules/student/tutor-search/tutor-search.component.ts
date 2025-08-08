@@ -4,9 +4,11 @@ import { HttpClient } from '@angular/common/http';
 import { CitiesService } from '../../../services/auth-services/services/cities.service';
 import { City } from '../../../models/city.model';
 import { CalendarOptions } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import hrLocale from '@fullcalendar/core/locales/hr';
+import { LessonService } from '../../../services/auth-services/services/lesson.service';
+import { LessonSchedule } from '../../../services/auth-services/services/lesson.service';
 
 @Component({
   selector: 'app-tutor-search',
@@ -22,7 +24,7 @@ export class TutorSearchComponent implements OnInit {
   isLoading = false;
   selectedTutorForSchedule: any = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private citiesService: CitiesService) {
+  constructor(private fb: FormBuilder, private http: HttpClient, private citiesService: CitiesService, private lessonService: LessonService) {
     this.searchForm = this.fb.group({
       subjectId: [''],
       categoryId: [''],
@@ -109,53 +111,58 @@ export class TutorSearchComponent implements OnInit {
     );
   }
 
-  showReservationForm = false;
   showConfirmModal = false;
 
+  private bosnianMonths = [
+    'Januar', 'Februar', 'Mart', 'April', 'Maj', 'Juni',
+    'Juli', 'August', 'Septembar', 'Oktobar', 'Novembar', 'Decembar'
+  ];
+
   calendarOptions: CalendarOptions = {
-    plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
-    initialView: 'dayGridMonth',
-    locale: 'bs',
+    plugins: [timeGridPlugin, interactionPlugin],
+    initialView: 'timeGridWeek',
+    locale: hrLocale,
     headerToolbar: {
-      left: 'prev,next',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek'
+      left: '',
+      center: 'prev title next',
+      right: ''
+    },
+    viewDidMount: (info) => {
+      this.updateCalendarTitle(info);
+    },
+    datesSet: (info) => {
+      this.updateCalendarTitle(info);
     },
     buttonText: {
-      today: 'Danas',
-      month: 'Mjesec',
-      week: 'Sedmica',
-      day: 'Dan'
+      prev: 'Prethodna sedmica',
+      next: 'Sljedeća sedmica'
     },
+    slotMinTime: '08:00:00',
+    slotMaxTime: '21:00:00',
+    allDaySlot: false,
+    titleFormat: { month: 'long', year: 'numeric' },
     dayHeaderFormat: { weekday: 'long' },
-    titleFormat: { year: 'numeric', month: 'long' },
-    eventTimeFormat: { // 24-satni format
+    eventTimeFormat: {
       hour: '2-digit',
       minute: '2-digit',
       meridiem: false
     },
-    slotLabelFormat: { // 24-satni format za time grid
+    slotLabelFormat: {
       hour: '2-digit',
       minute: '2-digit',
       meridiem: false
     },
-    firstDay: 1, // Ponedjeljak kao prvi dan u sedmici
-    events: [
-      {
-        title: 'Zauzeto',
-        start: '2025-07-07T10:00:00',
-        end: '2025-07-07T12:00:00',
-        color: '#ff6b6b',
-        textColor: '#ffffff'
-      },
-      {
-        title: 'Slobodan termin',
-        start: '2025-07-08T14:00:00',
-        end: '2025-07-08T16:00:00',
-        color: '#51cf66',
-        textColor: '#ffffff'
-      }
-    ],
+    eventContent: function (arg) {
+      return {
+        html: `
+      <div style="text-align:center;">
+        <div style="margin-bottom: 2px;">Zauzeto</div>
+        <div style="font-size: 0.8em;">${arg.timeText}</div>
+      </div>
+    `
+      };
+    },
+    firstDay: 1,
     dateClick: this.handleDateClick.bind(this),
     selectable: true,
     selectMirror: true,
@@ -165,13 +172,65 @@ export class TutorSearchComponent implements OnInit {
     height: 'auto'
   };
 
+  private updateCalendarTitle(info: any): void {
+    setTimeout(() => {
+      const titleElement = document.querySelector('.fc-toolbar-title');
+      if (!titleElement) return;
+
+      const currentDate = info.start || info.view.currentStart;
+      const month = currentDate.getMonth();
+      const year = currentDate.getFullYear();
+
+      const mainTitle = `${this.bosnianMonths[month]} ${year}`;
+      const weekRange = this.getWeekRange(info);
+
+      titleElement.innerHTML = `
+      <div style="display: flex; flex-direction: column; align-items: center; line-height: 1.2;">
+      <div style="font-size: 1.2em; font-weight: bold;">${mainTitle}</div>
+      <div style="font-size: 0.85em; color: #666; margin-top: 4px;">${weekRange}</div>
+      </div>`;
+    }, 10);
+  }
+
+  selectTutor(tutor: any): void {
+    console.log('Selektovani tutor:', tutor);
+    this.selectedTutorForSchedule = tutor;
+    this.loadTutorSchedule(tutor.id);
+  }
+
+  loadTutorSchedule(tutorId: number): void {
+    this.lessonService.getLessonsForTutor(tutorId).subscribe(
+      (lessons: LessonSchedule[]) => {
+        console.log('Lekcije za tutora:', lessons);
+        const events = lessons.map(lesson => {
+          return {
+            start: new Date(lesson.start),
+            end: new Date(lesson.end),
+            display: 'block',
+            color: '#e28585',
+            borderColor: '#990000',
+            textColor: '#990000',
+            meta: lesson
+          };
+        });
+        this.calendarOptions = {
+          ...this.calendarOptions,
+          events: events
+        };
+      },
+      (error) => {
+        console.error('Greška pri učitavanju rasporeda', error);
+      }
+    );
+  }
+
   showCloseConfirmation() {
     this.showConfirmModal = true;
   }
 
   confirmClose() {
     this.showConfirmModal = false;
-    this.showReservationForm = false;
+    this.selectedTutorForSchedule = null;
   }
 
   cancelClose() {
@@ -180,7 +239,6 @@ export class TutorSearchComponent implements OnInit {
 
   saveReservation() {
     console.log('Rezervacija spremljena!');
-    this.showReservationForm = false;
   }
 
   onOverlayClick(event: Event) {
@@ -191,5 +249,22 @@ export class TutorSearchComponent implements OnInit {
 
   handleDateClick(arg: any) {
     alert('Kliknuli ste datum: ' + arg.dateStr);
+  }
+
+  private getWeekRange(info: any): string {
+    const startDate = new Date(info.start || info.view.currentStart);
+    const endDate = new Date(info.end || info.view.currentEnd);
+    endDate.setDate(endDate.getDate() - 1);
+
+    const startDay = startDate.getDate();
+    const startMonth = startDate.getMonth();
+    const endDay = endDate.getDate();
+    const endMonth = endDate.getMonth();
+
+    if (startMonth === endMonth) {
+      return `${startDay}. - ${endDay}. ${this.bosnianMonths[startMonth]}`;
+    } else {
+      return `${startDay}. ${this.bosnianMonths[startMonth]} - ${endDay}. ${this.bosnianMonths[endMonth]}`;
+    }
   }
 }

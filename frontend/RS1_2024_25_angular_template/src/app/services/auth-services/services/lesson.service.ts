@@ -44,7 +44,7 @@ export class LessonService {
     return this.http.get<LessonSchedule[]>(`${this.baseUrl}/${studentId}`);
   }
   getLessonsForTutor(tutorId: number) {
-    return this.http.get<any[]>(`${this.baseUrl}/schedule/${tutorId}`);
+    return this.http.get<LessonSchedule[]>(`${this.weeklyUrl}/${tutorId}`);
   }
 
   createLesson(data: any) {
