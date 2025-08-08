@@ -1,5 +1,5 @@
 <div class="search-container">
-  <h2>Pretražite studente</h2>
+  <h4>Pretražite studente</h4>
 
   <!-- Forma sa filterima -->
   <div class="search-form">
@@ -13,7 +13,9 @@
     </div>
     <div class="search-input-group">
       <select (change)="filterStudents()" [(ngModel)]="selectedCity">
-        <option value="" disabled selected hidden>Izaberite grad</option>
+        <option value="undefined" disabled selected hidden>
+          Izaberite grad
+        </option>
         <option *ngFor="let city of cities" [value]="city.id">
           {{ city.name }}
         </option>
@@ -65,10 +67,12 @@
           <td>{{ formatEducationlevel(student.educationLevel) }}</td>
           <td>
             <button class="btn btn-warning" (click)="editStudent(student)">
-              Edit
+              <i class="far fa-edit"></i>
+              Uredi
             </button>
             <button class="btn btn-danger" (click)="deleteStudent(student.id)">
-              Delete
+              <i class="far fa-trash-alt"></i>
+              Obriši
             </button>
           </td>
         </tr>
@@ -82,7 +86,7 @@
 
   <div *ngIf="editingStudent" class="edit-form-container">
     <div class="edit-form">
-      <h3>Edituj Studenta</h3>
+      <h4>Uredi podatke studenta</h4>
       <form (ngSubmit)="saveStudent()">
         <div class="form-group">
           <label for="firstName">Ime</label>
@@ -132,9 +136,9 @@
         </div>
 
         <div class="form-group">
-          <button type="submit" class="btn btn-success">Save changes</button>
+          <button type="submit" class="btn btn-success">Spremi izmjene</button>
           <button type="button" class="btn btn-danger" (click)="cancelEdit()">
-            Cancel
+            Otkaži
           </button>
         </div>
       </form>
@@ -142,6 +146,53 @@
   </div>
 
   <div class="action-buttons">
-    <button class="btn btn-reset" (click)="clearSearch()">Reset filters</button>
+    <button class="btn btn-reset" (click)="clearSearch()">
+      <i class="fas fa-refresh"></i>
+      Resetuj filtere
+    </button>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div
+    *ngIf="showConfirmModal"
+    class="modal-overlay"
+    (click)="onOverlayClick($event)"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Potvrda zatvaranja</h3>
+        <p class="modal-message">
+          Da li ste sigurni da želite napustiti formu za uređivanje?
+        </p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmClose()">Da, zatvori</button>
+        <button class="btn-outline" (click)="cancelClose()">Ne, ostani</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div
+    *ngIf="showConfirmModalDeletion"
+    class="modal-overlay"
+    (click)="onOverlayClick($event)"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Potvrda brisanja</h3>
+        <p class="modal-message">
+          Da li ste sigurni da želite obrisati odabranog studenta?
+        </p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmDeletion()">
+          Da, obriši
+        </button>
+        <button class="btn-outline" (click)="cancelDelete()">
+          Ne, odustani
+        </button>
+      </div>
+    </div>
   </div>
 </div>

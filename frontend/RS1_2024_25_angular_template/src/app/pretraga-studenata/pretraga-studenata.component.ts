@@ -22,10 +22,15 @@ export class PretragaStudenataComponent implements OnInit {
   selectedCity?: City;
   students: Student[] = [];
   editingStudent: Student | null = null;
+  originalStudent: Student | null = null; // Dodano za čuvanje originalnih podataka
   isEditing: boolean = false;
 
   searchTerm: Subject<string> = new Subject<string>();
   searchValue: string = '';
+
+  showConfirmModal = false;
+  showConfirmModalDeletion = false;
+  studentToDeleteId: number | null = null;
 
   constructor(private citiesService: CitiesService, private studentService: StudentService) { }
 
@@ -33,11 +38,10 @@ export class PretragaStudenataComponent implements OnInit {
   schoolTypes: { name: string, value: number }[] = [{ name: 'Osnovna škola', value: 0 }, { name: 'Srednja škola', value: 1 }];
 
   ngOnInit(): void {
-
     this.searchTerm.pipe(
       debounceTime(300),
-      map(term => term.trim().toLowerCase()), // mapiranje unosa na trimovani i lowercase string
-      filter(term => term.length >= 3 || term.length === 0),         // filtriranje praznih stringova
+      map(term => term.trim().toLowerCase()),
+      filter(term => term.length >= 3 || term.length === 0),
       distinctUntilChanged()
     ).subscribe(term => {
       this.searchValue = term;
@@ -60,7 +64,6 @@ export class PretragaStudenataComponent implements OnInit {
     });
   }
 
-  // Filtriranje studenata prema pretrazi
   filterStudents() {
     if (!this.searchValue && this.selectedCity?.id == 0 && this.selectedGrade == "" && this.selectedSchoolType == null) return;
     var filterObject = {
@@ -77,9 +80,11 @@ export class PretragaStudenataComponent implements OnInit {
   }
 
   editStudent(student: any) {
-    // Provjeravamo da li student sadrži podatke
     if (student && student.myAppUser) {
-      this.editingStudent = { ...student, city: student.myAppUser.city };
+      // Kreiraj duboku kopiju originalnog studenta
+      this.originalStudent = JSON.parse(JSON.stringify(student));
+      // Kreiraj radnu kopiju za editovanje
+      this.editingStudent = JSON.parse(JSON.stringify(student));
       this.isEditing = true;
     } else {
       console.error("Student nije validan ili nema podatke", student);
@@ -87,18 +92,58 @@ export class PretragaStudenataComponent implements OnInit {
   }
 
   cancelEdit() {
-    this.isEditing = false;
-    this.editingStudent = null;
-    location.reload;
+    this.showConfirmModal = true;
   }
 
   deleteStudent(studentId: number) {
-    this.students = this.students.filter((student: Student) => student.id != studentId);
-    this.studentService.delete(studentId).subscribe();
+    this.studentToDeleteId = studentId;
+    this.showConfirmModalDeletion = true;
+  }
+
+  confirmDeletion() {
+    if (this.studentToDeleteId !== null) {
+      this.students = this.students.filter(student => student.id !== this.studentToDeleteId);
+      this.studentService.delete(this.studentToDeleteId).subscribe();
+      this.studentToDeleteId = null;
+      this.showConfirmModalDeletion = false;
+    }
+  }
+
+  cancelDelete() {
+    this.studentToDeleteId = null;
+    this.showConfirmModalDeletion = false;
+  }
+
+  confirmClose() {
+    // Vraćanje originalnih podataka u tabelu ako su bili promenjeni
+    if (this.originalStudent) {
+      const index = this.students.findIndex(s => s.id === this.originalStudent!.id);
+      if (index !== -1) {
+        this.students[index] = this.originalStudent;
+      }
+    }
+
+    this.showConfirmModal = false;
+    this.isEditing = false;
+    this.editingStudent = null;
+    this.originalStudent = null;
+  }
+
+  cancelClose() {
+    this.showConfirmModal = false;
+  }
+
+  onOverlayClick(event: Event) {
+    if (event.target === event.currentTarget) {
+      this.cancelClose();
+    }
   }
 
   saveStudent() {
     if (this.editingStudent) {
+      // Pronađi odabrani grad objekat na osnovu ID-ja
+      const selectedCity = this.cities.find(city => city.id == this.editingStudent!.myAppUser.city.id);
+
       const podaci: StudentUpdateDTO = {
         id: this.editingStudent.id,
         email: this.editingStudent.myAppUser.email,
@@ -111,8 +156,24 @@ export class PretragaStudenataComponent implements OnInit {
         lastName: this.editingStudent.myAppUser.lastName,
         preferredMode: this.editingStudent.preferredMode,
       }
+
       this.studentService.update(this.editingStudent.id, podaci).subscribe(
-        () => location.reload(),
+        (updatedStudent) => {
+          // Ažuriranje studenta u tabeli sa novim podacima
+          const index = this.students.findIndex(s => s.id === this.editingStudent!.id);
+          if (index !== -1) {
+            // Ažuriraj grad objekat sa kompletnim objektom
+            if (selectedCity) {
+              this.editingStudent!.myAppUser.city = selectedCity;
+            }
+            this.students[index] = { ...this.editingStudent! };
+          }
+
+          // Zatvaranje forme
+          this.isEditing = false;
+          this.editingStudent = null;
+          this.originalStudent = null;
+        },
         (error) => console.error('Greška pri ažuriranju studenta', error)
       );
     }
@@ -120,7 +181,6 @@ export class PretragaStudenataComponent implements OnInit {
 
   formatEducationlevel(level: number) { return level == 0 ? "Osnovna škola" : "Srednja škola" }
 
-  // Resetovanje filtera
   clearSearch() {
     this.searchValue = '';
     this.searchTerm.next('');
