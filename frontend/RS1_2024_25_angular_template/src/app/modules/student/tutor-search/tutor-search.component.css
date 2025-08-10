@@ -211,8 +211,25 @@
 .edit-form ::ng-deep .fc-toolbar-title {
   font-size: 1.3rem;
   font-weight: 600;
-  color: #1f1f1f;
+  color: transparent !important;
   text-transform: capitalize;
+  position: relative;
+  overflow: hidden !important;
+}
+
+.edit-form ::ng-deep .fc-toolbar-title * {
+  color: transparent !important;
+  visibility: hidden !important;
+}
+
+.edit-form ::ng-deep .fc-toolbar-title > div[style*="display: flex"] {
+  color: #1f1f1f !important;
+  visibility: visible !important;
+}
+
+.edit-form ::ng-deep .fc-toolbar-title > div[style*="display: flex"] * {
+  color: inherit !important;
+  visibility: visible !important;
 }
 
 .edit-form ::ng-deep .fc-col-header-cell-cushion {
@@ -223,11 +240,17 @@
   text-decoration: none !important;
 }
 
-.edit-form ::ng-deep .fc-timegrid-col.fc-day-sun {
-  background-color: #e28585 !important;
-}
 .edit-form ::ng-deep .fc-timegrid-col.fc-day-today {
-  background-color: #ebeaea !important;
+  background-color: #fcf8e3 !important;
+}
+
+::ng-deep .fc-col-header-cell.fc-day-today .fc-col-header-cell-cushion {
+  font-weight: bold !important;
+  color: #515050 !important;
+}
+
+::ng-deep .fc-timegrid-slot {
+  height: 40px !important;
 }
 
 .calendar-actions {
@@ -299,6 +322,27 @@
   font-style: italic;
   font-size: 0.85rem;
   padding-top: 2px;
+}
+
+/*Slotovi ze rezervaciju*/
+::ng-deep .fc-timegrid-event.selected-slot {
+  background-color: #85a8e2 !important;
+  border-color: #003366 !important;
+  cursor: pointer;
+}
+
+::ng-deep .fc-timegrid-event.selected-slot .fc-event-main,
+::ng-deep .fc-timegrid-event.selected-slot .fc-event-title,
+::ng-deep .fc-timegrid-event.selected-slot .fc-event-title-container {
+  color: #003366 !important;
+}
+
+::ng-deep .fc-timegrid-event.selected-slot .fc-event-time {
+  color: #003366 !important;
+  font-weight: bold;
+}
+::ng-deep .fc-timegrid-slot-lane {
+  cursor: pointer !important;
 }
 
 /* Modal stilovi */

@@ -22,7 +22,7 @@ export class PretragaStudenataComponent implements OnInit {
   selectedCity?: City;
   students: Student[] = [];
   editingStudent: Student | null = null;
-  originalStudent: Student | null = null; // Dodano za čuvanje originalnih podataka
+  originalStudent: Student | null = null;
   isEditing: boolean = false;
 
   searchTerm: Subject<string> = new Subject<string>();
@@ -115,7 +115,6 @@ export class PretragaStudenataComponent implements OnInit {
   }
 
   confirmClose() {
-    // Vraćanje originalnih podataka u tabelu ako su bili promenjeni
     if (this.originalStudent) {
       const index = this.students.findIndex(s => s.id === this.originalStudent!.id);
       if (index !== -1) {
@@ -141,7 +140,6 @@ export class PretragaStudenataComponent implements OnInit {
 
   saveStudent() {
     if (this.editingStudent) {
-      // Pronađi odabrani grad objekat na osnovu ID-ja
       const selectedCity = this.cities.find(city => city.id == this.editingStudent!.myAppUser.city.id);
 
       const podaci: StudentUpdateDTO = {
@@ -159,17 +157,14 @@ export class PretragaStudenataComponent implements OnInit {
 
       this.studentService.update(this.editingStudent.id, podaci).subscribe(
         (updatedStudent) => {
-          // Ažuriranje studenta u tabeli sa novim podacima
           const index = this.students.findIndex(s => s.id === this.editingStudent!.id);
           if (index !== -1) {
-            // Ažuriraj grad objekat sa kompletnim objektom
             if (selectedCity) {
               this.editingStudent!.myAppUser.city = selectedCity;
             }
             this.students[index] = { ...this.editingStudent! };
           }
 
-          // Zatvaranje forme
           this.isEditing = false;
           this.editingStudent = null;
           this.originalStudent = null;

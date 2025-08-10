@@ -9,6 +9,9 @@ import interactionPlugin from '@fullcalendar/interaction';
 import hrLocale from '@fullcalendar/core/locales/hr';
 import { LessonService } from '../../../services/auth-services/services/lesson.service';
 import { LessonSchedule } from '../../../services/auth-services/services/lesson.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Student } from '../../../models/student.model';
+import { MyAuthService } from '../../../services/auth-services/my-auth.service';
 
 @Component({
   selector: 'app-tutor-search',
@@ -21,10 +24,15 @@ export class TutorSearchComponent implements OnInit {
   categories: any[] = [];
   tutors: any[] = [];
   cities: City[] = [];
+  user: Student | null = null;
   isLoading = false;
-  selectedTutorForSchedule: any = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient, private citiesService: CitiesService, private lessonService: LessonService) {
+  selectedTutorForSchedule: any = null;
+  selectedSlots: Set<string> = new Set();
+  calendarApi: any;
+
+
+  constructor(private fb: FormBuilder, private http: HttpClient, private citiesService: CitiesService, private lessonService: LessonService, private snackBar: MatSnackBar, private myAuth: MyAuthService) {
     this.searchForm = this.fb.group({
       subjectId: [''],
       categoryId: [''],
@@ -38,7 +46,6 @@ export class TutorSearchComponent implements OnInit {
   ngOnInit(): void {
     this.fetchSubjects();
     this.fetchCities();
-
     // Subscribe to form value changes for real-time filtering
     this.searchForm.valueChanges.subscribe((filters) => {
       this.fetchTutors(filters);
@@ -128,6 +135,7 @@ export class TutorSearchComponent implements OnInit {
       right: ''
     },
     viewDidMount: (info) => {
+      this.calendarApi = info.view.calendar;
       this.updateCalendarTitle(info);
     },
     datesSet: (info) => {
@@ -153,24 +161,117 @@ export class TutorSearchComponent implements OnInit {
       meridiem: false
     },
     eventContent: function (arg) {
+      if (arg.event.classNames.includes('selected-slot')) {
+        const start = new Date(arg.event.start!);
+        const end = new Date(arg.event.end!);
+        const format = (d: Date) =>
+          `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+
+        return {
+          html: ` 
+          <div style="
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            font-size: 0.9em;
+            color: #333;">
+          ${format(start)} - ${format(end)}`
+        };
+      }
       return {
         html: `
-      <div style="text-align:center;">
+        <div style=" display: flex;
+         flex-direction: column;
+         align-items: center;
+         justify-content: center;
+         height: 100%;
+         width: 100%;
+         text-align: center;
+         cursor: not-allowed;">
         <div style="margin-bottom: 2px;">Zauzeto</div>
         <div style="font-size: 0.8em;">${arg.timeText}</div>
-      </div>
-    `
+        </div>`
       };
     },
     firstDay: 1,
-    dateClick: this.handleDateClick.bind(this),
     selectable: true,
-    selectMirror: true,
+    selectMirror: false,
     dayMaxEvents: true,
     weekends: true,
     editable: true,
-    height: 'auto'
+    height: 'auto',
+    select: (info) => {
+      const startTime = info.start.toISOString();
+
+      if (this.selectedSlots.has(startTime)) {
+        this.selectedSlots.delete(startTime);
+      } else {
+        this.selectedSlots.add(startTime);
+      }
+      const calendarApi = info.view.calendar;
+      calendarApi.unselect();
+      calendarApi.refetchEvents();
+    },
+    eventSources:
+      [{
+        events: (fetchInfo, successCallback) => {
+          const groupedSlots = this.groupContinuousSlots(Array.from(this.selectedSlots));
+          const events = groupedSlots.map(slot => ({
+            start: slot.start,
+            end: slot.end,
+            title: '',
+            className: 'selected-slot'
+          }));
+          successCallback(events);
+        }
+      },
+      {
+        events: (fetchInfo, successCallback, failureCallback) => {
+          const tutorId = this.selectedTutorForSchedule?.id;
+          if (!tutorId) {
+            successCallback([]);
+            return;
+          }
+          this.lessonService.getLessonsForTutor(tutorId).subscribe(
+            (lessons: LessonSchedule[]) => {
+              const events = lessons.map(lesson => ({
+                title: 'Zauzeto',
+                start: new Date(lesson.start),
+                end: new Date(lesson.end),
+                display: 'block',
+                color: '#e28585',
+                borderColor: '#990000',
+                textColor: '#990000',
+                meta: lesson
+              }));
+              successCallback(events);
+            },
+            (error) => {
+              console.error('Greška pri učitavanju rasporeda', error);
+              failureCallback(error);
+            }
+          );
+        }
+      }
+      ],
+    eventClick: (info) => {
+      const event = info.event;
+      if (event.classNames.includes('selected-slot')) {
+        const startStr = event.start?.toISOString();
+        if (startStr && this.selectedSlots.has(startStr)) {
+          this.selectedSlots.delete(startStr);
+          info.view.calendar.refetchEvents();
+        }
+      }
+    }
   };
+
+  formatTime(date: Date): string {
+    const h = date.getHours().toString().padStart(2, '0');
+    const m = date.getMinutes().toString().padStart(2, '0');
+    return `${h}:${m}`;
+  }
 
   private updateCalendarTitle(info: any): void {
     setTimeout(() => {
@@ -193,35 +294,10 @@ export class TutorSearchComponent implements OnInit {
   }
 
   selectTutor(tutor: any): void {
-    console.log('Selektovani tutor:', tutor);
     this.selectedTutorForSchedule = tutor;
-    this.loadTutorSchedule(tutor.id);
-  }
-
-  loadTutorSchedule(tutorId: number): void {
-    this.lessonService.getLessonsForTutor(tutorId).subscribe(
-      (lessons: LessonSchedule[]) => {
-        console.log('Lekcije za tutora:', lessons);
-        const events = lessons.map(lesson => {
-          return {
-            start: new Date(lesson.start),
-            end: new Date(lesson.end),
-            display: 'block',
-            color: '#e28585',
-            borderColor: '#990000',
-            textColor: '#990000',
-            meta: lesson
-          };
-        });
-        this.calendarOptions = {
-          ...this.calendarOptions,
-          events: events
-        };
-      },
-      (error) => {
-        console.error('Greška pri učitavanju rasporeda', error);
-      }
-    );
+    if (this.calendarApi) {
+      this.calendarApi.refetchEvents();
+    }
   }
 
   showCloseConfirmation() {
@@ -237,18 +313,113 @@ export class TutorSearchComponent implements OnInit {
     this.showConfirmModal = false;
   }
 
+  // Funkcija za spajanje slotova
+  groupContinuousSlots(slots: string[]): { start: Date; end: Date }[] {
+    if (!slots || slots.length === 0) return [];
+
+    const sortedSlots = slots
+      .map(s => new Date(s))
+      .sort((a, b) => a.getTime() - b.getTime());
+
+    const groups: { start: Date; end: Date }[] = [];
+    let start = sortedSlots[0];
+    let end = new Date(start.getTime() + 30 * 60000);
+
+    for (let i = 1; i < sortedSlots.length; i++) {
+      const current = sortedSlots[i];
+
+      if (current.getTime() === end.getTime()) {
+        end = new Date(end.getTime() + 30 * 60000);
+      } else {
+        groups.push({ start, end });
+        start = current;
+        end = new Date(start.getTime() + 30 * 60000);
+      }
+    }
+
+    groups.push({ start, end });
+
+    return groups;
+  }
+
   saveReservation() {
-    console.log('Rezervacija spremljena!');
+    if (this.selectedSlots.size === 0) {
+      this.snackBar.open('Niste odabrali nijedan termin!', '', {
+        duration: 4000,
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        data: { hasBackdrop: false },
+        panelClass: ['custom-snackbar-error']
+      });
+      return;
+    }
+    this.user = this.myAuth.getLoggedInUser() as Student;
+    const subjectId = this.searchForm.get('subjectId')?.value;
+    const subjectIdNumber = Number(subjectId);
+    const studentId = this.user.id;
+
+    const grouped = this.groupContinuousSlots(Array.from(this.selectedSlots));
+
+    grouped.forEach(group => {
+      const date = group.start.toISOString().split('T')[0];
+      const startTime = this.formatTime(group.start);
+      const endTime = this.formatTime(group.end);
+
+      const lessonDto = {
+        TutorID: this.selectedTutorForSchedule.id,
+        StudentID: studentId,
+        SubjectID: subjectIdNumber,
+        Date: date,
+        Start: startTime,
+        End: endTime,
+        LessonMode: 1
+      };
+
+      this.lessonService.addLesson(lessonDto).subscribe({
+        next: (res) => {
+          this.snackBar.open('Rezervacija uspješna!', '', {
+            duration: 4000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['custom-snackbar-success']
+          });
+        },
+        error: (err) => {
+          if (err.status === 409) {
+            this.snackBar.open('U odabranom periodu već imate zakazane instrukcije!', '', {
+              duration: 4000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['custom-snackbar-error']
+            });
+          } else if (err.status === 400) {
+            this.snackBar.open('Termin ne može biti zakazan u prošlosti!', '', {
+              duration: 4000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['custom-snackbar-error']
+            });
+          } else {
+            this.snackBar.open('Došlo je do greške prilikom rezervacije.', '', {
+              duration: 4000,
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: ['custom-snackbar-error']
+            });
+          }
+          this.selectedSlots.clear();
+          if (this.calendarApi) {
+            this.calendarApi.refetchEvents();
+          }
+        }
+      });
+    });
   }
 
   onOverlayClick(event: Event) {
     if (event.target === event.currentTarget) {
       this.cancelClose();
     }
-  }
-
-  handleDateClick(arg: any) {
-    alert('Kliknuli ste datum: ' + arg.dateStr);
   }
 
   private getWeekRange(info: any): string {

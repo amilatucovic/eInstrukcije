@@ -47,11 +47,11 @@ export class LessonService {
     return this.http.get<LessonSchedule[]>(`${this.weeklyUrl}/${tutorId}`);
   }
 
-  createLesson(data: any) {
-    return this.http.post(`${this.baseUrl}`, data);
-  }
-
   deleteLesson(id: number) {
     return this.http.delete(`${this.baseUrl}/${id}`);
+  }
+
+  addLesson(lessonData: any) {
+    return this.http.post('http://localhost:7000/api/LessonEndpoint', lessonData);
   }
 }
