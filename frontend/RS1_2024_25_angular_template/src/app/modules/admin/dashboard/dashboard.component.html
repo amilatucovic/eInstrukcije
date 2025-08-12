@@ -1,62 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <!-- Bootstrap Navbar -->
-    <nav class="navbar navbar-expand-lg">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-          <img src="images/Logo.png" alt="Logo eInstrukcije" />
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div
-          class="collapse navbar-collapse justify-content-end"
-          id="navbarNav"
-        >
-          <ul class="navbar-nav">
-            <li class="nav-item">
-              <a class="nav-link" href="#profile">Moj profil</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Dashboard Content -->
-    <div class="dashboard-container">
-      <h1>Dobrodošli nazad, Admin!</h1>
-      <p>
-        Ovo je vaša kontrolna ploča. Upravljajte korisnicima i sadržajem s
-        lakoćom.
-      </p>
-      <a
-        [routerLink]="'/pretraga-studenata'"
-        class="btn btn-custom d-block mb-1"
-        >Idi na sekciju Studenti</a
-      >
-      <a [routerLink]="['/admin/tutors']" class="btn btn-custom d-block">Idi na sekciju Tutori</a>
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div class="logo">
+      <img src="images/Logo.png" alt="Logo eInstrukcije" />
     </div>
+    <nav class="nav flex-column">
+      <a class="nav-link active" href="#dashboard">
+        <i class="fas fa-tachometer-alt"></i>
+        Dashboard
+      </a>
+      <a class="nav-link" [routerLink]="'/pretraga-studenata'">
+        <i class="fas fa-user-graduate"></i>
+        Studenti
+      </a>
+      <a class="nav-link" [routerLink]="['/admin/tutors']">
+        <i class="fas fa-chalkboard-teacher"></i>
+        Tutori
+      </a>
+      <a class="nav-link" href="#settings">
+        <i class="fas fa-cog"></i>
+        Postavke
+      </a>
+      <a class="nav-link logout-link" (click)="openModal()">
+        <i class="fas fa-sign-out-alt"></i>
+        Odjava
+      </a>
+    </nav>
+  </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  </body>
-</html>
+  <div class="main-content">
+    <div class="dashboard-content">
+      <div class="welcome-card">
+        <h1>Dobrodošli nazad, Admin!</h1>
+        <p>
+          Ovo je vaša kontrolna ploča. Upravljajte korisnicima i sadržajem s
+          lakoćom.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="showConfirmModal"
+    class="modal-overlay"
+    (click)="onOverlayClick($event)"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Potvrda odjave</h3>
+        <p class="modal-message">Da li ste sigurni da se želite odjaviti?</p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="confirmClose()">Da, odjava</button>
+        <button class="btn-outline" (click)="cancelClose()">Ne, ostani</button>
+      </div>
+    </div>
+  </div>
+</body>
