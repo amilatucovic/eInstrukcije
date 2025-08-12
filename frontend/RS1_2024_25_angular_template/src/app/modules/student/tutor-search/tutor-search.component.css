@@ -288,32 +288,6 @@
   color: white;
 }
 
-.close-button {
-  position: absolute;
-  top: 9px;
-  right: 32px;
-  width: 32px;
-  height: 32px;
-  background-color: transparent;
-  color: #1f1f1f;
-  font-size: 1.5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  line-height: 0;
-  padding: 0px 22px;
-  border-radius: 5px;
-  border-width: thin;
-}
-
-.close-button:hover {
-  background-color: rgba(220, 53, 69, 0.1);
-  color: #dc3545;
-  border-color: rgb(170, 1, 1);
-}
-
 .fc-event.zauzeto-event .fc-event-title {
   display: block;
   text-align: center;

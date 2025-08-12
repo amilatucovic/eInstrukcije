@@ -6,6 +6,8 @@ import { StudentService } from '../services/auth-services/services/students.serv
 import { StudentUpdateDTO } from '../models/studentUpdate.model';
 import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, filter } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pretraga-studenata',
@@ -31,8 +33,13 @@ export class PretragaStudenataComponent implements OnInit {
   showConfirmModal = false;
   showConfirmModalDeletion = false;
   studentToDeleteId: number | null = null;
+  showConfirmCloseSectionModal = false;
 
-  constructor(private citiesService: CitiesService, private studentService: StudentService) { }
+  currentPage = 1;
+  pageSize = 5;
+  totalCount = 0;
+
+  constructor(private citiesService: CitiesService, private studentService: StudentService, private snackBar: MatSnackBar, private router: Router) { }
 
   grades: string[] = ['Prvi', 'Drugi', 'Treći', 'Četvrti', 'Peti', 'Šesti', 'Sedmi', 'Osmi', 'Deveti'];
   schoolTypes: { name: string, value: number }[] = [{ name: 'Osnovna škola', value: 0 }, { name: 'Srednja škola', value: 1 }];
@@ -56,27 +63,38 @@ export class PretragaStudenataComponent implements OnInit {
       }
     );
 
-    this.studentService.getStudents({ IsUserIncluded: true }).subscribe({
-      next: (students: Student[]) => {
-        this.students = students;
-      },
-      error: (error: any) => console.error("Greška pri učitavanju studenta: ", error)
-    });
+    this.filterStudents();
   }
 
   filterStudents() {
-    if (!this.searchValue && this.selectedCity?.id == 0 && this.selectedGrade == "" && this.selectedSchoolType == null) return;
     var filterObject = {
       IsUserIncluded: true,
       searchTerm: this.searchValue,
       CityId: this.selectedCity,
       Grade: this.selectedGrade,
       EducationLevel: this.selectedSchoolType,
+      page: this.currentPage,
+      pageSize: this.pageSize
     }
     this.studentService.getStudents(filterObject).subscribe({
-      next: (students: Student[]) => this.students = students,
-      error: (error: any) => console.error("Greška pri učitavanju studenta: ", error)
+      next: (response: any) => {
+        this.students = response.dataItems;
+        this.totalCount = response.totalCount;
+        this.currentPage = response.currentPage;
+
+      },
+      error: (error: any) => console.error("Greška pri učitavanju studenata: ", error)
     });
+  }
+  getTotalPages(): number {
+    return Math.ceil(this.totalCount / this.pageSize);
+  }
+
+  changePage(page: number) {
+    if (page >= 1 && page <= this.getTotalPages()) {
+      this.currentPage = page;
+      this.filterStudents();
+    }
   }
 
   editStudent(student: any) {
@@ -93,6 +111,20 @@ export class PretragaStudenataComponent implements OnInit {
 
   cancelEdit() {
     this.showConfirmModal = true;
+  }
+
+  confirmClose() {
+    if (this.originalStudent) {
+      const index = this.students.findIndex(s => s.id === this.originalStudent!.id);
+      if (index !== -1) {
+        this.students[index] = this.originalStudent;
+      }
+    }
+
+    this.showConfirmModal = false;
+    this.isEditing = false;
+    this.editingStudent = null;
+    this.originalStudent = null;
   }
 
   deleteStudent(studentId: number) {
@@ -114,18 +146,15 @@ export class PretragaStudenataComponent implements OnInit {
     this.showConfirmModalDeletion = false;
   }
 
-  confirmClose() {
-    if (this.originalStudent) {
-      const index = this.students.findIndex(s => s.id === this.originalStudent!.id);
-      if (index !== -1) {
-        this.students[index] = this.originalStudent;
-      }
-    }
+  openCloseSectionModal() {
+    this.showConfirmCloseSectionModal = true;
+  }
+  goBackToAdmin() {
+    this.router.navigate(['/admin']);
+  }
 
-    this.showConfirmModal = false;
-    this.isEditing = false;
-    this.editingStudent = null;
-    this.originalStudent = null;
+  cancelCloseSection() {
+    this.showConfirmCloseSectionModal = false;
   }
 
   cancelClose() {
@@ -164,7 +193,12 @@ export class PretragaStudenataComponent implements OnInit {
             }
             this.students[index] = { ...this.editingStudent! };
           }
-
+          this.snackBar.open('Ažuriranje uspješno!', '', {
+            duration: 4000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['custom-snackbar-success']
+          });
           this.isEditing = false;
           this.editingStudent = null;
           this.originalStudent = null;
@@ -183,5 +217,6 @@ export class PretragaStudenataComponent implements OnInit {
     this.selectedGrade = '';
     this.selectedSchoolType = '';
     this.filterStudents();
+    this.currentPage = 1;
   }
 }

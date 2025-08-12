@@ -1,4 +1,3 @@
-/* Stilovi za formu i pretragu */
 .search-container {
   max-width: 1020px;
   margin: 20px auto;
@@ -18,7 +17,7 @@ h4 {
   gap: 10px;
   align-items: center;
   margin-bottom: 20px;
-  justify-content: center; /* centriraj samo filter polja */
+  justify-content: center;
 }
 
 .search-input-group select,
@@ -45,24 +44,23 @@ h4 {
   box-shadow: 0 0 5px rgba(74, 144, 226, 0.5);
 }
 
-/* Stil za rezultate tabele */
 .results-container {
   margin-top: 20px;
 }
 
-table {
+.table {
   width: 100%;
   margin-top: 20px;
   border-collapse: collapse;
 }
 
-th,
-td {
+.table th,
+.table td {
   padding: 12px;
   text-align: left;
 }
 
-th {
+.table th {
   background-color: #f2f2f2;
 }
 
@@ -70,7 +68,6 @@ tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
-/* Dugmad u tabeli i akcije */
 button {
   margin: 5px;
   cursor: pointer;
@@ -85,7 +82,6 @@ button:hover {
   opacity: 0.8;
 }
 
-/* Dugmad sa specifičnim bojama */
 .btn-warning {
   background-color: #f0ad4e;
   color: white;
@@ -103,7 +99,6 @@ button:hover {
   color: white;
 }
 
-/* Dugme Reset filters u plavoj boji */
 .btn-reset,
 .action-buttons .btn-danger {
   background-color: #4a90e2;
@@ -118,7 +113,7 @@ button:hover {
 }
 
 .action-buttons {
-  text-align: center; /* centriraj dugme Reset */
+  text-align: center;
 }
 .btn-reset:hover,
 .action-buttons .btn-danger:hover {
@@ -241,7 +236,9 @@ h3 {
 .no-results {
   text-align: center;
   color: #888;
+  padding-bottom: 13px;
 }
+
 /* Modal stilovi */
 .modal-overlay {
   position: fixed;
@@ -340,4 +337,85 @@ h3 {
 .btn-danger i {
   transform: scaleX(0.8);
   display: inline-block;
+}
+
+.search-header .close-button {
+  position: absolute;
+  top: 0;
+  right: 2px;
+  width: 32px;
+  height: 25px;
+  background-color: transparent;
+  color: #1f1f1f;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  line-height: 0;
+  padding: 0px 18px;
+  border-radius: 5px;
+  border-width: thin;
+  border: 1px solid;
+}
+
+.search-header .close-button:hover {
+  background-color: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border-color: rgb(170, 1, 1);
+}
+
+.search-header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+/*Paginator stilovi*/
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 4px 0;
+}
+
+.pagination-container button {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 8px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  padding: 9px 20px;
+}
+
+.pagination-container button:hover:not(:disabled) {
+  background-color: #357ac8;
+}
+
+.pagination-container button:focus:not(:disabled) {
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.4);
+}
+
+.pagination-container button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.pagination-container button:disabled:hover {
+  background-color: #ccc;
+}
+
+.pagination-container span {
+  font-size: 1rem;
+  color: #444;
+  font-weight: 500;
 }

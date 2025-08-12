@@ -12,11 +12,12 @@ export class StudentService {
 
     constructor(private http: HttpClient) { }
 
-    getStudents(filter?: any): Observable<Student[]> {
-        var queryString = buildHttpParams(filter);
-        var apiUrl = `http://localhost:7000/api/StudentEndpoints?${queryString}`;
-        return this.http.get<Student[]>(apiUrl);
+    getStudents(filter?: any): Observable<any> {
+        const queryString = buildHttpParams(filter);
+        const apiUrl = `http://localhost:7000/api/StudentEndpoints?${queryString}`;
+        return this.http.get<any>(apiUrl); // više ne vraća samo Student[]
     }
+
 
     delete(studentId: number) {
         var apiUrl = `http://localhost:7000/api/StudentEndpoints/${studentId}`;

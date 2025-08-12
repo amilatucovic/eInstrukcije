@@ -1,5 +1,10 @@
 <div class="search-container">
-  <h4>Pretražite studente</h4>
+  <div class="search-header">
+    <h4>Pretražite studente</h4>
+    <button class="close-button" (click)="openCloseSectionModal()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
 
   <!-- Forma sa filterima -->
   <div class="search-form">
@@ -42,7 +47,7 @@
   </div>
 
   <!-- Tabela sa rezultatima -->
-  <div *ngIf="students.length > 0" class="results-container">
+  <div *ngIf="students && students.length > 0" class="results-container">
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -80,8 +85,28 @@
     </table>
   </div>
 
-  <div *ngIf="students.length === 0" class="no-results">
+  <div *ngIf="totalCount === 0" class="no-results">
     Nema studenata koji odgovaraju pretrazi.
+  </div>
+
+  <div *ngIf="totalCount > 0" class="no-results">
+    Broj rezultata koji odgovaraju pretrazi: {{ totalCount }}
+  </div>
+
+  <div *ngIf="totalCount > pageSize" class="pagination-container">
+    <button
+      (click)="changePage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+    >
+      <i class="fas fa-chevron-left"></i>
+    </button>
+    <span> {{ currentPage }} od {{ getTotalPages() }}</span>
+    <button
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage === getTotalPages()"
+    >
+      <i class="fas fa-chevron-right"></i>
+    </button>
   </div>
 
   <div *ngIf="editingStudent" class="edit-form-container">
@@ -191,6 +216,30 @@
         </button>
         <button class="btn-outline" (click)="cancelDelete()">
           Ne, odustani
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div
+    *ngIf="showConfirmCloseSectionModal"
+    class="modal-overlay"
+    (click)="onOverlayClick($event)"
+  >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Potvrda zatvaranja</h3>
+        <p class="modal-message">
+          Da li ste sigurni da želite napustiti sekciju za studente?
+        </p>
+      </div>
+      <div class="modal-actions">
+        <button class="btn-danger" (click)="goBackToAdmin()">
+          Da, zatvori
+        </button>
+        <button class="btn-outline" (click)="cancelCloseSection()">
+          Ne, ostani
         </button>
       </div>
     </div>

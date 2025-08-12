@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MyAuthService } from '../../../services/auth-services/my-auth.service';
-import { MyAppUser } from '../../../models/myAppUser.model';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Student } from '../../../models/student.model';
 
 @Component({
@@ -56,6 +55,7 @@ export class StudentDashboardComponent implements OnInit {
   cancelClose() {
     this.showConfirmModal = false;
   }
+
   onOverlayClick(event: Event) {
     if (event.target === event.currentTarget) {
       this.cancelClose();

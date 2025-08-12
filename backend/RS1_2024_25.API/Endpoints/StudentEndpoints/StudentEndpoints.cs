@@ -6,6 +6,7 @@ using RS1_2024_2025.Domain.Requests;
 using RS1_2024_2025.Domain.SearchObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using RS1_2024_2025.API.Helper;
 
 namespace RS1_2024_25.API.Endpoints.StudentEndpoints
 {
@@ -14,40 +15,51 @@ namespace RS1_2024_25.API.Endpoints.StudentEndpoints
 	public class StudentEndpoints(ApplicationDbContext db, IMapper mapper) : ControllerBase
 	{
 		[HttpGet]
-		public IActionResult GetAll([FromQuery] StudentSearchObject? search)
+		public async Task<IActionResult> GetAll([FromQuery] StudentSearchObject? search, CancellationToken cancellationToken)
 		{
-			var query = db.Set<Student>().AsQueryable();
+			var query = db.Students.AsQueryable();
+
 			if (!string.IsNullOrEmpty(search?.SearchTerm))
-			{
-				query = query.Where(s =>s.MyAppUser.FirstName.StartsWith(search.SearchTerm) || 	s.MyAppUser.LastName.StartsWith(search.SearchTerm));
-			}
-			if (search?.Grade.IsNullOrEmpty() == false)
-			{
+				query = query.Where(s =>
+					s.MyAppUser.FirstName.StartsWith(search.SearchTerm) ||
+					s.MyAppUser.LastName.StartsWith(search.SearchTerm));
+
+			if (!string.IsNullOrEmpty(search?.Grade))
 				query = query.Where(s => s.Grade == search.Grade);
-			}
+
 			if (search?.EducationLevel != null)
-			{
 				query = query.Where(s => s.EducationLevel == search.EducationLevel);
-			}
-			if (search?.PrefferedMode.IsNullOrEmpty() == false)
-			{
+
+			if (!string.IsNullOrEmpty(search?.PrefferedMode))
 				query = query.Where(s => s.PreferredMode.Contains(search.PrefferedMode));
-			}
 
 			if (search?.CityId != null)
-			{
 				query = query.Where(s => s.MyAppUser.CityId == search.CityId);
-			}
 
 			if (search?.IsUserIncluded == true)
 			{
-				query = query.Include("MyAppUser");
-				query = query.Include("MyAppUser.City");
+				query = query.Include(s => s.MyAppUser)
+							 .Include(s => s.MyAppUser.City);
 			}
 
-			var students = query.ToList();
-			return Ok(students);
+			var pagingRequest = new MyPagedRequest
+			{
+				PageNumber = search?.Page ?? 1,
+				PageSize = search?.PageSize ?? 10
+			};
+
+			var pagedList = await MyPagedList<Student>.CreateAsync(query, pagingRequest, cancellationToken);
+
+			return Ok(new
+			{
+				dataItems = pagedList.DataItems,
+				totalCount = pagedList.TotalCount,
+				currentPage = pagedList.CurrentPage,
+				totalPages = pagedList.TotalPages
+			});
 		}
+
+
 
 		[HttpGet("{id}")]
 		public IActionResult GetById(int id)
@@ -123,6 +135,10 @@ namespace RS1_2024_25.API.Endpoints.StudentEndpoints
 			await db.SaveChangesAsync();
 			return Ok(student);
 		}
+
+
 	}
+
+
 }
 
