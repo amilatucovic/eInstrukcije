@@ -17,21 +17,23 @@ export class StudentDashboardComponent implements OnInit {
   constructor(private myAuth: MyAuthService, private router: Router) { }
 
   ngOnInit(): void {
-    const savedImage = localStorage.getItem('studentProfileImage');
-    if (savedImage) {
-      this.profileImageUrl = savedImage;
-    }
-
     this.user = this.myAuth.getLoggedInUser() as Student;
+
+    if (this.user) {
+      const savedImage = localStorage.getItem('studentProfileImage_' + this.user.id);
+      if (savedImage) {
+        this.profileImageUrl = savedImage;
+      }
+    }
   }
 
   onFileSelected(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
+    if (file && this.user) {
       const reader = new FileReader();
       reader.onload = () => {
         this.profileImageUrl = reader.result;
-        localStorage.setItem('studentProfileImage', this.profileImageUrl as string);
+        localStorage.setItem('studentProfileImage_' + this.user!.id, this.profileImageUrl as string);
       };
       reader.readAsDataURL(file);
     }
@@ -39,10 +41,11 @@ export class StudentDashboardComponent implements OnInit {
 
   removeProfileImage(event: MouseEvent): void {
     event.stopPropagation();
-    this.profileImageUrl = null;
-    localStorage.removeItem('studentProfileImage');
+    if (this.user) {
+      this.profileImageUrl = null;
+      localStorage.removeItem('studentProfileImage_' + this.user.id);
+    }
   }
-
   showCloseConfirmation() {
     this.showConfirmModal = true;
   }

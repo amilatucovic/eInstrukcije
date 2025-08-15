@@ -99,9 +99,7 @@ export class PretragaStudenataComponent implements OnInit {
 
   editStudent(student: any) {
     if (student && student.myAppUser) {
-      // Kreiraj duboku kopiju originalnog studenta
       this.originalStudent = JSON.parse(JSON.stringify(student));
-      // Kreiraj radnu kopiju za editovanje
       this.editingStudent = JSON.parse(JSON.stringify(student));
       this.isEditing = true;
     } else {

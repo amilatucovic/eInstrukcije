@@ -65,7 +65,7 @@
 .main-content {
   flex: 1;
   padding: 40px;
-  background-color: #f9fbfe;
+  background-color: #0cd0e912;
   overflow-y: auto;
 }
 
@@ -153,8 +153,8 @@
 
 .nav-links a.logout-link:hover,
 .nav-links a.logout-link.active {
-  background-color: #fce4ec; /* Roze-crvena pozadina */
-  color: #c62828; /* Tamno crvena boja teksta */
+  background-color: #fce4ec;
+  color: #c62828;
   cursor: pointer;
 }
 
