@@ -56,10 +56,6 @@ export class StudentAccSettingsTabComponent implements OnInit {
       error: (err) => console.error("Greska pri ucitavanju gradova", err)
     });
 
-    const savedImage = localStorage.getItem('studentProfileImage');
-    if (savedImage) {
-      this.profileImageUrl = savedImage;
-    }
     this.user = this.myAuth.getLoggedInUser() as Student;
 
     this.UserForm.get('educationLevel')?.valueChanges.subscribe(level => {
@@ -177,24 +173,6 @@ export class StudentAccSettingsTabComponent implements OnInit {
         catchError(() => of({ usernameTaken: true })) // Ako API padne, tretiraj kao zauzeto
       );
     };
-  }
-
-  onFileSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.profileImageUrl = reader.result;
-        localStorage.setItem('studentProfileImage', this.profileImageUrl as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  removeProfileImage(event: MouseEvent): void {
-    event.stopPropagation();
-    this.profileImageUrl = null;
-    localStorage.removeItem('studentProfileImage');
   }
 }
 

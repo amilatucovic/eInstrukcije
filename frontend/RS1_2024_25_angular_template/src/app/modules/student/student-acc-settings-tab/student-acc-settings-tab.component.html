@@ -1,32 +1,5 @@
 <body>
   <div class="profile-container">
-    <div
-      class="profile-picture-wrapper"
-      (mouseenter)="hovering = true"
-      (mouseleave)="hovering = false"
-    >
-      <img
-        [src]="profileImageUrl"
-        *ngIf="profileImageUrl"
-        class="profile-image"
-      />
-      <i class="fas fa-camera" *ngIf="!profileImageUrl"></i>
-      <div
-        class="remove-overlay"
-        *ngIf="profileImageUrl && hovering"
-        (click)="removeProfileImage($event)"
-      >
-        <i class="material-icons">delete</i>
-        <span>Ukloni</span>
-      </div>
-      <input type="file" hidden #fileInput (change)="onFileSelected($event)" />
-    </div>
-
-    <div class="profile-action-link" (click)="fileInput.click()">
-      <span *ngIf="profileImageUrl">Promijeni sliku</span>
-      <span *ngIf="!profileImageUrl">Dodaj sliku</span>
-    </div>
-
     <form [formGroup]="UserForm" (ngSubmit)="save()" *ngIf="user">
       <div class="form-row">
         <div class="form-group">
