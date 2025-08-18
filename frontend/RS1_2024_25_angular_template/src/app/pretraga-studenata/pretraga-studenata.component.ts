@@ -132,12 +132,36 @@ export class PretragaStudenataComponent implements OnInit {
 
   confirmDeletion() {
     if (this.studentToDeleteId !== null) {
-      this.students = this.students.filter(student => student.id !== this.studentToDeleteId);
-      this.studentService.delete(this.studentToDeleteId).subscribe();
-      this.studentToDeleteId = null;
-      this.showConfirmModalDeletion = false;
+      this.studentService.delete(this.studentToDeleteId).subscribe({
+        next: () => {
+          this.snackBar.open('Student uspješno obrisan.', '', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['custom-snackbar-success']
+          });
+
+          if (this.students.length === 1 && this.currentPage > 1) {
+            this.currentPage -= 1;
+          }
+
+          this.filterStudents();
+          this.studentToDeleteId = null;
+          this.showConfirmModalDeletion = false;
+        },
+        error: (error) => {
+          console.error('Greška pri brisanju studenta:', error);
+          this.snackBar.open('Greška pri brisanju studenta.', '', {
+            duration: 3000,
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: ['custom-snackbar-error']
+          });
+        }
+      });
     }
   }
+
 
   cancelDelete() {
     this.studentToDeleteId = null;

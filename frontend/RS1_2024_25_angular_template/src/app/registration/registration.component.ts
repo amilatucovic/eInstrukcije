@@ -11,6 +11,9 @@ import { MyAppUserService } from '../services/auth-services/services/myappuser.s
 import { HttpErrorResponse } from '@angular/common/http';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs'; // Dodano za upravljanje pretplatama
+import { MyAuthService } from '../services/auth-services/my-auth.service';
+import { MyAppUser } from '../models/myAppUser.model';
+import { Student } from '../models/student.model';
 
 declare var window: any; //za pristup globalnim objektima jer koristimo bootstrap
 
@@ -37,7 +40,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   private langChangeSubscription: Subscription | undefined;
   private usernameCheckSubscription: Subscription | undefined;
 
-  constructor(private http: HttpClient, private router: Router, private citiesService: CitiesService, private translate: TranslateService, private myAppUserService: MyAppUserService) {
+  constructor(private http: HttpClient, private router: Router, private citiesService: CitiesService, private translate: TranslateService, private myAppUserService: MyAppUserService, private myAuth: MyAuthService) {
     this.UserForm = new FormGroup({
       firstName: new FormControl('', [Validators.required, Validators.pattern(/^\p{L}(?:['\-]?\p{L})*$/u)]),
       lastName: new FormControl('', [Validators.required, Validators.pattern(/^\p{L}(?:['\-]?\p{L})*$/u)]),
@@ -196,7 +199,6 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   registriraj() {
     this.UserForm.markAllAsTouched();
 
-    console.log(this.checkPasswordMatch())
     if (!this.checkPasswordMatch()) {
       this.passwordMatch = this.translate.instant('form.passwordMatch');
       this.passwordMatchClass = 'text-danger';
@@ -207,18 +209,46 @@ export class RegistrationComponent implements OnInit, OnDestroy {
     }
     if (this.UserForm.valid) {
       const formValues = this.UserForm.value;
-      this.http.post('http://localhost:7000/api/StudentEndpoints', formValues).subscribe({
-        next: (response: any) => {
+
+      this.http.post<any>('http://localhost:7000/api/StudentEndpoints', formValues).subscribe({
+        next: (response) => {
+
+          const user = new MyAppUser(
+            response.student.myAppUser.id,
+            response.student.myAppUser.city,
+            response.student.myAppUser.cityId,
+            response.student.myAppUser.firstName,
+            response.student.myAppUser.lastName,
+            response.student.myAppUser.email,
+            response.student.myAppUser.username,
+            response.student.myAppUser.phoneNumber,
+            response.student.myAppUser.role,
+          );
+
+          this.myAuth.setLoggedInUser(user);
+
+          if (response.student.id) {
+            const student = new Student(
+              response.student.id,
+              response.student.grade,
+              response.student.educationLevel,
+              response.student.preferredMode,
+              response.student.myAppUser
+            )
+            this.myAuth.setLoggedInUser(student);
+          }
+
+          localStorage.setItem('accessToken', response.token);
+          localStorage.setItem('refreshToken', response.refreshToken);
           this.router.navigate(['/student-dashboard']);
         },
-        error: (error) => {
-          console.log(error);
+        error: (error: HttpErrorResponse) => {
+          console.error('Greška pri registraciji:', error);
         }
       });
-    }
-    else {
+    } else {
       console.log('Forma nije validna!');
-      return
     }
   }
+
 }

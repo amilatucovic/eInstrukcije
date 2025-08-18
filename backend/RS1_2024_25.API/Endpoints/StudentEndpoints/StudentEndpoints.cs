@@ -7,13 +7,16 @@ using RS1_2024_2025.Domain.SearchObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RS1_2024_2025.API.Helper;
+using MiNET.Worlds;
+using RS1_2024_25.API.Endpoints.LoginEndpoint.Interfaces;
 
 namespace RS1_2024_25.API.Endpoints.StudentEndpoints
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class StudentEndpoints(ApplicationDbContext db, IMapper mapper) : ControllerBase
+	public class StudentEndpoints(ApplicationDbContext db, IMapper mapper, ITokenService tokenService) : ControllerBase
 	{
+		
 		[HttpGet]
 		public async Task<IActionResult> GetAll([FromQuery] StudentSearchObject? search, CancellationToken cancellationToken)
 		{
@@ -103,7 +106,20 @@ namespace RS1_2024_25.API.Endpoints.StudentEndpoints
 			db.Students.Add(newStudent);
 			await db.SaveChangesAsync(cancellationToken);
 
-			return Ok(newStudent);
+			var token = tokenService.GenerateToken(newUser.ID, newUser.Username, newUser.UserType.ToString());
+			var refreshToken = tokenService.GenerateRefreshToken();
+
+			newUser.RefreshToken = refreshToken;
+			newUser.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+			await db.SaveChangesAsync();
+
+			return Ok(new
+			{
+				token = token,
+				refreshToken = refreshToken,
+				student=newStudent
+			});
+
 		}
 
 

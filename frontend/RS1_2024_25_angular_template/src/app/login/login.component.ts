@@ -70,7 +70,7 @@ export class LoginComponent {
               response.grade,
               response.educationLevel,
               response.preferredMode,
-              response.myAppUser,
+              response.myAppUser
             )
             this.myAuth.setLoggedInUser(student);
           }

@@ -18,7 +18,7 @@ export class StudentDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.myAuth.getLoggedInUser() as Student;
-
+    console.log(this.user);
     if (this.user) {
       const savedImage = localStorage.getItem('studentProfileImage_' + this.user.id);
       if (savedImage) {

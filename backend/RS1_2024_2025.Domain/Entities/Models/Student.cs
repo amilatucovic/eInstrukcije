@@ -23,8 +23,10 @@ namespace RS1_2024_2025.Domain.Entities
         public ICollection<Attendance> Attendances { get; set; }
         public ICollection<ReservationPayment> ReservationsPayment { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
+        public ICollection<Lesson> Lessons { get; set; }
 
-        [ForeignKey(nameof(MyAppUser))]
+
+		[ForeignKey(nameof(MyAppUser))]
         public int MyAppUserID { get; set; }
         public MyAppUser MyAppUser { get; set; }
     }

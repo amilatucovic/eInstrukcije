@@ -2,7 +2,6 @@
 using MiNET.Plugins;
 using MiNET.UI;
 using RS1_2024_2025.Database;
-using RS1_2024_2025.Database.Migrations;
 using RS1_2024_2025.Domain.Entities;
 
 namespace RS1_2024_25.API.Endpoints.TutorSearch

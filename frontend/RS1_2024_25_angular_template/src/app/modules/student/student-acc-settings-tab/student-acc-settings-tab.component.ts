@@ -98,7 +98,6 @@ export class StudentAccSettingsTabComponent implements OnInit {
 
     if (this.user) {
       this.originalUsername = this.user.myAppUser.username;
-      console.log("User na ucitavanju:", this.user);
       this.UserForm.patchValue({
         firstName: this.user.myAppUser.firstName,
         lastName: this.user.myAppUser.lastName,

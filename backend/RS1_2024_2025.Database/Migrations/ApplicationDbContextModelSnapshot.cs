@@ -469,45 +469,6 @@ namespace RS1_2024_2025.Database.Migrations
                             StudentID = 7,
                             SubjectID = 12,
                             TutorID = 4
-                        },
-                        new
-                        {
-                            ID = 8,
-                            Duration = 0,
-                            EndTime = new DateTime(2025, 9, 1, 15, 15, 0, 0, DateTimeKind.Unspecified),
-                            LessonDate = new DateTime(2025, 9, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Mode = 0,
-                            StartTime = new DateTime(2025, 9, 1, 14, 15, 0, 0, DateTimeKind.Unspecified),
-                            Status = 0,
-                            StudentID = 1,
-                            SubjectID = 9,
-                            TutorID = 4
-                        },
-                        new
-                        {
-                            ID = 9,
-                            Duration = 0,
-                            EndTime = new DateTime(2025, 6, 25, 10, 0, 0, 0, DateTimeKind.Unspecified),
-                            LessonDate = new DateTime(2025, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Mode = 1,
-                            StartTime = new DateTime(2025, 6, 25, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = 0,
-                            StudentID = 2,
-                            SubjectID = 3,
-                            TutorID = 5
-                        },
-                        new
-                        {
-                            ID = 10,
-                            Duration = 0,
-                            EndTime = new DateTime(2025, 6, 25, 11, 15, 0, 0, DateTimeKind.Unspecified),
-                            LessonDate = new DateTime(2025, 6, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Mode = 0,
-                            StartTime = new DateTime(2025, 6, 25, 10, 15, 0, 0, DateTimeKind.Unspecified),
-                            Status = 0,
-                            StudentID = 3,
-                            SubjectID = 6,
-                            TutorID = 5
                         });
                 });
 
@@ -1070,33 +1031,6 @@ namespace RS1_2024_2025.Database.Migrations
                     b.HasIndex("SubjectID");
 
                     b.ToTable("StudentsSubjects");
-
-                    b.HasData(
-                        new
-                        {
-                            StudentID = 1,
-                            SubjectID = 1
-                        },
-                        new
-                        {
-                            StudentID = 2,
-                            SubjectID = 7
-                        },
-                        new
-                        {
-                            StudentID = 3,
-                            SubjectID = 19
-                        },
-                        new
-                        {
-                            StudentID = 4,
-                            SubjectID = 24
-                        },
-                        new
-                        {
-                            StudentID = 5,
-                            SubjectID = 22
-                        });
                 });
 
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Subject", b =>
@@ -1804,7 +1738,7 @@ namespace RS1_2024_2025.Database.Migrations
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Lesson", b =>
                 {
                     b.HasOne("RS1_2024_2025.Domain.Entities.Student", "Student")
-                        .WithMany()
+                        .WithMany("Lessons")
                         .HasForeignKey("StudentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1904,7 +1838,7 @@ namespace RS1_2024_2025.Database.Migrations
                     b.HasOne("RS1_2024_2025.Domain.Entities.Student", "Student")
                         .WithMany("Reservations")
                         .HasForeignKey("StudentID")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RS1_2024_2025.Domain.Entities.Tutor", "Tutor")
@@ -1948,7 +1882,7 @@ namespace RS1_2024_2025.Database.Migrations
                     b.HasOne("RS1_2024_2025.Domain.Entities.Student", "Student")
                         .WithMany("Reviews")
                         .HasForeignKey("StudentID")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RS1_2024_2025.Domain.Entities.Tutor", "Tutor")
@@ -2071,6 +2005,8 @@ namespace RS1_2024_2025.Database.Migrations
             modelBuilder.Entity("RS1_2024_2025.Domain.Entities.Student", b =>
                 {
                     b.Navigation("Attendances");
+
+                    b.Navigation("Lessons");
 
                     b.Navigation("Reservations");
 

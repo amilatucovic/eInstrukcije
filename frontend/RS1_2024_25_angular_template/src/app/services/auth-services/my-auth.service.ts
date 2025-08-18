@@ -32,10 +32,15 @@ export class MyAuthService {
   setLoggedInUser(user: any): void {
     if (user) {
       localStorage.setItem('loggedInUser', JSON.stringify(user));
+      if (user.token) {
+        localStorage.setItem('accessToken', user.token);
+      }
     } else {
       localStorage.removeItem('loggedInUser');
+      localStorage.removeItem('accessToken');
     }
   }
+
   getLoggedInUser(): MyAppUser | Student | null {
     const stored = localStorage.getItem('loggedInUser');
     return stored ? JSON.parse(stored) as MyAppUser : null;
@@ -50,8 +55,4 @@ export class MyAuthService {
     const user = this.getLoggedInUser();
     return user ? user.id : null;
   }
-
-
-
-
 }

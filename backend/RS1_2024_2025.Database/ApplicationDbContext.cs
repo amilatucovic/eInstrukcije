@@ -51,7 +51,7 @@ namespace RS1_2024_2025.Database
 				.HasOne(r => r.Student)
 				.WithMany(s => s.Reviews)
 				.HasForeignKey(r => r.StudentID)
-				.OnDelete(DeleteBehavior.NoAction);
+				.OnDelete(DeleteBehavior.Cascade);
 
 
 			modelBuilder.Entity<Review>()
@@ -64,7 +64,7 @@ namespace RS1_2024_2025.Database
     .HasKey(tsc => tsc.ID); 
 
             modelBuilder.Entity<TutorSubjectCategory>()
-                .HasIndex(tsc => new { tsc.TutorID, tsc.SubjectID, tsc.CategoryID }) // Sprečava duplikate
+                .HasIndex(tsc => new { tsc.TutorID, tsc.SubjectID, tsc.CategoryID })
                 .IsUnique();
 
             modelBuilder.Entity<TutorSubjectCategory>()
@@ -170,7 +170,7 @@ namespace RS1_2024_2025.Database
 				entity.HasOne(r => r.Student)
 				.WithMany(s => s.Reservations)
 				.HasForeignKey(r => r.StudentID)
-				.OnDelete(DeleteBehavior.Restrict);
+				.OnDelete(DeleteBehavior.Cascade);
 
 				entity.HasOne(r => r.Tutor)
 				.WithMany(t => t.Reservations)
@@ -210,7 +210,14 @@ namespace RS1_2024_2025.Database
                         .HasForeignKey<Tutor>(t => t.MyAppUserID)
                         .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<City>().SeedData();
+
+			modelBuilder.Entity<Student>()
+						.HasMany(s => s.Lessons)
+						.WithOne(l => l.Student)
+						.HasForeignKey(l => l.StudentID)
+						.OnDelete(DeleteBehavior.Cascade); 
+
+			modelBuilder.Entity<City>().SeedData();
 			modelBuilder.Entity<MyAppUser>().SeedData();
 			modelBuilder.Entity<Student>().SeedData();
 			modelBuilder.Entity<Tutor>().SeedData();
@@ -219,7 +226,7 @@ namespace RS1_2024_2025.Database
 			modelBuilder.Entity<Category>().SeedData();
 			modelBuilder.Entity<SubjectCategory>().SeedData();
 			modelBuilder.Entity<TutorSubject>().SeedData();
-			modelBuilder.Entity<StudentSubject>().SeedData();
+			//modelBuilder.Entity<StudentSubject>().SeedData();
 			modelBuilder.Entity<Lesson>().SeedData();
 
 			OnModelCreatingPartial(modelBuilder);
