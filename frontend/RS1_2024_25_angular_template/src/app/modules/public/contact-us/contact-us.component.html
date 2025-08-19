@@ -5,31 +5,82 @@
       <strong>Kontaktirajte nas za sva dodatna pitanja!</strong>
     </p>
     <p>
-      <strong>📍 Adresa: </strong> Maršala Tita 182, Mostar, BiH (kod Kampusa
+      <strong>📍 Adresa:</strong> Maršala Tita 182, Mostar, BiH (kod Kampusa
       Univerziteta)
     </p>
     <p>
-      <strong>📞 Telefon: </strong>
-      <a href="tel">+387 62 123 456</a>
+      <strong>📞 Telefon:</strong>
+      <a href="tel:+38762123456">+387 62 123 456</a>
     </p>
     <p>
-      <strong>✉️ Email: </strong>
-      <a href="mail">eInstrukcije&#64;example.com</a>
+      <strong>✉️ Email:</strong>
+      <a href="mailto:eInstrukcije@example.com">eInstrukcije&#64;example.com</a>
     </p>
-    <p><strong>🕐 Radno vrijeme: </strong> Pon – Pet (08:00 – 16:00)</p>
+    <p><strong>🕐 Radno vrijeme:</strong> Pon – Pet (08:00 – 16:00)</p>
   </div>
 
   <div class="contact-container">
-    <form class="contact-form">
-      <label><span class="required">*</span></label>
-      <input type="text" placeholder="Ime i prezime" required />
+    <form class="contact-form" [formGroup]="UserForm" (ngSubmit)="submit()">
+      <div class="form-group">
+        <input type="text" placeholder="Ime i prezime" formControlName="name" />
+        <div
+          class="text-danger"
+          *ngIf="
+            UserForm.controls['name'].invalid &&
+            (UserForm.controls['name'].touched ||
+              UserForm.controls['name'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['name'].errors?.['required']"
+            >Polje je obavezno!</span
+          >
+          <span *ngIf="UserForm.controls['name'].errors?.['pattern']"
+            >Sadržaj polja nije u ispravnom formatu!</span
+          >
+        </div>
+      </div>
 
-      <label><span class="required">*</span></label>
-      <input type="email" placeholder="Email adresa" required />
+      <div class="form-group">
+        <input
+          type="email"
+          placeholder="Email adresa"
+          formControlName="email"
+        />
+        <div
+          class="text-danger"
+          *ngIf="
+            UserForm.controls['email'].invalid &&
+            (UserForm.controls['email'].touched ||
+              UserForm.controls['email'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['email'].errors?.['required']"
+            >Polje je obavezno!</span
+          >
+          <span *ngIf="UserForm.controls['email'].errors?.['email']"
+            >Email nije u ispravnom formatu!</span
+          >
+        </div>
+      </div>
 
-      <label><span class="required">*</span></label>
-      <textarea placeholder="Sadržaj poruke" required></textarea>
-      <p class="required-note">* polje je obavezno</p>
+      <div class="form-group">
+        <textarea placeholder="Poruka" formControlName="message"></textarea>
+        <div
+          class="text-danger"
+          *ngIf="
+            UserForm.controls['message'].invalid &&
+            (UserForm.controls['message'].touched ||
+              UserForm.controls['message'].dirty)
+          "
+        >
+          <span *ngIf="UserForm.controls['message'].errors?.['required']"
+            >Polje je obavezno!</span
+          >
+          <span *ngIf="UserForm.controls['message'].errors?.['minlength']"
+            >Sadržaj poruke nema dovoljno karaktera!</span
+          >
+        </div>
+      </div>
 
       <button type="submit">Pošaljite poruku</button>
     </form>
@@ -42,8 +93,7 @@
         style="border: 0"
         allowfullscreen
         loading="lazy"
-      >
-      </iframe>
+      ></iframe>
     </div>
   </div>
 </section>

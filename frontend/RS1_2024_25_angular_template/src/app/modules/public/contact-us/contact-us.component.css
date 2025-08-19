@@ -10,7 +10,7 @@ h1 {
   text-align: center;
   font-size: 32px;
   margin-bottom: 10px;
-  color: #008b8b; /* tirkiz */
+  color: #008b8b;
 }
 
 .subtext {
@@ -36,7 +36,6 @@ h1 {
 .contact-form textarea {
   width: 100%;
   padding: 12px;
-  margin-bottom: 15px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 14px;
@@ -47,6 +46,20 @@ h1 {
   resize: vertical;
 }
 
+.contact-form input:hover,
+.contact-form textarea:hover {
+  border-color: #008b8b;
+  outline: 2px solid #008b8b;
+  outline-offset: -2px;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #008b8b;
+  outline: 2px solid #008b8b;
+  outline-offset: -2px;
+  box-shadow: 0 0 0 3px rgba(0, 139, 139, 0.2);
+}
 .contact-form button {
   background-color: #008b8b;
   color: white;
@@ -89,11 +102,17 @@ h1 {
 .info-box a:hover {
   text-decoration: underline;
 }
-.required {
-  color: red;
-}
-.required-note {
-  color: red;
+
+.text-danger {
   font-size: small;
-  margin-top: -20px;
+  padding-top: 0px;
+}
+
+.contact-form .form-group input.ng-invalid.ng-touched,
+.contact-form .form-group textarea.ng-invalid.ng-touched {
+  border: 1px solid #dc3545;
+  outline: none;
+}
+.form-group {
+  margin-bottom: 20px;
 }
