@@ -12,8 +12,8 @@ using RS1_2024_2025.Database;
 namespace RS1_2024_2025.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250818190141_init")]
-    partial class init
+    [Migration("20250821144938_MyFirstMigration")]
+    partial class MyFirstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

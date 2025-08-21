@@ -135,34 +135,23 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
                 return NotFound();
 
             var userId = tutor.MyAppUserID;
-
-            
             var messages = await db.Messages
                 .Where(m => m.SenderID == userId || m.ReceiverID == userId)
                 .ToListAsync();
             db.Messages.RemoveRange(messages);
-
-            
             db.Reviews.RemoveRange(tutor.Reviews);
-
-            
-            var tutorSubjectCategories = await db.TutorSubjectCategories
-                .Where(tsc => tsc.TutorID == tutor.ID)
-                .ToListAsync();
-            db.TutorSubjectCategories.RemoveRange(tutorSubjectCategories);
-
-           
-            db.TutorsSubjects.RemoveRange(tutor.TutorSubjects);
-
-           
             var lessons = await db.Lessons
-                .Where(l => l.TutorID == tutor.ID)
-                .Include(l => l.Reservation)
-                    .ThenInclude(r => r.ReservationPayments)
-                .ToListAsync();
+    .Where(l => l.TutorID == tutor.ID)
+    .Include(l => l.Reservation)
+        .ThenInclude(r => r.ReservationPayments)
+    .Include(l => l.Attendances) 
+    .ToListAsync();
 
             foreach (var lesson in lessons)
             {
+               
+                db.Attendances.RemoveRange(lesson.Attendances);
+
                 
                 if (lesson.Reservation != null)
                 {
@@ -171,10 +160,17 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
                 }
             }
 
-        
+            
             db.Lessons.RemoveRange(lessons);
 
+            var tutorSubjectCategories = await db.TutorSubjectCategories
+                .Where(tsc => tsc.TutorID == tutor.ID)
+                .ToListAsync();
+            db.TutorSubjectCategories.RemoveRange(tutorSubjectCategories);
+
            
+            db.TutorsSubjects.RemoveRange(tutor.TutorSubjects);
+
             db.Tutors.Remove(tutor);
             db.MyAppUsers.Remove(tutor.MyAppUser);
 
@@ -185,12 +181,15 @@ namespace RS1_2024_25.API.Endpoints.TutorEndpoints
             }
             catch (Exception ex)
             {
+                Console.WriteLine("DELETE ERROR: " + ex);
                 return StatusCode(500, new
                 {
                     error = ex.Message,
-                    inner = ex.InnerException?.Message
+                    inner = ex.InnerException?.Message,
+                    stack = ex.StackTrace
                 });
             }
+
         }
 
 

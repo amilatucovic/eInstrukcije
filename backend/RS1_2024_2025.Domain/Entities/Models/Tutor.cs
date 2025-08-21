@@ -24,6 +24,7 @@ namespace RS1_2024_2025.Domain.Entities
         public ICollection<ReservationPayment> ReservationsPayment { get; set; }    
         public ICollection<TutorSubject> TutorSubjects { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
+        public ICollection<Lesson> Lessons { get; set; }
 
     }
 }

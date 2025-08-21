@@ -40,16 +40,12 @@ namespace RS1_2024_2025.Domain.Entities
 
         public Reservation Reservation { get; set; }  //navigacijski property
 
+        [NotMapped] 
         public int Duration
         {
             get
             {
                 return (EndTime - StartTime).Minutes;
-            }
-            set
-            {
-               
-                Duration = value;
             }
         }
         public LessonStatus Status { get; set; }  
