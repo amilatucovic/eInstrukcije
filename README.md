@@ -24,7 +24,7 @@
 - 💬 Real-time chat between students and tutors (SignalR)
 - 🔍 Browse available tutors and their profiles
 - 🔐 Role-based access control
-- 🧾 Admin dashboard for managing tutors and users
+- 🧾 Admin module for managing tutors and users
 
 ---
 
@@ -34,18 +34,18 @@ Use the following credentials to log in and explore the application:
 
 ### 🎓 Student
 
-- **Email:** student1@einstrukcije.com  
-- **Password:** `Test123!`
+- **Username:** emmaStudent  
+- **Password:** `emma123`
 
 ### 📘 Tutor
 
-- **Email:** tutor1@einstrukcije.com  
-- **Password:** `Test123!`
+- **Username:** oliviaTutor  
+- **Password:** `olivia123`
 
 ### 🔐 Admin
 
-- **Email:** admin@einstrukcije.com  
-- **Password:** `Test123!`
+- **Username:** AdminAdmin  
+- **Password:** `admin123`
 
 ---
 
@@ -66,4 +66,5 @@ Use the following credentials to log in and explore the application:
 cd Frontend
 npm install
 ng serve
+
 
