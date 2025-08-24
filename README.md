@@ -1,20 +1,69 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# 📚 eInstrukcije
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+**eInstrukcije** is a web application developed as part of the *Software Development I* course at the Faculty of Information Technologies. It serves as a platform that connects students and tutors for easy session scheduling, communication, and learning management.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+---
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## 🛠️ Technologies Used
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+- ASP.NET Core (Web API)
+- Angular (Frontend)
+- Entity Framework Core (ORM)
+- SQL Server
+- SignalR (Real-time messaging)
+- JWT Authentication
+- Git / Azure DevOps / GitHub
+
+---
+
+## 🚀 Key Features
+
+- 👤 User roles: Student, Tutor, and Admin
+- 📅 Schedule management: students can request sessions
+- ✅ Tutors can confirm or reject requests
+- 💬 Real-time chat between students and tutors (SignalR)
+- 🔍 Browse available tutors and their profiles
+- 🔐 Role-based access control
+- 🧾 Admin dashboard for managing tutors and users
+
+---
+
+## 👥 Test Users
+
+Use the following credentials to log in and explore the application:
+
+### 🎓 Student
+
+- **Email:** student1@einstrukcije.com  
+- **Password:** `Test123!`
+
+### 📘 Tutor
+
+- **Email:** tutor1@einstrukcije.com  
+- **Password:** `Test123!`
+
+### 🔐 Admin
+
+- **Email:** admin@einstrukcije.com  
+- **Password:** `Test123!`
+
+---
+
+## 🖥️ Getting Started
+
+### 🔧 Backend (ASP.NET Core)
+
+1. Open the `eInstrukcije.sln` solution in Visual Studio
+2. Run database migrations using the Package Manager Console:
+    ```
+    Update-Database
+    ```
+3. Start the backend server (`F5` or `dotnet run`)
+
+### 🌐 Frontend (Angular)
+
+```bash
+cd Frontend
+npm install
+ng serve
+
